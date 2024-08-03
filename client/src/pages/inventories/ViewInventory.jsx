@@ -8,7 +8,7 @@ const Button = lazy(() => import("../../components/formsUI/ButtonWrapper"));
 const ViewInventory = ({ inventory, closeEvent }) => {
     return (
         <>
-            {/* Add your form here */}
+            {/* Add your form here Shaaciye */}
             <Typography variant="h6" fontWeight="bold" align="center">
                 View Inventory
             </Typography>
