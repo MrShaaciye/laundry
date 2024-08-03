@@ -1,0 +1,138 @@
+"use client";
+import { lazy } from "react";
+import { Box, Grid, IconButton, Typography } from "@mui/material";
+import axios from "axios";
+import * as yup from "yup";
+import { Form, Formik, FastField } from "formik";
+import CloseIcon from "@mui/icons-material/Close";
+import { toast } from "react-toastify";
+const TextField = lazy(() => import("../../components/formsUI/TextFieldWrapper"));
+const RadioGroup = lazy(() => import("../../components/formsUI/RadioGroupWrapper"));
+const Button = lazy(() => import("../../components/formsUI/ButtonWrapper"));
+
+const AddEmployee = ({ newEmployee, employees, closeEvent }) => {
+    // Initial Values
+    const initialValues = {
+        name: "",
+        gender: "",
+        address: "",
+        phone: "",
+        jobTitle: "",
+        salary: "",
+    };
+
+    // Validation Schema with Yup
+    const validationSchema = yup.object().shape({
+        name: yup
+            .string()
+            .min(3)
+            .max(50)
+            .matches(/^[A-Za-z ]+$/, "Name must be Letters")
+            .required(),
+        gender: yup.string().min(4).max(6).oneOf(["Male", "Female"]).required(),
+        address: yup
+            .string()
+            .min(4)
+            .max(100)
+            .matches(/^[A-Za-z0-9_., ]+$/, "Address must be Letters/Numbers")
+            .required(),
+        phone: yup
+            .string()
+            .min(9)
+            .max(9)
+            .matches(/^[0-9]+$/, "Phone must be numbers")
+            .required(),
+        jobTitle: yup
+            .string()
+            .min(5)
+            .max(20)
+            .matches(/^[A-Za-z0-9_.,'!@#$%^&* ]+$/, "Address must be Letters/Numbers")
+            .required(),
+        salary: yup.number().typeError().positive().min(100).max(9999.99).required(),
+    });
+
+    // Submit Form Data function
+    const onSubmit = async (formData, onSubmitProps) => {
+        try {
+            const { name, phone } = formData;
+            const employeeExist = employees.find(employee => employee.name === name && employee.phone === phone);
+            if (employeeExist) {
+                closeEvent();
+                return toast.error(`Employee already exists`);
+            }
+            await axios.post(`/api/v1/employee`, formData);
+            setTimeout(() => {
+                onSubmitProps.resetForm();
+                onSubmitProps.setSubmitting(false);
+            }, 500);
+            newEmployee(formData);
+            closeEvent();
+            return toast.success(`Employee added successfully`);
+        } catch (err) {
+            closeEvent();
+            return toast.error(err.response.data);
+        }
+    };
+
+    // Gender Array Object
+    const genderOptions = [
+        { value: "Male", label: "Male" },
+        { value: "Female", label: "Female" },
+    ];
+
+    return (
+        <>
+            {/* Add your form here */}
+            <Typography variant="h6" fontWeight="bold" align="center">
+                Add Employee
+            </Typography>
+            <Box sx={{ m: 2 }} />
+            <IconButton style={{ position: "absolute", top: "0", right: "0" }} onClick={closeEvent}>
+                <CloseIcon />
+            </IconButton>
+            {/* Formik Starts here */}
+            <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit} enableReinitialize>
+                {formik => {
+                    return (
+                        <Form>
+                            <Grid container spacing={2}>
+                                <Grid item xs={8}>
+                                    <Box height={7} />
+                                    <FastField type="text" name="name" label="Full Name" component={TextField} />
+                                </Grid>
+                                <Grid item xs={4}>
+                                    <Box height={7} />
+                                    <FastField type="text" name="gender" label="Gender" component={RadioGroup} options={genderOptions} />
+                                </Grid>
+                                <Grid item xs={7}>
+                                    <Box height={7} />
+                                    <FastField type="text" name="address" label="Address" component={TextField} />
+                                </Grid>
+                                <Grid item xs={5}>
+                                    <Box height={7} />
+                                    <FastField type="text" name="phone" label="Phone" component={TextField} />
+                                </Grid>
+                                <Grid item xs={6}>
+                                    <Box height={7} />
+                                    <FastField type="text" name="jobTitle" label="Job Title" component={TextField} />
+                                </Grid>
+                                <Grid item xs={6}>
+                                    <Box height={7} />
+                                    <FastField type="number" name="salary" label="Salary" step="0.00" component={TextField} />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Box height={7} />
+                                    <Button type="submit" label="Submit" disabled={!(formik.dirty && formik.isValid) || formik.isSubmitting}>
+                                        {formik.isSubmitting ? "Loading" : "Create Employee"}
+                                    </Button>
+                                </Grid>
+                            </Grid>
+                        </Form>
+                    );
+                }}
+            </Formik>
+        </>
+    );
+};
+
+export default AddEmployee;
