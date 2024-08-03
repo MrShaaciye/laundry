@@ -11,11 +11,12 @@ COPY CSS BODY file to index.jsx
 link: https://github.com/tamphimai007/React-Pro-sidebar/blob/main/client/src/index.css
 
 COPY APP BAR file to Header.js
-<<<<<<< HEAD
+
 link: https://github.com/tamphimai007/React-Pro-sidebar/blob/main/client/src/layout/HeaderBar.js
 =======
 link: https://github.com/tamphimai007/React-Pro-sidebar/blob/main/client/src/layout/HeaderBar.js
 
+…or create a new repository on the command line
 echo "# laundry" >> README.md
 git init
 git add README.md
@@ -24,3 +25,7 @@ git branch -M main
 git remote add origin https://github.com/MrShaaciye/laundry.git
 git push -u origin main
 
+…or push an existing repository from the command line
+git remote add origin https://github.com/MrShaaciye/laundry.git
+git branch -M main
+git push -u origin main
