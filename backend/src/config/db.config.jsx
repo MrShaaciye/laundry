@@ -1,7 +1,7 @@
 `use strict`;
 module.exports = {
     // DB: `ORCLPDB`,
-    // USER: `halaqaty`,
+    // USER: `laundry`,
     // PASSWORD: `656369`,
     // HOST: `localhost`,
     // DIALECT: `oracle`,
@@ -12,7 +12,7 @@ module.exports = {
     HOST: `localhost`,
     DIALECT: `mysql`,
 
-    // DB: `halaqaty`,
+    // DB: `laundry`,
     // USER: `sa`,
     // PASSWORD: `123`,
     // HOST: `localhost`,

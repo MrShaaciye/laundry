@@ -30,7 +30,7 @@ const UpdatePayment = ({ expenses, payment, updatedPayment, closeEvent }) => {
             .transform(value => (value ? value : new Date()))
             .max(new Date(), "Date can't be in the future")
             .required(),
-        amount: yup.number().typeError().positive().min(0.5).max(499.99).required(),
+        amount: yup.number().typeError().positive().min(0.5).max(99999.99).required(),
         note: yup
             .string()
             .min(3)

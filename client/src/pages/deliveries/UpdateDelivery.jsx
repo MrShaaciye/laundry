@@ -23,7 +23,7 @@ const UpdateDelivery = ({ customers, employees, delivery, updatedDelivery, close
     const validationSchema = yup.object().shape({
         customerId: yup.number().typeError().positive().required(),
         employeeId: yup.number().typeError().positive().required(),
-        fee: yup.number().typeError().positive().min(0.5).max(499.99).required(),
+        fee: yup.number().typeError().positive().min(0.5).max(99.99).required(),
         note: yup
             .string()
             .min(3)

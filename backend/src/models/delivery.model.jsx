@@ -39,7 +39,7 @@ module.exports = (sequelize, DataTypes) => {
                 },
             },
             fee: {
-                type: DataTypes.DECIMAL(8, 2),
+                type: DataTypes.DECIMAL(5, 2),
                 allowNull: false,
                 validate: {
                     isDecimal: {
@@ -47,8 +47,8 @@ module.exports = (sequelize, DataTypes) => {
                         msg: `Fee must be a decimal number.`,
                     },
                     len: {
-                        args: [1, 8],
-                        msg: `Fee must be between 1 and 8 characters.`,
+                        args: [1, 5],
+                        msg: `Fee must be between 1 and 6 characters.`,
                     },
                     notNull: {
                         args: true,
