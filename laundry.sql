@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.34, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.38, for Win64 (x86_64)
 --
 -- Host: localhost    Database: laundry
 -- ------------------------------------------------------
--- Server version	8.0.35
+-- Server version	8.0.39
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -78,7 +78,7 @@ CREATE TABLE `deliveries` (
 
 LOCK TABLES `deliveries` WRITE;
 /*!40000 ALTER TABLE `deliveries` DISABLE KEYS */;
-INSERT INTO `deliveries` VALUES (1,3,3,1.50,'Macmiilkan adeeggiisa waa loo qaaday','2023-11-29 11:56:14','2023-11-29 12:17:38',NULL),(2,3,1,2.00,'Macmiilkan adeeggiisa waa loo qaaday','2023-11-29 12:00:33','2023-11-29 12:00:33',NULL);
+INSERT INTO `deliveries` VALUES (1,3,3,1.50,'Macmiilkan waa loo adeegay','2023-11-29 11:56:14','2024-08-04 07:37:52',NULL),(2,3,1,2.00,'Macmiilkan waa loo adeegay','2023-11-29 12:00:33','2024-08-04 07:37:30',NULL);
 /*!40000 ALTER TABLE `deliveries` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -466,4 +466,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-12-05 15:53:30
+-- Dump completed on 2024-08-04 11:57:36
