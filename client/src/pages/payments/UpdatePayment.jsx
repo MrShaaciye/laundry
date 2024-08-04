@@ -91,7 +91,7 @@ const UpdatePayment = ({ expenses, payment, updatedPayment, closeEvent }) => {
                                 <Grid item xs={12}>
                                     <Box height={7} />
                                     <Button type="submit" label="Submit" disabled={!(formik.dirty && formik.isValid) || formik.isSubmitting}>
-                                        {formik.isSubmitting ? "Loading" : "Create Payment"}
+                                        {formik.isSubmitting ? "Loading" : "Update Payment"}
                                     </Button>
                                 </Grid>
                             </Grid>

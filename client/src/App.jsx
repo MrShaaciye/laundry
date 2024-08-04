@@ -17,6 +17,7 @@ const Supplies = lazy(() => import("./pages/supplies/Supplies"));
 const Expenses = lazy(() => import("./pages/expenses/Expenses"));
 const Payments = lazy(() => import("./pages/payments/Payments"));
 const Inventories = lazy(() => import("./pages/inventories/Inventories"));
+const Deliveries = lazy(() => import("./pages/deliveries/Deliveries"));
 
 const App = () => {
     const [isSidebar, setIsSidebar] = useState(true);
@@ -44,6 +45,7 @@ const App = () => {
                                         <Route path="/expenses" element={<Expenses />} />
                                         <Route path="/payments" element={<Payments />} />
                                         <Route path="/inventories" element={<Inventories />} />
+                                        <Route path="/deliveries" element={<Deliveries />} />
                                         <Route path="*" element={<div>Oops! Page Not Found</div>} />
                                     </Routes>
                                 </Box>

@@ -16,9 +16,10 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 import dateFormatter from "../../components/utils/dateFormatter";
-const AddInventory = lazy(() => import("./AddInventory"));
-const UpdateInventory = lazy(() => import("./UpdateInventory"));
-const ViewInventory = lazy(() => import("./ViewInventory"));
+import currencyFormatter from "../../components/utils/currencyFormatter";
+const AddDelivery = lazy(() => import("./AddDelivery"));
+const UpdateDelivery = lazy(() => import("./UpdateDelivery"));
+const ViewDelivery = lazy(() => import("./ViewDelivery"));
 
 // Modal Style
 const style = {
@@ -38,9 +39,9 @@ const style = {
 // Table Header List
 const columns = [
     { field: `id`, label: `ID` },
-    { field: `supply name`, label: `Supply Name` },
-    { field: `quantity`, label: `Quantity` },
-    { field: `type`, label: `Type` },
+    { field: `customer`, label: `Customer` },
+    { field: `employee`, label: `Employee` },
+    { field: `fee`, label: `Fee` },
     { field: `note`, label: `Note` },
     { field: `createdAt`, label: `Created At` },
     { field: `updatedAt`, label: `Updated At` },
@@ -80,9 +81,10 @@ const Inventories = () => {
     const log = useRef(true);
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
-    const [supplies, setSupplies] = useState([]);
-    const [inventories, setInventories] = useState([]);
-    const [inventory, setInventory] = useState({});
+    const [customers, setCustomers] = useState([]);
+    const [employees, setEmployees] = useState([]);
+    const [deliveries, setDeliveries] = useState([]);
+    const [delivery, setDelivery] = useState({});
     const [count, setCount] = useState(0);
     const [search, setSearch] = useState("");
     const [page, setPage] = useState(0);
@@ -91,11 +93,11 @@ const Inventories = () => {
     const [modalEditOpen, setModalEditOpen] = useState(false);
     const [modalViewOpen, setModalViewOpen] = useState(false);
 
-    // Get Supplies from API function
-    const getSupplies = async () => {
+    // Get Customers from API function
+    const getCustomers = async () => {
         try {
-            axios.get(`/api/v1/supply`).then(res => {
-                return setSupplies(res.data.rows);
+            axios.get(`/api/v1/customer`).then(res => {
+                return setCustomers(res.data.rows);
             });
         } catch (err) {
             setError(err.response.data);
@@ -103,12 +105,24 @@ const Inventories = () => {
         }
     };
 
-    // Get Inventories from API function
-    const getInventories = async () => {
+    // Get Employees from API function
+    const getEmployees = async () => {
+        try {
+            axios.get(`/api/v1/employee`).then(res => {
+                return setEmployees(res.data.rows);
+            });
+        } catch (err) {
+            setError(err.response.data);
+            return toast.error(error);
+        }
+    };
+
+    // Get Deliveries from API function
+    const getDeliveries = async () => {
         setIsLoading(true);
         try {
-            await axios.get(`/api/v1/inventory`).then(res => {
-                setInventories(res.data.rows);
+            await axios.get(`/api/v1/delivery`).then(res => {
+                setDeliveries(res.data.rows);
                 return setCount(res.data.count);
             });
         } catch (err) {
@@ -122,8 +136,9 @@ const Inventories = () => {
     useEffect(() => {
         if (log.current) {
             log.current = false;
-            getSupplies();
-            getInventories();
+            getCustomers();
+            getEmployees();
+            getDeliveries();
         }
         // eslint-disable-next-line
     }, []);
@@ -143,11 +158,11 @@ const Inventories = () => {
         try {
             // Create a new workbook and add a worksheet
             const workbook = xlsx.utils.book_new();
-            const worksheet = xlsx.utils.json_to_sheet(inventories);
+            const worksheet = xlsx.utils.json_to_sheet(deliveries);
             // Add the worksheet to the workbook
-            xlsx.utils.book_append_sheet(workbook, worksheet, "Inventories");
+            xlsx.utils.book_append_sheet(workbook, worksheet, "Deliveries");
             // Save the worksheet to a file
-            xlsx.writeFile(workbook, "inventories.xlsx");
+            xlsx.writeFile(workbook, "deliveries.xlsx");
         } catch (err) {
             setError(err.response.data);
             return toast.error(error);
@@ -165,29 +180,29 @@ const Inventories = () => {
     const handleViewClose = () => setModalViewOpen(false);
 
     // Create function
-    const handleCreate = () => getInventories();
+    const handleCreate = () => getDeliveries();
 
     // View function
     const handleView = async id => {
         try {
-            await axios.get(`/api/v1/inventory/${id}`).then(res => {
-                return setInventory(res.data);
+            await axios.get(`/api/v1/delivery/${id}`).then(res => {
+                return setDelivery(res.data);
             });
             handleViewOpen();
         } catch (err) {
-            return toast.error(`Sorry! Inventory was't found!`);
+            return toast.error(`Sorry! Delivery was't found!`);
         }
     };
 
     // Edit function
     const handleEdit = async id => {
         try {
-            await axios.get(`/api/v1/inventory/${id}`).then(res => {
-                return setInventory(res.data);
+            await axios.get(`/api/v1/delivery/${id}`).then(res => {
+                return setDelivery(res.data);
             });
             handleEditOpen();
         } catch (err) {
-            return toast.error(`Sorry! Inventory was't found!`);
+            return toast.error(`Sorry! Delivery was't found!`);
         }
     };
 
@@ -204,11 +219,11 @@ const Inventories = () => {
         }).then(async res => {
             if (res.value) {
                 try {
-                    await axios.delete(`/api/v1/inventory/${id}`);
-                    getInventories();
-                    return toast.success(`Inventory ${id} deleted successfully!`);
+                    await axios.delete(`/api/v1/delivery/${id}`);
+                    getDeliveries();
+                    return toast.success(`Delivery ${id} deleted successfully!`);
                 } catch (err) {
-                    return toast.error(`Sorry! Inventory was't found!`);
+                    return toast.error(`Sorry! Delivery was't found!`);
                 }
             }
         });
@@ -224,18 +239,18 @@ const Inventories = () => {
                 <Box>
                     <Modal keepMounted open={modalAddOpen} aria-labelledby="responsive-modal-title" aria-describedby="responsive-modal-description">
                         <Box sx={style}>
-                            <AddInventory newInventory={handleCreate} supplies={supplies} closeEvent={handleAddClose} />
+                            <AddDelivery newDelivery={handleCreate} customers={customers} employees={employees} closeEvent={handleAddClose} />
                         </Box>
                     </Modal>
                 </Box>
                 <Modal keepMounted open={modalEditOpen} aria-labelledby="responsive-modal-title" aria-describedby="responsive-modal-description">
                     <Box sx={style}>
-                        <UpdateInventory updatedInventory={handleCreate} supplies={supplies} closeEvent={handleEditClose} inventory={inventory} />
+                        <UpdateDelivery updatedDelivery={handleCreate} customers={customers} employees={employees} closeEvent={handleEditClose} delivery={delivery} />
                     </Box>
                 </Modal>
                 <Modal keepMounted open={modalViewOpen} aria-labelledby="responsive-modal-title" aria-describedby="responsive-modal-description">
                     <Box sx={style}>
-                        <ViewInventory closeEvent={handleViewClose} inventory={inventory} />
+                        <ViewDelivery closeEvent={handleViewClose} delivery={delivery} />
                     </Box>
                 </Modal>
             </Stack>
@@ -243,7 +258,7 @@ const Inventories = () => {
                 <Paper sx={{ width: "100%", overflow: "hidden" }}>
                     <Stack ml={1} mr={1} direction="row" spacing={2}>
                         <Typography gutterBottom variant="h6" component="div" sx={{ pl: "10px", pt: "10px" }}>
-                            Inventories List
+                            Deliveries List
                         </Typography>
                         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}></Typography>
                         <Button variant="contained" disableRipple disableElevation sx={{ maxHeight: "35px", minHeight: "35px" }} startIcon={<DownloadIcon />} onClick={handleDownload}>
@@ -255,7 +270,7 @@ const Inventories = () => {
                     {/* Search Box */}
                     <Stack ml={1} mr={1} direction="row" spacing={2}>
                         <TextField type="search" size="small" sx={{ width: 300 }} onChange={e => setSearch(e.target.value)} label={`${count} Search Inventory...`} />
-                        {/* <Autocomplete disablePortal id="combo-box-demo" size="small" options={inventories} sx={{ width: 300 }} onChange={(e, v) => setRowData(v)} getOptionLabel={inventories => inventory.type || ""} renderInput={params => <TextField {...params} label={`${count} Search Inventory...`} />} /> */}
+                        {/* <Autocomplete disablePortal id="combo-box-demo" size="small" options={deliveries} sx={{ width: 300 }} onChange={(e, v) => setRowData(v)} getOptionLabel={deliveries => inventory.type || ""} renderInput={params => <TextField {...params} label={`${count} Search Inventory...`} />} /> */}
                         <Typography variant="h6" component="div" sx={{ flexGrow: 12 }}></Typography>
                         <Button variant="contained" disableRipple disableElevation sx={{ maxHeight: "35px", minHeight: "35px" }} startIcon={<AddCircleIcon />} onClick={handleAddOpen}>
                             Add
@@ -276,23 +291,23 @@ const Inventories = () => {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {(rowsPerPage > 0 ? inventories.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : inventories)
-                                    .filter(inventory => (search.toLowerCase() === "" ? inventory : inventory.type.toLowerCase().includes(search)))
-                                    .map(inventory => (
-                                        <TableRow key={inventory.id}>
-                                            <TableCell>{inventory.id}</TableCell>
-                                            <TableCell>{inventory.supplies.name}</TableCell>
-                                            <TableCell>{inventory.quantity}</TableCell>
-                                            <TableCell>{inventory.type}</TableCell>
-                                            <TableCell>{inventory.note}</TableCell>
-                                            <TableCell>{dateFormatter(new Date(inventory.createdAt), "YYYY-MM-DD HH:mm:ss")}</TableCell>
-                                            <TableCell>{dateFormatter(new Date(inventory.updatedAt), "YYYY-MM-DD HH:mm:ss")}</TableCell>
-                                            <TableCell>{inventory.deletedAt ? dateFormatter(new Date(inventory.deletedAt), "YYYY-MM-DD HH:mm:ss") : "Null"}</TableCell>
+                                {(rowsPerPage > 0 ? deliveries.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : deliveries)
+                                    .filter(delivery => (search.toLowerCase() === "" ? delivery : delivery.type.toLowerCase().includes(search)))
+                                    .map(delivery => (
+                                        <TableRow key={delivery.id}>
+                                            <TableCell>{delivery.id}</TableCell>
+                                            <TableCell>{`${delivery.customers.name} [${delivery.customers.phone}] ${delivery.customers.address}`}</TableCell>
+                                            <TableCell>{`${delivery.employees.name} [${delivery.employees.jobTitle}]`}</TableCell>
+                                            <TableCell>{currencyFormatter(delivery.fee)}</TableCell>
+                                            <TableCell>{delivery.note}</TableCell>
+                                            <TableCell>{dateFormatter(new Date(delivery.createdAt), "YYYY-MM-DD HH:mm:ss")}</TableCell>
+                                            <TableCell>{dateFormatter(new Date(delivery.updatedAt), "YYYY-MM-DD HH:mm:ss")}</TableCell>
+                                            <TableCell>{delivery.deletedAt ? dateFormatter(new Date(delivery.deletedAt), "YYYY-MM-DD HH:mm:ss") : "Null"}</TableCell>
                                             <TableCell>
                                                 <Stack direction="row" justifyContent="center" alignItems="center" spacing={0.3}>
-                                                    <VisibilityIcon style={{ fontSize: "20px", color: "green", cursor: "pointer" }} onClick={() => handleView(inventory.id)} />
-                                                    <EditIcon style={{ fontSize: "20px", color: "blue", cursor: "pointer" }} onClick={() => handleEdit(inventory.id)} />
-                                                    <DeleteIcon style={{ fontSize: "20px", color: "red", cursor: "pointer" }} onClick={() => handleDelete(inventory.id)} />
+                                                    <VisibilityIcon style={{ fontSize: "20px", color: "green", cursor: "pointer" }} onClick={() => handleView(delivery.id)} />
+                                                    <EditIcon style={{ fontSize: "20px", color: "blue", cursor: "pointer" }} onClick={() => handleEdit(delivery.id)} />
+                                                    <DeleteIcon style={{ fontSize: "20px", color: "red", cursor: "pointer" }} onClick={() => handleDelete(delivery.id)} />
                                                 </Stack>
                                             </TableCell>
                                         </TableRow>

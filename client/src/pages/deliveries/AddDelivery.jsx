@@ -10,43 +10,38 @@ const MenuItem = lazy(() => import("../../components/formsUI/MenuItemWrapper"));
 const TextField = lazy(() => import("../../components/formsUI/TextFieldWrapper"));
 const Button = lazy(() => import("../../components/formsUI/ButtonWrapper"));
 
-const AddPayment = ({ expenses, newPayment, closeEvent }) => {
+const AddDelivery = ({ customers, employees, newDelivery, closeEvent }) => {
     // Initial Values
     const initialValues = {
-        expenseId: "",
-        date: "",
-        amount: "",
+        customerId: "",
+        employeeId: "",
+        fee: "",
         note: "",
     };
 
     // Validation Schema with Yup
     const validationSchema = yup.object().shape({
-        expenseId: yup.number().typeError().positive().integer().required(),
-        date: yup
-            .date()
-            .transform(value => (value ? value : new Date()))
-            .max(new Date(), "Payment Date can't be in the future")
-            .required(),
-        amount: yup.number().typeError().positive().min(0.5).max(499.99).required(),
+        customerId: yup.number().typeError().positive().required(),
+        employeeId: yup.number().typeError().positive().required(),
+        fee: yup.number().typeError().positive().min(0.5).max(499.99).required(),
         note: yup
             .string()
             .min(3)
             .max(50)
-            .matches(/^[A-Za-z0-9_.,'!@#$%^&* ]+$/, "Note must be Letters/Numbers/Some Symbols.")
-            .required(),
+            .matches(/^[A-Za-z0-9_.,'!@#$%^&* ]+$/, "Note must be Letters/Numbers/Some Symbols."),
     });
 
     // Submit Form Data function
     const onSubmit = async (formData, onSubmitProps) => {
         try {
-            await axios.post(`/api/v1/payment`, formData);
+            await axios.post(`/api/v1/delivery`, formData);
             setTimeout(() => {
                 onSubmitProps.resetForm();
                 onSubmitProps.setSubmitting(false);
             }, 500);
-            newPayment(formData);
+            newDelivery(formData);
             closeEvent();
-            return toast.success(`Payment added successfully`);
+            return toast.success(`Delivery added successfully`);
         } catch (err) {
             closeEvent();
             return toast.error(err.response.data);
@@ -57,7 +52,7 @@ const AddPayment = ({ expenses, newPayment, closeEvent }) => {
         <>
             {/* Add your form here */}
             <Typography variant="h6" fontWeight="bold" align="center">
-                Add Payment
+                Add Delivery
             </Typography>
             <Box sx={{ m: 2 }} />
             <IconButton style={{ position: "absolute", top: "0", right: "0" }} onClick={closeEvent}>
@@ -71,15 +66,15 @@ const AddPayment = ({ expenses, newPayment, closeEvent }) => {
                             <Grid container spacing={2}>
                                 <Grid item xs={12}>
                                     <Box height={7} />
-                                    <FastField type="number" name="expenseId" label="Select Payment" component={MenuItem} options={expenses.map(expense => ({ value: expense.id, label: expense.name }))} />
+                                    <FastField type="number" name="customerId" label="Select Customer" component={MenuItem} options={customers.map(customer => ({ value: customer.id, label: customer.name }))} />
                                 </Grid>
                                 <Grid item xs={12}>
                                     <Box height={7} />
-                                    <FastField type="date" name="date" label="Payment Date" component={TextField} />
+                                    <FastField type="number" name="employeeId" label="Select Customer" component={MenuItem} options={employees.map(employee => ({ value: employee.id, label: employee.name }))} />
                                 </Grid>
                                 <Grid item xs={12}>
                                     <Box height={7} />
-                                    <FastField type="number" name="amount" label="Amount" step="0.00" component={TextField} />
+                                    <FastField type="number" name="fee" label="Fee" step="0.00" component={TextField} />
                                 </Grid>
                                 <Grid item xs={12}>
                                     <Box height={7} />
@@ -88,7 +83,7 @@ const AddPayment = ({ expenses, newPayment, closeEvent }) => {
                                 <Grid item xs={12}>
                                     <Box height={7} />
                                     <Button type="submit" label="Submit" disabled={!(formik.dirty && formik.isValid) || formik.isSubmitting}>
-                                        {formik.isSubmitting ? "Loading" : "Create Payment"}
+                                        {formik.isSubmitting ? "Loading" : "Create Delivery"}
                                     </Button>
                                 </Grid>
                             </Grid>
@@ -100,4 +95,4 @@ const AddPayment = ({ expenses, newPayment, closeEvent }) => {
     );
 };
 
-export default AddPayment;
+export default AddDelivery;

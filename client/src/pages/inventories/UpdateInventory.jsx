@@ -90,7 +90,7 @@ const UpdatePrice = ({ supplies, inventory, updatedInventory, closeEvent }) => {
                                 <Grid item xs={12}>
                                     <Box height={7} />
                                     <Button type="submit" label="Submit" disabled={!(formik.dirty && formik.isValid) || formik.isSubmitting}>
-                                        {formik.isSubmitting ? "Loading" : "Update Price"}
+                                        {formik.isSubmitting ? "Loading" : "Update Inventory"}
                                     </Button>
                                 </Grid>
                             </Grid>

@@ -10,7 +10,7 @@ const MenuItem = lazy(() => import("../../components/formsUI/MenuItemWrapper"));
 const TextField = lazy(() => import("../../components/formsUI/TextFieldWrapper"));
 const Button = lazy(() => import("../../components/formsUI/ButtonWrapper"));
 
-const AddPrice = ({ supplies, newInventory, closeEvent }) => {
+const AddInventory = ({ supplies, newInventory, closeEvent }) => {
     // Initial Values
     const initialValues = {
         supplyId: "",
@@ -59,7 +59,7 @@ const AddPrice = ({ supplies, newInventory, closeEvent }) => {
         <>
             {/* Add your form here */}
             <Typography variant="h6" fontWeight="bold" align="center">
-                Add Price
+                Add inventory
             </Typography>
             <Box sx={{ m: 2 }} />
             <IconButton style={{ position: "absolute", top: "0", right: "0" }} onClick={closeEvent}>
@@ -90,7 +90,7 @@ const AddPrice = ({ supplies, newInventory, closeEvent }) => {
                                 <Grid item xs={12}>
                                     <Box height={7} />
                                     <Button type="submit" label="Submit" disabled={!(formik.dirty && formik.isValid) || formik.isSubmitting}>
-                                        {formik.isSubmitting ? "Loading" : "Create Price"}
+                                        {formik.isSubmitting ? "Loading" : "Create Inventory"}
                                     </Button>
                                 </Grid>
                             </Grid>
@@ -102,4 +102,4 @@ const AddPrice = ({ supplies, newInventory, closeEvent }) => {
     );
 };
 
-export default AddPrice;
+export default AddInventory;
