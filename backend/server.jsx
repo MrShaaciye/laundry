@@ -1,4 +1,5 @@
 `use strict`;
+const compression = require(`compression`);
 const express = require(`express`);
 const cors = require(`cors`);
 const https = require(`https`);
@@ -12,12 +13,24 @@ const httpsServer = https.createServer({
     cert: fs.readFileSync(`./src/keys/cert.pem`),
 });
 
+const compressionOptions = compression({
+    level: 6,
+    threshold: 10 * 1000,
+    filter: (req, res) => {
+        if (req.headers[`x-no-compression`]) {
+            return false;
+        }
+        return compression.filter(req, res);
+    },
+});
+
 const corsOptions = {
     origin: `http://localhost:3000`,
     optionsSuccessStatus: 200,
 };
 
 app.use(cors(corsOptions))
+    .use(compressionOptions)
     .use(logger)
     .use(express.json())
     .use(express.urlencoded({ extended: false }))
