@@ -9,7 +9,7 @@ const Button = lazy(() => import("../../components/formsUI/ButtonWrapper"));
 const ViewCustomer = ({ customer, closeEvent }) => {
     return (
         <>
-            {/* Add your form here shaaciye */}
+            {/* Add your form here */}
             <Typography variant="h6" fontWeight="bold" align="center">
                 View Customer
             </Typography>
