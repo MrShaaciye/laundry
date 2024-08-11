@@ -212,7 +212,7 @@ const Payments = () => {
     };
 
     // If Loading
-    if (isLoading) return <Stack>Loading...</Stack>;
+    if (isLoading) return <Stack>Page is Loading data...</Stack>;
 
     return (
         <>
