@@ -218,7 +218,6 @@ const Customers = () => {
                     getCustomers();
                     return toast.success(`Customer ${id} deleted successfully!`);
                 } catch (err) {
-                    console.log(err);
                     return toast.error(err.response.data);
                 }
             }
