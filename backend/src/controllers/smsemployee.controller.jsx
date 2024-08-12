@@ -56,7 +56,7 @@ exports.findOne = async (req, res) => {
         });
         return smsEmployee ? (await transactions.commit(), res.status(200).json(smsEmployee)) : err;
     } catch (err) {
-        return await transactions.rollback(), res.status(500).json(err);
+        return await transactions.rollback(), res.status(404).json(err);
     }
 };
 
@@ -70,7 +70,7 @@ exports.update = async (req, res) => {
     } catch (err) {
         const messages = {};
         let message;
-        return await transactions.rollback(), err.errors.forEach(error => ((messages[error.path] = error.message), (message = messages[error.path]))), res.status(500).json(message);
+        return await transactions.rollback(), err.errors.forEach(error => ((messages[error.path] = error.message), (message = messages[error.path]))), res.status(404).json(message);
     }
 };
 
@@ -82,7 +82,7 @@ exports.restore = async (req, res) => {
         const smsEmployee = await smsEmployeeModel.restore({ where: { id: id }, transaction: transactions });
         return smsEmployee ? (await transactions.commit(), res.status(200).json(smsEmployee)) : err;
     } catch (err) {
-        return await transactions.rollback(), res.status(500).json(err);
+        return await transactions.rollback(), res.status(404).json(err);
     }
 };
 
@@ -94,6 +94,6 @@ exports.delete = async (req, res) => {
         const smsEmployee = await smsEmployeeModel.destroy({ where: { id: id }, transaction: transactions });
         return smsEmployee ? (await transactions.commit(), res.status(200).json(smsEmployee)) : err;
     } catch (err) {
-        return await transactions.rollback(), res.status(500).json(err);
+        return await transactions.rollback(), res.status(404).json(err);
     }
 };

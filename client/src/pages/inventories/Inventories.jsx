@@ -174,7 +174,7 @@ const Inventories = () => {
             });
             handleViewOpen();
         } catch (err) {
-            return toast.error(`Sorry! Inventory was't found!`);
+            return toast.error(`Sorry! Inventory ${err.response.statusText}`);
         }
     };
 
@@ -186,7 +186,7 @@ const Inventories = () => {
             });
             handleEditOpen();
         } catch (err) {
-            return toast.error(`Sorry! Inventory was't found!`);
+            return toast.error(`Sorry! Inventory ${err.response.statusText}`);
         }
     };
 
@@ -207,7 +207,7 @@ const Inventories = () => {
                     getInventories();
                     return toast.success(`Inventory ${id} deleted successfully!`);
                 } catch (err) {
-                    return toast.error(`Sorry! Inventory was't found!`);
+                    return toast.error(`Sorry! Inventory ${err.response.statusText}`);
                 }
             }
         });

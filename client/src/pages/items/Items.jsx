@@ -157,7 +157,7 @@ const Items = () => {
             });
             handleViewOpen();
         } catch (err) {
-            return toast.error(`Sorry! Item was't found!`);
+            return toast.error(`Sorry! Item ${err.response.statusText}`);
         }
     };
 
@@ -169,7 +169,7 @@ const Items = () => {
             });
             handleEditOpen();
         } catch (err) {
-            return toast.error(`Sorry! Item was't found!`);
+            return toast.error(`Sorry! Item ${err.response.statusText}`);
         }
     };
 
@@ -190,7 +190,7 @@ const Items = () => {
                     getItems();
                     return toast.success(`Item ${id} deleted successfully!`);
                 } catch (err) {
-                    return toast.error(`Sorry! Item was't found!`);
+                    return toast.error(`Sorry! Item ${err.response.statusText}`);
                 }
             }
         });

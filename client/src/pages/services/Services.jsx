@@ -157,7 +157,7 @@ const Services = () => {
             });
             handleViewOpen();
         } catch (err) {
-            return toast.error(`Sorry! Service was't found!`);
+            return toast.error(`Sorry! Service ${err.response.statusText}`);
         }
     };
 
@@ -169,7 +169,7 @@ const Services = () => {
             });
             handleEditOpen();
         } catch (err) {
-            return toast.error(`Sorry! Service was't found!`);
+            return toast.error(`Sorry! Service ${err.response.statusText}`);
         }
     };
 
@@ -190,7 +190,7 @@ const Services = () => {
                     getServices();
                     return toast.success(`Service ${id} deleted successfully!`);
                 } catch (err) {
-                    return toast.error(`Sorry! Service was't found!`);
+                    return toast.error(`Sorry! Service ${err.response.statusText}`);
                 }
             }
         });
