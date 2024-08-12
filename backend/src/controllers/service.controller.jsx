@@ -51,9 +51,9 @@ exports.findOne = async (req, res) => {
             paranoid: false,
             where: { id: id },
         });
-        return service ? (await transactions.commit(), res.status(200).json(service)) : err;
+        return service ? (await transactions.commit(), res.status(200).json(service)) : await transactions.rollback(), res.status(404).json(`Service not found`);
     } catch (err) {
-        return await transactions.rollback(), res.status(404).json(err);
+        return await transactions.rollback(), res.status(500).json(err);
     }
 };
 
@@ -68,7 +68,7 @@ exports.update = async (req, res) => {
     } catch (err) {
         const messages = {};
         let message;
-        return await transactions.rollback(), err.errors.forEach(error => ((messages[error.path] = error.message), (message = messages[error.path]))), res.status(404).json(message);
+        return await transactions.rollback(), err.errors.forEach(error => ((messages[error.path] = error.message), (message = messages[error.path]))), res.status(500).json(message);
     }
 };
 
@@ -78,9 +78,9 @@ exports.restore = async (req, res) => {
     try {
         const id = req.params.id;
         const service = await serviceModel.restore({ where: { id: id }, transaction: transactions });
-        return service ? (await transactions.commit(), res.status(200).json(service)) : err;
+        return service ? (await transactions.commit(), res.status(200).json(service)) : await transactions.rollback(), res.status(404).json(`Service not found`);
     } catch (err) {
-        return await transactions.rollback(), res.status(404).json(err);
+        return await transactions.rollback(), res.status(500).json(err);
     }
 };
 
@@ -90,8 +90,8 @@ exports.delete = async (req, res) => {
     try {
         const id = req.params.id;
         const service = await serviceModel.destroy({ where: { id: id }, transaction: transactions });
-        return service ? (await transactions.commit(), res.status(200).json(service)) : err;
+        return service ? (await transactions.commit(), res.status(200).json(service)) : await transactions.rollback(), res.status(404).json(`Service not found`);
     } catch (err) {
-        return await transactions.rollback(), res.status(404).json(err);
+        return await transactions.rollback(), res.status(500).json(err);
     }
 };

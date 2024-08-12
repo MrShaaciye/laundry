@@ -181,11 +181,11 @@ const Customers = () => {
     const handleView = async id => {
         try {
             await axios.get(`/api/v1/customer/${id}`).then(res => {
-                return setCustomer(res.data);
+                setCustomer(res.data);
             });
             handleViewOpen();
         } catch (err) {
-            return toast.error(`Sorry! Customer ${err.response.statusText}`);
+            return toast.error(err.response.data);
         }
     };
 
@@ -197,7 +197,7 @@ const Customers = () => {
             });
             handleEditOpen();
         } catch (err) {
-            return toast.error(`Sorry! Customer ${err.response.statusText}`);
+            return toast.error(err.response.data);
         }
     };
 
@@ -218,7 +218,8 @@ const Customers = () => {
                     getCustomers();
                     return toast.success(`Customer ${id} deleted successfully!`);
                 } catch (err) {
-                    return toast.error(`Sorry! Customer ${err.response.statusText}`);
+                    console.log(err);
+                    return toast.error(err.response.data);
                 }
             }
         });

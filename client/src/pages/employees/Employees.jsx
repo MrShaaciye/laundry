@@ -184,7 +184,7 @@ const Employees = () => {
             });
             handleViewOpen();
         } catch (err) {
-            return toast.error(`Sorry! Employee ${err.response.statusText}`);
+            return toast.error(err.response.data);
         }
     };
 
@@ -196,7 +196,7 @@ const Employees = () => {
             });
             handleEditOpen();
         } catch (err) {
-            return toast.error(`Sorry! Employee ${err.response.statusText}`);
+            return toast.error(err.response.data);
         }
     };
 
@@ -217,7 +217,7 @@ const Employees = () => {
                     getEmployees();
                     return toast.success(`Employee ${id} deleted successfully!`);
                 } catch (err) {
-                    return toast.error(`Sorry! Employee ${err.response.statusText}`);
+                    return toast.error(err.response.data);
                 }
             }
         });

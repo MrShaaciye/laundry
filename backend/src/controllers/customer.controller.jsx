@@ -5,6 +5,8 @@ const xlsx = require(`xlsx`);
 // Import centerModel, Sequelize, Op
 const customerModel = db.customerModel;
 const sequelize = db.sequelize;
+const query = sequelize.query(`SELECT * FROM customers;`);
+console.log(query);
 const Op = db.Op;
 
 // Bulk Create Customer
@@ -74,9 +76,9 @@ exports.findOne = async (req, res) => {
             paranoid: false,
             where: { id: id },
         });
-        return customer ? (await transactions.commit(), res.status(200).json(customer)) : err;
+        return customer ? (await transactions.commit(), res.status(200).json(customer)) : await transactions.rollback(), res.status(404).json(`Customer not found`);
     } catch (err) {
-        return await transactions.rollback(), res.status(404).json(err);
+        return await transactions.rollback(), res.status(500).json(err);
     }
 };
 
@@ -91,7 +93,7 @@ exports.update = async (req, res) => {
     } catch (err) {
         const messages = {};
         let message;
-        return await transactions.rollback(), err.errors.forEach(error => ((messages[error.path] = error.message), (message = messages[error.path]))), res.status(404).json(message);
+        return await transactions.rollback(), err.errors.forEach(error => ((messages[error.path] = error.message), (message = messages[error.path]))), res.status(500).json(message);
     }
 };
 
@@ -101,9 +103,9 @@ exports.restore = async (req, res) => {
     try {
         const id = req.params.id;
         const customer = await customerModel.restore({ where: { id: id }, transaction: transactions });
-        return customer ? (await transactions.commit(), res.status(200).json(customer)) : err;
+        return customer ? (await transactions.commit(), res.status(200).json(customer)) : await transactions.rollback(), res.status(404).json(`Customer not found`);
     } catch (err) {
-        return await transactions.rollback(), res.status(404).json(err);
+        return await transactions.rollback(), res.status(500).json(err);
     }
 };
 
@@ -113,8 +115,8 @@ exports.delete = async (req, res) => {
     try {
         const id = req.params.id;
         const customer = await customerModel.destroy({ where: { id: id }, transaction: transactions });
-        return customer ? (await transactions.commit(), res.status(200).json(customer)) : err;
+        return customer ? (await transactions.commit(), res.status(200).json(customer)) : await transactions.rollback(), res.status(404).json(`Customer not found`);
     } catch (err) {
-        return await transactions.rollback(), res.status(404).json(err);
+        return await transactions.rollback(), res.status(500).json(err);
     }
 };

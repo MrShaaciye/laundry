@@ -75,9 +75,9 @@ exports.findOne = async (req, res) => {
             paranoid: false,
             where: { id: id },
         });
-        return user ? (await transactions.commit(), res.status(200).json(user)) : err;
+        return user ? (await transactions.commit(), res.status(200).json(user)) : await transactions.rollback(), res.status(404).json(`User not found`);
     } catch (err) {
-        return await transactions.rollback(), res.status(404).json(err);
+        return await transactions.rollback(), res.status(500).json(err);
     }
 };
 
@@ -92,7 +92,7 @@ exports.update = async (req, res) => {
     } catch (err) {
         const messages = {};
         let message;
-        return await transactions.rollback(), err.errors.forEach(error => ((messages[error.path] = error.message), (message = messages[error.path]))), res.status(404).json(message);
+        return await transactions.rollback(), err.errors.forEach(error => ((messages[error.path] = error.message), (message = messages[error.path]))), res.status(500).json(message);
     }
 };
 
@@ -102,9 +102,9 @@ exports.restore = async (req, res) => {
     try {
         const id = req.params.id;
         const user = await userModel.restore({ where: { id: id }, transaction: transactions });
-        return user ? (await transactions.commit(), res.status(200).json(user)) : err;
+        return user ? (await transactions.commit(), res.status(200).json(user)) : await transactions.rollback(), res.status(404).json(`User not found`);
     } catch (err) {
-        return await transactions.rollback(), res.status(404).json(err);
+        return await transactions.rollback(), res.status(500).json(err);
     }
 };
 
@@ -114,8 +114,9 @@ exports.delete = async (req, res) => {
     try {
         const id = req.params.id;
         const user = await userModel.destroy({ where: { id: id }, transaction: transactions });
+        return user ? (await transactions.commit(), res.status(200).json(user)) : await transactions.rollback(), res.status(404).json(`User not found`);
         return user ? (await transactions.commit(), res.status(200).json(user)) : err;
     } catch (err) {
-        return await transactions.rollback(), res.status(404).json(err);
+        return await transactions.rollback(), res.status(500).json(err);
     }
 };
