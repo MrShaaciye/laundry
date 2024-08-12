@@ -58,7 +58,7 @@ exports.findAll = async (req, res) => {
         });
         return customers ? (await transactions.commit(), res.status(200).json(customers)) : err;
     } catch (err) {
-        return await transactions.rollback(), res.status(404).json(err);
+        return await transactions.rollback(), res.status(500).json(err);
     }
 };
 

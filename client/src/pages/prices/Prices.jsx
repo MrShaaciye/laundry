@@ -159,7 +159,7 @@ const Prices = () => {
             });
             handleViewOpen();
         } catch (err) {
-            return toast.error(`Sorry! Price was't found!`);
+            return toast.error(`Sorry! Price ${err.response.statusText}`);
         }
     };
 
@@ -171,7 +171,7 @@ const Prices = () => {
             });
             handleEditOpen();
         } catch (err) {
-            return toast.error(`Sorry! Price was't found!`);
+            return toast.error(`Sorry! Price ${err.response.statusText}`);
         }
     };
 
@@ -192,7 +192,7 @@ const Prices = () => {
                     getPrices();
                     return toast.success(`Price ${id} deleted successfully!`);
                 } catch (err) {
-                    return toast.error(`Sorry! Price was't found!`);
+                    return toast.error(`Sorry! Price ${err.response.statusText}`);
                 }
             }
         });
