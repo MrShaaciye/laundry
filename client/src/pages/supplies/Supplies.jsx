@@ -158,7 +158,7 @@ const Supplies = () => {
             });
             handleViewOpen();
         } catch (err) {
-            return toast.error(`Sorry! Supply ${err.response.statusText}`);
+            return toast.error(`Sorry! Supply was't found!`);
         }
     };
 
@@ -170,7 +170,7 @@ const Supplies = () => {
             });
             handleEditOpen();
         } catch (err) {
-            return toast.error(`Sorry! Supply ${err.response.statusText}`);
+            return toast.error(`Sorry! Supply was't found!`);
         }
     };
 
@@ -191,7 +191,7 @@ const Supplies = () => {
                     getSupplies();
                     return toast.success(`Supply ${id} deleted successfully!`);
                 } catch (err) {
-                    return toast.error(`Sorry! Supply ${err.response.statusText}`);
+                    return toast.error(`Sorry! Supply was't found!`);
                 }
             }
         });

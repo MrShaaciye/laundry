@@ -189,7 +189,7 @@ const Inventories = () => {
             });
             handleViewOpen();
         } catch (err) {
-            return toast.error(`Sorry! Delivery ${err.response.statusText}`);
+            return toast.error(`Sorry! Delivery was't found!`);
         }
     };
 
@@ -201,7 +201,7 @@ const Inventories = () => {
             });
             handleEditOpen();
         } catch (err) {
-            return toast.error(`Sorry! Delivery ${err.response.statusText}`);
+            return toast.error(`Sorry! Delivery was't found!`);
         }
     };
 
@@ -222,7 +222,7 @@ const Inventories = () => {
                     getDeliveries();
                     return toast.success(`Delivery ${id} deleted successfully!`);
                 } catch (err) {
-                    return toast.error(`Sorry! Delivery ${err.response.statusText}`);
+                    return toast.error(`Sorry! Delivery was't found!`);
                 }
             }
         });

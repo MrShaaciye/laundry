@@ -158,7 +158,7 @@ const Expenses = () => {
             });
             handleViewOpen();
         } catch (err) {
-            return toast.error(`Sorry! Expense ${err.response.statusText}`);
+            return toast.error(`Sorry! Expense was't found!`);
         }
     };
 
@@ -170,7 +170,7 @@ const Expenses = () => {
             });
             handleEditOpen();
         } catch (err) {
-            return toast.error(`Sorry! Expense ${err.response.statusText}`);
+            return toast.error(`Sorry! Expense was't found!`);
         }
     };
 
@@ -191,7 +191,7 @@ const Expenses = () => {
                     getExpenses();
                     return toast.success(`Expense ${id} deleted successfully!`);
                 } catch (err) {
-                    return toast.error(`Sorry! Expense ${err.response.statusText}`);
+                    return toast.error(`Sorry! Expense was't found!`);
                 }
             }
         });

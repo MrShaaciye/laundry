@@ -172,7 +172,7 @@ const Payments = () => {
             });
             handleViewOpen();
         } catch (err) {
-            return toast.error(`Sorry! Payment ${err.response.statusText}`);
+            return toast.error(`Sorry! Payment was't found!`);
         }
     };
 
@@ -184,7 +184,7 @@ const Payments = () => {
             });
             handleEditOpen();
         } catch (err) {
-            return toast.error(`Sorry! Payment ${err.response.statusText}`);
+            return toast.error(`Sorry! Payment was't found!`);
         }
     };
 
@@ -205,7 +205,7 @@ const Payments = () => {
                     getPayments();
                     return toast.success(`Payment ${id} deleted successfully!`);
                 } catch (err) {
-                    return toast.error(`Sorry! Payment ${err.response.statusText}`);
+                    return toast.error(`Sorry! Payment was't found!`);
                 }
             }
         });

@@ -185,7 +185,7 @@ const Customers = () => {
             });
             handleViewOpen();
         } catch (err) {
-            return toast.error(`Sorry! Customer ${err.response.statusText}`);
+            return toast.error(`Customer was't found!`);
         }
     };
 
@@ -197,7 +197,7 @@ const Customers = () => {
             });
             handleEditOpen();
         } catch (err) {
-            return toast.error(`Sorry! Customer ${err.response.statusText}`);
+            return toast.error(`Customer was't found!`);
         }
     };
 
@@ -218,7 +218,7 @@ const Customers = () => {
                     getCustomers();
                     return toast.success(`Customer ${id} deleted successfully!`);
                 } catch (err) {
-                    return toast.error(`Sorry! Customer ${err.response.statusText}`);
+                    return toast.error(`Customer was't found!`);
                 }
             }
         });
