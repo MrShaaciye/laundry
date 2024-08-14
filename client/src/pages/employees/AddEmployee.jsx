@@ -32,7 +32,7 @@ const AddEmployee = ({ newEmployee, employees, closeEvent }) => {
         gender: yup.string().min(4).max(6).oneOf(["Male", "Female"]).required(),
         address: yup
             .string()
-            .min(4)
+            .min(5)
             .max(100)
             .matches(/^[A-Za-z0-9_., ]+$/, "Address must be Letters/Numbers")
             .required(),
