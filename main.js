@@ -42,17 +42,15 @@ console.log(spreadArr3); */
 /* const getInfo = (name, age, ...hobbies) => `Name: ${name}, Age: ${age}, Hobbies: ${hobbies}`;
 console.log(getInfo("John", 30, "Reading", "Coding", "Swimming")); */
 
-// Map, Find, Filter
-const people = [
+// Map
+/* const people = [
     { name: "John", age: 30, occupation: "developer" },
     { name: "Jane", age: 25, occupation: "designer" },
     { name: "Bob", age: 35, occupation: "teacher" },
     { name: "Alice", age: 22, occupation: "developer" },
     { name: "Eve", age: 28, occupation: "designer" },
 ];
-
-// Map
-/* const info = people.map((person, index) => `No: ${index} Name: ${person.name} Age: ${person.age} Occupation: ${person.occupation}`);
+const info = people.map((person, index) => `No: ${index} Name: ${person.name} Age: ${person.age} Occupation: ${person.occupation}`);
 console.log(info); */
 
 // Find
@@ -64,13 +62,20 @@ console.log(sameAge); */
 console.log(developers); */
 
 // Some
-const some = people.some(person => person.age >= 30);
-console.log(some);
+/* const some = people.some(person => person.age >= 30);
+console.log(some); */
 
 // Every
+/* const every = people.every(person => person.age >= 22);
+console.log(every); */
 
 // Includes
+/* const includeArr = ["John", "Doe", "Bob"];
+console.log(includeArr.includes("Doe")); */
 
 // IndexOf
+/* const indexOfArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+console.log(indexOfArr.indexOf(7)); */
 
 // FindIndex
+/* console.log(people.findIndex(person => person.occupation === "teacher")); */
