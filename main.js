@@ -43,13 +43,14 @@ console.log(spreadArr3); */
 console.log(getInfo("John", 30, "Reading", "Coding", "Swimming")); */
 
 // Map
-/* const people = [
+const people = [
     { name: "John", age: 30, occupation: "developer" },
     { name: "Jane", age: 25, occupation: "designer" },
     { name: "Bob", age: 35, occupation: "teacher" },
     { name: "Alice", age: 22, occupation: "developer" },
     { name: "Eve", age: 28, occupation: "designer" },
 ];
+/* 
 const info = people.map((person, index) => `No: ${index} Name: ${person.name} Age: ${person.age} Occupation: ${person.occupation}`);
 console.log(info); */
 
@@ -79,3 +80,23 @@ console.log(indexOfArr.indexOf(7)); */
 
 // FindIndex
 /* console.log(people.findIndex(person => person.occupation === "teacher")); */
+
+// Reduce
+/* const reduce = people.reduce((acc, person) => acc + person.age, 0);
+console.log(reduce); */
+
+// Fetch
+/* const products = async () => {
+    try {
+        await fetch("https://dummyjson.com/products")
+            .then(response => response.json())
+            .then(data => (data.products.length > 0 ? data.products.map((product, index) => console.log(`No: ${index} Name: ${product.title} Price: ${product.price}`)) : console.log("No products found")));
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+products(); */
+/* ======================================================================================================================= */
+// REACT JS
+/* ======================================================================================================================= */
