@@ -9,7 +9,7 @@ import { toast } from "react-toastify";
 const TextField = lazy(() => import("../../components/formsUI/TextFieldWrapper"));
 const Button = lazy(() => import("../../components/formsUI/ButtonWrapper"));
 
-const AddExpense = ({ newExpense, expenses, closeEvent }) => {
+const AddExpense = ({ newExpense, closeEvent }) => {
     // Initial Values
     const initialValues = {
         name: "",
@@ -35,12 +35,6 @@ const AddExpense = ({ newExpense, expenses, closeEvent }) => {
     // Submit Form Data function
     const onSubmit = async (formData, onSubmitProps) => {
         try {
-            const { name } = formData;
-            const expenseExist = expenses.find(expense => expense.name === name);
-            if (expenseExist) {
-                closeEvent();
-                return toast.error(`Expense already exists`);
-            }
             await axios.post(`/api/v1/expense`, formData);
             setTimeout(() => {
                 onSubmitProps.resetForm();

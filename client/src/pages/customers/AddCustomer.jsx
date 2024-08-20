@@ -52,12 +52,6 @@ const AddCustomer = ({ newCustomer, customers, closeEvent }) => {
     // Submit Form Data function
     const onSubmit = async (formData, onSubmitProps) => {
         try {
-            const { name, phone } = formData;
-            const customerExist = customers.find(customer => customer.name === name && customer.phone === phone);
-            if (customerExist) {
-                closeEvent();
-                return toast.error(`Customer already exists`);
-            }
             await axios.post(`/api/v1/customer`, formData);
             setTimeout(() => {
                 onSubmitProps.resetForm();

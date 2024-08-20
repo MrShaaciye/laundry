@@ -10,7 +10,7 @@ const TextField = lazy(() => import("../../components/formsUI/TextFieldWrapper")
 const RadioGroup = lazy(() => import("../../components/formsUI/RadioGroupWrapper"));
 const Button = lazy(() => import("../../components/formsUI/ButtonWrapper"));
 
-const UpdateEmployee = ({ employee, employees, updatedEmployee, closeEvent }) => {
+const UpdateEmployee = ({ employee, updatedEmployee, closeEvent }) => {
     // Initial Values
     const initialValues = {
         name: employee.name,
@@ -54,12 +54,6 @@ const UpdateEmployee = ({ employee, employees, updatedEmployee, closeEvent }) =>
     // Submit Form Data function
     const onSubmit = async (formData, onSubmitProps) => {
         try {
-            const { name, phone } = formData;
-            const employeeExist = employees.find(employee => employee.name === name && employee.phone === phone);
-            if (employeeExist) {
-                closeEvent();
-                return toast.error(`Employee already exists`);
-            }
             await axios.put(`/api/v1/employee/${employee.id}`, formData).then(res => {
                 setTimeout(() => {
                     onSubmitProps.resetForm();

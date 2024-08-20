@@ -233,13 +233,13 @@ const Employees = () => {
                 <Box>
                     <Modal keepMounted open={modalAddOpen} aria-labelledby="responsive-modal-title" aria-describedby="responsive-modal-description">
                         <Box sx={style}>
-                            <AddEmployee newEmployee={handleCreate} employees={employees} closeEvent={handleAddClose} />
+                            <AddEmployee newEmployee={handleCreate} closeEvent={handleAddClose} />
                         </Box>
                     </Modal>
                 </Box>
                 <Modal keepMounted open={modalEditOpen} aria-labelledby="responsive-modal-title" aria-describedby="responsive-modal-description">
                     <Box sx={style}>
-                        <UpdateEmployee updatedEmployee={handleCreate} employees={employees} closeEvent={handleEditClose} employee={employee} />
+                        <UpdateEmployee updatedEmployee={handleCreate} closeEvent={handleEditClose} employee={employee} />
                     </Box>
                 </Modal>
                 <Modal keepMounted open={modalViewOpen} aria-labelledby="responsive-modal-title" aria-describedby="responsive-modal-description">

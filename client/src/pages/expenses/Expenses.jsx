@@ -207,13 +207,13 @@ const Expenses = () => {
                 <Box>
                     <Modal keepMounted open={modalAddOpen} aria-labelledby="responsive-modal-title" aria-describedby="responsive-modal-description">
                         <Box sx={style}>
-                            <AddExpense newExpense={handleCreate} expenses={expenses} closeEvent={handleAddClose} />
+                            <AddExpense newExpense={handleCreate} closeEvent={handleAddClose} />
                         </Box>
                     </Modal>
                 </Box>
                 <Modal keepMounted open={modalEditOpen} aria-labelledby="responsive-modal-title" aria-describedby="responsive-modal-description">
                     <Box sx={style}>
-                        <UpdateExpense updatedExpense={handleCreate} expenses={expenses} closeEvent={handleEditClose} expense={expense} />
+                        <UpdateExpense updatedExpense={handleCreate} closeEvent={handleEditClose} expense={expense} />
                     </Box>
                 </Modal>
                 <Modal keepMounted open={modalViewOpen} aria-labelledby="responsive-modal-title" aria-describedby="responsive-modal-description">

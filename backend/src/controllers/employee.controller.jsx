@@ -28,11 +28,9 @@ exports.create = async (req, res) => {
     const transactions = await sequelize.transaction();
     try {
         const [employee, created] = await employeeModel.findOrCreate({ where: { name: req.body.name, phone: req.body.phone }, defaults: { gender: req.body.gender, address: req.body.address, jobTitle: req.body.jobTitle, salary: req.body.salary }, transaction: transactions });
-        return created ? (await transactions.commit(), res.status(201).json(employee)) : employee ? (await transactions.rollback(), res.status(500).json(`Employee with the same name and phone already exists`)) : err;
+        return created ? (await transactions.commit(), res.status(201).json(employee)) : (await transactions.rollback(), res.status(404).json(`Employee with the same name and phone already exists`));
     } catch (err) {
-        const messages = {};
-        let message;
-        return await transactions.rollback(), err.errors.forEach(error => ((messages[error.path] = error.message), (message = messages[error.path]))), res.status(500).json(message);
+        return await transactions.rollback(), res.status(500).json(err.message);
     }
 };
 
@@ -55,9 +53,9 @@ exports.findAll = async (req, res) => {
             order: [[`id`, `DESC`]],
             where: finder,
         });
-        return employees ? (await transactions.commit(), res.status(200).json(employees)) : err;
+        return await transactions.commit(), res.status(200).json(employees);
     } catch (err) {
-        return await transactions.rollback(), res.status(500).json(err);
+        return await transactions.rollback(), res.status(500).json(err.message);
     }
 };
 
@@ -73,9 +71,9 @@ exports.findOne = async (req, res) => {
             paranoid: false,
             where: { id: id },
         });
-        return employee ? (await transactions.commit(), res.status(200).json(employee)) : await transactions.rollback(), res.status(404).json(`Employee not found`);
+        return employee ? (await transactions.commit(), res.status(200).json(employee)) : (await transactions.rollback(), res.status(404).json(`Employee not found`));
     } catch (err) {
-        return await transactions.rollback(), res.status(500).json(err);
+        return await transactions.rollback(), res.status(500).json(err.message);
     }
 };
 
@@ -84,13 +82,10 @@ exports.update = async (req, res) => {
     const transactions = await sequelize.transaction();
     try {
         const id = req.params.id;
-        let employee;
-        const findEmployee = await employeeModel.findOne({ where: { name: req.body.name, phone: req.body.phone }, transaction: transactions });
-        return findEmployee ? (await transactions.rollback(), res.status(400).json(`Employee with the same name and phone already exists`)) : ((employee = await employeeModel.update(req.body, { where: { id: id }, transaction: transactions })), (await transactions.commit(), res.status(200).json(employee)));
+        const employee = await employeeModel.findOne({ where: { name: req.body.name, phone: req.body.phone }, transaction: transactions });
+        return employee ? (await transactions.rollback(), res.status(400).json(`Employee with the same name and phone already exists`)) : (await employeeModel.update(req.body, { where: { id: id }, transaction: transactions }), (await transactions.commit(), res.status(200).json(employee)));
     } catch (err) {
-        const messages = {};
-        let message;
-        return await transactions.rollback(), err.errors.forEach(error => ((messages[error.path] = error.message), (message = messages[error.path]))), res.status(500).json(message);
+        return await transactions.rollback(), res.status(500).json(err.message);
     }
 };
 
@@ -100,9 +95,9 @@ exports.restore = async (req, res) => {
     try {
         const id = req.params.id;
         const employee = await employeeModel.restore({ where: { id: id }, transaction: transactions });
-        return employee ? (await transactions.commit(), res.status(200).json(employee)) : await transactions.rollback(), res.status(404).json(`Employee not found`);
+        return employee ? (await transactions.commit(), res.status(200).json(employee)) : (await transactions.rollback(), res.status(404).json(`Employee not found`));
     } catch (err) {
-        return await transactions.rollback(), res.status(500).json(err);
+        return await transactions.rollback(), res.status(500).json(err.message);
     }
 };
 
@@ -112,8 +107,8 @@ exports.delete = async (req, res) => {
     try {
         const id = req.params.id;
         const employee = await employeeModel.destroy({ where: { id: id }, transaction: transactions });
-        return employee ? (await transactions.commit(), res.status(200).json(employee)) : await transactions.rollback(), res.status(404).json(`Employee not found`);
+        return employee ? (await transactions.commit(), res.status(200).json(employee)) : (await transactions.rollback(), res.status(404).json(`Employee not found`));
     } catch (err) {
-        return await transactions.rollback(), res.status(500).json(err);
+        return await transactions.rollback(), res.status(500).json(err.message);
     }
 };

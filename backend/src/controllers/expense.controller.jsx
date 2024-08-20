@@ -11,11 +11,9 @@ exports.create = async (req, res) => {
     const transactions = await sequelize.transaction();
     try {
         const [expense, created] = await expenseModel.findOrCreate({ where: { name: req.body.name }, defaults: { note: req.body.note }, transaction: transactions });
-        return created ? (await transactions.commit(), res.status(201).json(expense)) : expense ? (await transactions.rollback(), res.status(500).json(`Expense with the same name already exists`)) : err;
+        return created ? (await transactions.commit(), res.status(201).json(expense)) : (await transactions.rollback(), res.status(500).json(`Expense with the same name already exists`));
     } catch (err) {
-        const messages = {};
-        let message;
-        return await transactions.rollback(), err.errors.forEach(error => ((messages[error.path] = error.message), (message = messages[error.path]))), res.status(500).json(message);
+        return await transactions.rollback(), res.status(500).json(err.message);
     }
 };
 
@@ -34,9 +32,9 @@ exports.findAll = async (req, res) => {
             order: [[`id`, `DESC`]],
             where: finder,
         });
-        return expenses ? (await transactions.commit(), res.status(200).json(expenses)) : err;
+        return await transactions.commit(), res.status(200).json(expenses);
     } catch (err) {
-        return await transactions.rollback(), res.status(500).json(err);
+        return await transactions.rollback(), res.status(500).json(err.message);
     }
 };
 
@@ -52,9 +50,9 @@ exports.findOne = async (req, res) => {
             paranoid: false,
             where: { id: id },
         });
-        return expense ? (await transactions.commit(), res.status(200).json(expense)) : await transactions.rollback(), res.status(404).json(`Expense not found`);
+        return expense ? (await transactions.commit(), res.status(200).json(expense)) : (await transactions.rollback(), res.status(404).json(`Expense not found`));
     } catch (err) {
-        return await transactions.rollback(), res.status(500).json(err);
+        return await transactions.rollback(), res.status(500).json(err.message);
     }
 };
 
@@ -63,13 +61,10 @@ exports.update = async (req, res) => {
     const transactions = await sequelize.transaction();
     try {
         const id = req.params.id;
-        let expense;
-        const findExpense = await expenseModel.findOne({ where: { name: req.body.name }, transaction: transactions });
-        return findExpense ? (await transactions.rollback(), res.status(400).json(`Expense with the same name already exists`)) : ((expense = await expenseModel.update(req.body, { where: { id: id }, transaction: transactions })), (await transactions.commit(), res.status(200).json(expense)));
+        const expense = await expenseModel.findOne({ where: { name: req.body.name }, transaction: transactions });
+        return expense ? (await transactions.rollback(), res.status(400).json(`Expense with the same name already exists`)) : (await expenseModel.update(req.body, { where: { id: id }, transaction: transactions }), (await transactions.commit(), res.status(200).json(expense)));
     } catch (err) {
-        const messages = {};
-        let message;
-        return await transactions.rollback(), err.errors.forEach(error => ((messages[error.path] = error.message), (message = messages[error.path]))), res.status(500).json(message);
+        return await transactions.rollback(), res.status(500).json(err.message);
     }
 };
 
@@ -79,9 +74,9 @@ exports.restore = async (req, res) => {
     try {
         const id = req.params.id;
         const expense = await expenseModel.restore({ where: { id: id }, transaction: transactions });
-        return expense ? (await transactions.commit(), res.status(200).json(expense)) : await transactions.rollback(), res.status(404).json(`Expense not found`);
+        return expense ? (await transactions.commit(), res.status(200).json(expense)) : (await transactions.rollback(), res.status(404).json(`Expense not found`));
     } catch (err) {
-        return await transactions.rollback(), res.status(500).json(err);
+        return await transactions.rollback(), res.status(500).json(err.message);
     }
 };
 
@@ -91,8 +86,8 @@ exports.delete = async (req, res) => {
     try {
         const id = req.params.id;
         const expense = await expenseModel.destroy({ where: { id: id }, transaction: transactions });
-        return expense ? (await transactions.commit(), res.status(200).json(expense)) : await transactions.rollback(), res.status(404).json(`Expense not found`);
+        return expense ? (await transactions.commit(), res.status(200).json(expense)) : (await transactions.rollback(), res.status(404).json(`Expense not found`));
     } catch (err) {
-        return await transactions.rollback(), res.status(500).json(err);
+        return await transactions.rollback(), res.status(500).json(err.message);
     }
 };

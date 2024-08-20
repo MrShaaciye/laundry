@@ -234,13 +234,13 @@ const Customers = () => {
                 <Box>
                     <Modal keepMounted open={modalAddOpen} aria-labelledby="responsive-modal-title" aria-describedby="responsive-modal-description">
                         <Box sx={style}>
-                            <AddCustomer newCustomer={handleCreate} customers={customers} closeEvent={handleAddClose} />
+                            <AddCustomer newCustomer={handleCreate} closeEvent={handleAddClose} />
                         </Box>
                     </Modal>
                 </Box>
                 <Modal keepMounted open={modalEditOpen} aria-labelledby="responsive-modal-title" aria-describedby="responsive-modal-description">
                     <Box sx={style}>
-                        <UpdateCustomer updatedCustomer={handleCreate} customers={customers} closeEvent={handleEditClose} customer={customer} />
+                        <UpdateCustomer updatedCustomer={handleCreate} closeEvent={handleEditClose} customer={customer} />
                     </Box>
                 </Modal>
                 <Modal keepMounted open={modalViewOpen} aria-labelledby="responsive-modal-title" aria-describedby="responsive-modal-description">

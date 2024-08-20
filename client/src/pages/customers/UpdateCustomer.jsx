@@ -11,7 +11,7 @@ const RadioGroup = lazy(() => import("../../components/formsUI/RadioGroupWrapper
 const MenuItem = lazy(() => import("../../components/formsUI/MenuItemWrapper"));
 const Button = lazy(() => import("../../components/formsUI/ButtonWrapper"));
 
-const UpdateCustomer = ({ customer, customers, updatedCustomer, closeEvent }) => {
+const UpdateCustomer = ({ customer, updatedCustomer, closeEvent }) => {
     // Initial Values
     const initialValues = {
         name: customer.name,
@@ -52,12 +52,6 @@ const UpdateCustomer = ({ customer, customers, updatedCustomer, closeEvent }) =>
     // Submit Form Data function
     const onSubmit = async (formData, onSubmitProps) => {
         try {
-            const { name, phone } = formData;
-            const customerExist = customers.find(customer => customer.name === name && customer.phone === phone);
-            if (customerExist) {
-                closeEvent();
-                return toast.error(`Customer already exists`);
-            }
             await axios.put(`/api/v1/customer/${customer.id}`, formData).then(res => {
                 setTimeout(() => {
                     onSubmitProps.resetForm();
