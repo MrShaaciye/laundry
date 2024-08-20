@@ -164,7 +164,7 @@ const Items = () => {
     // Edit function
     const handleEdit = async id => {
         try {
-            await axios.put(`/api/v1/item/${id}`).then(res => {
+            await axios.get(`/api/v1/item/${id}`).then(res => {
                 return setItem(res.data);
             });
             handleEditOpen();
@@ -206,13 +206,13 @@ const Items = () => {
                 <Box>
                     <Modal keepMounted open={modalAddOpen} aria-labelledby="responsive-modal-title" aria-describedby="responsive-modal-description">
                         <Box sx={style}>
-                            <AddItem newItem={handleCreate} items={items} closeEvent={handleAddClose} />
+                            <AddItem newItem={handleCreate} closeEvent={handleAddClose} />
                         </Box>
                     </Modal>
                 </Box>
                 <Modal keepMounted open={modalEditOpen} aria-labelledby="responsive-modal-title" aria-describedby="responsive-modal-description">
                     <Box sx={style}>
-                        <UpdateItem updatedItem={handleCreate} items={items} closeEvent={handleEditClose} item={item} />
+                        <UpdateItem updatedItem={handleCreate} closeEvent={handleEditClose} item={item} />
                     </Box>
                 </Modal>
                 <Modal keepMounted open={modalViewOpen} aria-labelledby="responsive-modal-title" aria-describedby="responsive-modal-description">
