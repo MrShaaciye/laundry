@@ -11,11 +11,9 @@ exports.create = async (req, res) => {
     const transactions = await sequelize.transaction();
     try {
         const [service, created] = await serviceModel.findOrCreate({ where: { name: req.body.name }, transaction: transactions });
-        return created ? (await transactions.commit(), res.status(201).json(service)) : service ? (await transactions.rollback(), res.status(500).json(`Service with the same name already exists`)) : err;
+        return created ? (await transactions.commit(), res.status(201).json(service)) : (await transactions.rollback(), res.status(409).json(`Service with the same name already exists`));
     } catch (err) {
-        const messages = {};
-        let message;
-        return await transactions.rollback(), err.errors.forEach(error => ((messages[error.path] = error.message), (message = messages[error.path]))), res.status(500).json(message);
+        return await transactions.rollback(), res.status(500).json(err.message);
     }
 };
 
@@ -33,9 +31,9 @@ exports.findAll = async (req, res) => {
             order: [[`id`, `DESC`]],
             where: finder,
         });
-        return services ? (await transactions.commit(), res.status(200).json(services)) : err;
+        return await transactions.commit(), res.status(200).json(services);
     } catch (err) {
-        return await transactions.rollback(), res.status(500).json(err);
+        return await transactions.rollback(), res.status(500).json(err.message);
     }
 };
 
@@ -51,9 +49,9 @@ exports.findOne = async (req, res) => {
             paranoid: false,
             where: { id: id },
         });
-        return service ? (await transactions.commit(), res.status(200).json(service)) : await transactions.rollback(), res.status(404).json(`Service not found`);
+        return service ? (await transactions.commit(), res.status(200).json(service)) : (await transactions.rollback(), res.status(404).json(`Service not found`));
     } catch (err) {
-        return await transactions.rollback(), res.status(500).json(err);
+        return await transactions.rollback(), res.status(500).json(err.message);
     }
 };
 
@@ -62,13 +60,10 @@ exports.update = async (req, res) => {
     const transactions = await sequelize.transaction();
     try {
         const id = req.params.id;
-        let service;
-        const findService = await serviceModel.findOne({ where: { name: req.body.name }, transaction: transactions });
-        return findService ? (await transactions.rollback(), res.status(400).json(`Service with the same name already exists`)) : ((service = await serviceModel.update(req.body, { where: { id: id }, transaction: transactions })), (await transactions.commit(), res.status(200).json(service)));
+        const service = await serviceModel.findOne({ where: { name: req.body.name }, transaction: transactions });
+        return service ? (await transactions.rollback(), res.status(409).json(`Service with the same name already exists`)) : (await serviceModel.update(req.body, { where: { id: id }, transaction: transactions }), (await transactions.commit(), res.status(200).json(service)));
     } catch (err) {
-        const messages = {};
-        let message;
-        return await transactions.rollback(), err.errors.forEach(error => ((messages[error.path] = error.message), (message = messages[error.path]))), res.status(500).json(message);
+        return await transactions.rollback(), res.status(500).json(err.message);
     }
 };
 
@@ -78,9 +73,9 @@ exports.restore = async (req, res) => {
     try {
         const id = req.params.id;
         const service = await serviceModel.restore({ where: { id: id }, transaction: transactions });
-        return service ? (await transactions.commit(), res.status(200).json(service)) : await transactions.rollback(), res.status(404).json(`Service not found`);
+        return service ? (await transactions.commit(), res.status(200).json(service)) : (await transactions.rollback(), res.status(404).json(`Service not found`));
     } catch (err) {
-        return await transactions.rollback(), res.status(500).json(err);
+        return await transactions.rollback(), res.status(500).json(err.message);
     }
 };
 
@@ -90,8 +85,8 @@ exports.delete = async (req, res) => {
     try {
         const id = req.params.id;
         const service = await serviceModel.destroy({ where: { id: id }, transaction: transactions });
-        return service ? (await transactions.commit(), res.status(200).json(service)) : await transactions.rollback(), res.status(404).json(`Service not found`);
+        return service ? (await transactions.commit(), res.status(200).json(service)) : (await transactions.rollback(), res.status(404).json(`Service not found`));
     } catch (err) {
-        return await transactions.rollback(), res.status(500).json(err);
+        return await transactions.rollback(), res.status(500).json(err.message);
     }
 };

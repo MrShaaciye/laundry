@@ -12,11 +12,9 @@ exports.create = async (req, res) => {
     const transactions = await sequelize.transaction();
     try {
         const payment = await paymentModel.create({ expenseId: req.body.expenseId, date: req.body.date, amount: req.body.amount, note: req.body.note, transaction: transactions });
-        return payment ? (await transactions.commit(), res.status(201).json(payment)) : err;
+        return await transactions.commit(), res.status(201).json(payment);
     } catch (err) {
-        const messages = {};
-        let message;
-        return await transactions.rollback(), err.errors.forEach(error => ((messages[error.path] = error.message), (message = messages[error.path]))), res.status(500).json(message);
+        return await transactions.rollback(), res.status(500).json(err.message);
     }
 };
 
@@ -37,9 +35,9 @@ exports.findAll = async (req, res) => {
             order: [[`id`, `DESC`]],
             where: finder,
         });
-        return prices ? (await transactions.commit(), res.status(200).json(prices)) : err;
+        return await transactions.commit(), res.status(200).json(prices);
     } catch (err) {
-        return await transactions.rollback(), res.status(500).json(err);
+        return await transactions.rollback(), res.status(500).json(err.message);
     }
 };
 
@@ -56,9 +54,9 @@ exports.findOne = async (req, res) => {
             paranoid: false,
             where: { id: id },
         });
-        return payment ? (await transactions.commit(), res.status(200).json(payment)) : await transactions.rollback(), res.status(404).json(`Payment not found`);
+        return payment ? (await transactions.commit(), res.status(200).json(payment)) : (await transactions.rollback(), res.status(404).json(`Payment not found`));
     } catch (err) {
-        return await transactions.rollback(), res.status(500).json(err);
+        return await transactions.rollback(), res.status(500).json(err.message);
     }
 };
 
@@ -68,11 +66,9 @@ exports.update = async (req, res) => {
     try {
         const id = req.params.id;
         const payment = await paymentModel.update(req.body, { where: { id: id }, transaction: transactions });
-        return payment ? (await transactions.commit(), res.status(200).json(payment)) : err;
+        return await transactions.commit(), res.status(200).json(payment);
     } catch (err) {
-        const messages = {};
-        let message;
-        return await transactions.rollback(), err.errors.forEach(error => ((messages[error.path] = error.message), (message = messages[error.path]))), res.status(500).json(message);
+        return await transactions.rollback(), res.status(500).json(err.message);
     }
 };
 
@@ -82,9 +78,9 @@ exports.restore = async (req, res) => {
     try {
         const id = req.params.id;
         const payment = await paymentModel.restore({ where: { id: id }, transaction: transactions });
-        return payment ? (await transactions.commit(), res.status(200).json(payment)) : await transactions.rollback(), res.status(404).json(`Payment not found`);
+        return payment ? (await transactions.commit(), res.status(200).json(payment)) : (await transactions.rollback(), res.status(404).json(`Payment not found`));
     } catch (err) {
-        return await transactions.rollback(), res.status(500).json(err);
+        return await transactions.rollback(), res.status(500).json(err.message);
     }
 };
 
@@ -94,8 +90,8 @@ exports.delete = async (req, res) => {
     try {
         const id = req.params.id;
         const payment = await paymentModel.destroy({ where: { id: id }, transaction: transactions });
-        return payment ? (await transactions.commit(), res.status(200).json(payment)) : await transactions.rollback(), res.status(404).json(`Payment not found`);
+        return payment ? (await transactions.commit(), res.status(200).json(payment)) : (await transactions.rollback(), res.status(404).json(`Payment not found`));
     } catch (err) {
-        return await transactions.rollback(), res.status(500).json(err);
+        return await transactions.rollback(), res.status(500).json(err.message);
     }
 };

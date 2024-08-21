@@ -13,11 +13,9 @@ exports.create = async (req, res) => {
     const transactions = await sequelize.transaction();
     try {
         const [user, created] = await userModel.findOrCreate({ where: { username: req.body.username }, defaults: { name: req.body.name, password: req.body.password, type: req.body.type }, transaction: transactions });
-        return created ? (await transactions.commit(), res.status(201).json(user)) : err;
+        return created ? (await transactions.commit(), res.status(201).json(user)) : (await transactions.rollback(), res.status(409).json({ err: `Sorry! username ${req.body.username} already exists` }));
     } catch (err) {
-        const messages = {};
-        let message;
-        return await transactions.rollback(), err.errors.forEach(error => ((messages[error.path] = error.message), (message = messages[error.path]))), res.status(500).json(message);
+        return await transactions.rollback(), res.status(500).json(err.message);
     }
 };
 
@@ -57,9 +55,9 @@ exports.findAll = async (req, res) => {
             order: [[`id`, `DESC`]],
             where: finder,
         });
-        return users ? (await transactions.commit(), res.status(200).json(users)) : err;
+        return await transactions.commit(), res.status(200).json(users);
     } catch (err) {
-        return await transactions.rollback(), res.status(500).json(err);
+        return await transactions.rollback(), res.status(500).json(err.message);
     }
 };
 
@@ -75,9 +73,9 @@ exports.findOne = async (req, res) => {
             paranoid: false,
             where: { id: id },
         });
-        return user ? (await transactions.commit(), res.status(200).json(user)) : await transactions.rollback(), res.status(404).json(`User not found`);
+        return user ? (await transactions.commit(), res.status(200).json(user)) : (await transactions.rollback(), res.status(404).json(`User not found`));
     } catch (err) {
-        return await transactions.rollback(), res.status(500).json(err);
+        return await transactions.rollback(), res.status(500).json(err.message);
     }
 };
 
@@ -86,13 +84,10 @@ exports.update = async (req, res) => {
     const transactions = await sequelize.transaction();
     try {
         const id = req.params.id;
-        let user;
-        const findUser = await userModel.findOne({ where: { username: req.body.username }, transaction: transactions });
-        return findUser ? (await transactions.rollback(), res.status(400).json(`User with the same username already exists`)) : ((user = await userModel.update(req.body, { where: { id: id }, transaction: transactions })), (await transactions.commit(), res.status(200).json(user)));
+        const user = await userModel.findOne({ where: { username: req.body.username }, transaction: transactions });
+        return user ? (await transactions.rollback(), res.status(409).json(`User with the same username already exists`)) : (await userModel.update(req.body, { where: { id: id }, transaction: transactions }), (await transactions.commit(), res.status(200).json(user)));
     } catch (err) {
-        const messages = {};
-        let message;
-        return await transactions.rollback(), err.errors.forEach(error => ((messages[error.path] = error.message), (message = messages[error.path]))), res.status(500).json(message);
+        return await transactions.rollback(), res.status(500).json(err.message);
     }
 };
 
@@ -102,9 +97,9 @@ exports.restore = async (req, res) => {
     try {
         const id = req.params.id;
         const user = await userModel.restore({ where: { id: id }, transaction: transactions });
-        return user ? (await transactions.commit(), res.status(200).json(user)) : await transactions.rollback(), res.status(404).json(`User not found`);
+        return user ? (await transactions.commit(), res.status(200).json(user)) : (await transactions.rollback(), res.status(404).json(`User not found`));
     } catch (err) {
-        return await transactions.rollback(), res.status(500).json(err);
+        return await transactions.rollback(), res.status(500).json(err.message);
     }
 };
 
@@ -114,9 +109,8 @@ exports.delete = async (req, res) => {
     try {
         const id = req.params.id;
         const user = await userModel.destroy({ where: { id: id }, transaction: transactions });
-        return user ? (await transactions.commit(), res.status(200).json(user)) : await transactions.rollback(), res.status(404).json(`User not found`);
-        return user ? (await transactions.commit(), res.status(200).json(user)) : err;
+        return user ? (await transactions.commit(), res.status(200).json(user)) : (await transactions.rollback(), res.status(404).json(`User not found`));
     } catch (err) {
-        return await transactions.rollback(), res.status(500).json(err);
+        return await transactions.rollback(), res.status(500).json(err.message);
     }
 };

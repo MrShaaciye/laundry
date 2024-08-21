@@ -15,9 +15,8 @@ exports.bulkCreate = async (req, res) => {
         const data = xlsx.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]); // Convert the worksheet to JSON format
         const names = data.map(employee => employee.name); // Get the names of the employees from the data array
         const phones = data.map(employee => employee.phone); // Get the phone numbers of the employees from the data array
-        let employees;
-        const existingEmployees = await employeeModel.findAll({ where: { [Op.and]: [{ name: { [Op.in]: names } }, { phone: { [Op.in]: phones } }] }, defaults: { gender: req.body.gender, address: req.body.address, jobTitle: req.body.jobTitle, salary: req.body.salary } }); // Find existing employees
-        return existingEmployees.length > 0 ? (await transactions.rollback(), res.status(400).json(`Employees with the same name and phone already exist`)) : ((employees = await employeeModel.bulkCreate(data, { transaction: transactions })), (await transactions.commit(), res.status(201).json(employees))); // Create employees using Sequelize bulkCreate method
+        const employees = await employeeModel.findAll({ where: { [Op.and]: [{ name: { [Op.in]: names } }, { phone: { [Op.in]: phones } }] }, defaults: { gender: req.body.gender, address: req.body.address, jobTitle: req.body.jobTitle, salary: req.body.salary } }); // Find existing employees
+        return employees.length > 0 ? (await transactions.rollback(), res.status(409).json(`Employees with the same name and phone already exist`)) : (await employeeModel.bulkCreate(data, { transaction: transactions }), (await transactions.commit(), res.status(201).json(employees))); // Create employees using Sequelize bulkCreate method
     } catch (err) {
         return await transactions.rollback(), res.status(500).json(err.message);
     }
@@ -28,7 +27,7 @@ exports.create = async (req, res) => {
     const transactions = await sequelize.transaction();
     try {
         const [employee, created] = await employeeModel.findOrCreate({ where: { name: req.body.name, phone: req.body.phone }, defaults: { gender: req.body.gender, address: req.body.address, jobTitle: req.body.jobTitle, salary: req.body.salary }, transaction: transactions });
-        return created ? (await transactions.commit(), res.status(201).json(employee)) : (await transactions.rollback(), res.status(404).json(`Employee with the same name and phone already exists`));
+        return created ? (await transactions.commit(), res.status(201).json(employee)) : (await transactions.rollback(), res.status(409).json(`Employee with the same name and phone already exists`));
     } catch (err) {
         return await transactions.rollback(), res.status(500).json(err.message);
     }
@@ -83,7 +82,7 @@ exports.update = async (req, res) => {
     try {
         const id = req.params.id;
         const employee = await employeeModel.findOne({ where: { name: req.body.name, phone: req.body.phone }, transaction: transactions });
-        return employee ? (await transactions.rollback(), res.status(400).json(`Employee with the same name and phone already exists`)) : (await employeeModel.update(req.body, { where: { id: id }, transaction: transactions }), (await transactions.commit(), res.status(200).json(employee)));
+        return employee ? (await transactions.rollback(), res.status(409).json(`Employee with the same name and phone already exists`)) : (await employeeModel.update(req.body, { where: { id: id }, transaction: transactions }), (await transactions.commit(), res.status(200).json(employee)));
     } catch (err) {
         return await transactions.rollback(), res.status(500).json(err.message);
     }

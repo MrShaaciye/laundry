@@ -206,13 +206,13 @@ const Services = () => {
                 <Box>
                     <Modal keepMounted open={modalAddOpen} aria-labelledby="responsive-modal-title" aria-describedby="responsive-modal-description">
                         <Box sx={style}>
-                            <AddService newService={handleCreate} services={services} closeEvent={handleAddClose} />
+                            <AddService newService={handleCreate} closeEvent={handleAddClose} />
                         </Box>
                     </Modal>
                 </Box>
                 <Modal keepMounted open={modalEditOpen} aria-labelledby="responsive-modal-title" aria-describedby="responsive-modal-description">
                     <Box sx={style}>
-                        <UpdateService updatedService={handleCreate} services={services} closeEvent={handleEditClose} service={service} />
+                        <UpdateService updatedService={handleCreate} closeEvent={handleEditClose} service={service} />
                     </Box>
                 </Modal>
                 <Modal keepMounted open={modalViewOpen} aria-labelledby="responsive-modal-title" aria-describedby="responsive-modal-description">

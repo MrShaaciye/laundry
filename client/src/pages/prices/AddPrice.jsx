@@ -10,7 +10,7 @@ const MenuItem = lazy(() => import("../../components/formsUI/MenuItemWrapper"));
 const TextField = lazy(() => import("../../components/formsUI/TextFieldWrapper"));
 const Button = lazy(() => import("../../components/formsUI/ButtonWrapper"));
 
-const AddPrice = ({ newPrice, prices, closeEvent }) => {
+const AddPrice = ({ newPrice, closeEvent }) => {
     // Initial Values
     const initialValues = {
         type: "",
@@ -26,12 +26,6 @@ const AddPrice = ({ newPrice, prices, closeEvent }) => {
     // Submit Form Data function
     const onSubmit = async (formData, onSubmitProps) => {
         try {
-            const { type } = formData;
-            const priceExist = prices.find(price => price.type === type);
-            if (priceExist) {
-                closeEvent();
-                return toast.error(`Price already exists`);
-            }
             await axios.post(`/api/v1/price`, formData);
             setTimeout(() => {
                 onSubmitProps.resetForm();

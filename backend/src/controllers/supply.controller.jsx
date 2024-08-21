@@ -11,11 +11,9 @@ exports.create = async (req, res) => {
     const transactions = await sequelize.transaction();
     try {
         const [supply, created] = await supplyModel.findOrCreate({ where: { name: req.body.name }, defaults: { note: req.body.note }, transaction: transactions });
-        return created ? (await transactions.commit(), res.status(201).json(supply)) : supply ? (await transactions.rollback(), res.status(500).json(`Supply with the same name already exists`)) : err;
+        return created ? (await transactions.commit(), res.status(201).json(supply)) : (await transactions.rollback(), res.status(409).json(`Supply with the same name already exists`));
     } catch (err) {
-        const messages = {};
-        let message;
-        return await transactions.rollback(), err.errors.forEach(error => ((messages[error.path] = error.message), (message = messages[error.path]))), res.status(500).json(message);
+        return await transactions.rollback(), res.status(500).json(err.message);
     }
 };
 
@@ -34,9 +32,9 @@ exports.findAll = async (req, res) => {
             order: [[`id`, `DESC`]],
             where: finder,
         });
-        return supplies ? (await transactions.commit(), res.status(200).json(supplies)) : err;
+        return await transactions.commit(), res.status(200).json(supplies);
     } catch (err) {
-        return await transactions.rollback(), res.status(500).json(err);
+        return await transactions.rollback(), res.status(500).json(err.message);
     }
 };
 
@@ -52,7 +50,7 @@ exports.findOne = async (req, res) => {
             paranoid: false,
             where: { id: id },
         });
-        return supply ? (await transactions.commit(), res.status(200).json(supply)) : await transactions.rollback(), res.status(404).json(`Supply not found`);
+        return supply ? (await transactions.commit(), res.status(200).json(supply)) : (await transactions.rollback(), res.status(404).json(`Supply not found`));
     } catch (err) {
         return await transactions.rollback(), res.status(500).json(err);
     }
@@ -63,13 +61,10 @@ exports.update = async (req, res) => {
     const transactions = await sequelize.transaction();
     try {
         const id = req.params.id;
-        let supply;
-        const findSupply = await supplyModel.findOne({ where: { name: req.body.name }, transaction: transactions });
-        return findSupply ? (await transactions.rollback(), res.status(400).json(`Supply with the same name already exists`)) : ((supply = await supplyModel.update(req.body, { where: { id: id }, transaction: transactions })), (await transactions.commit(), res.status(200).json(supply)));
+        const supply = await supplyModel.findOne({ where: { name: req.body.name }, transaction: transactions });
+        return supply ? (await transactions.rollback(), res.status(409).json(`Supply with the same name already exists`)) : (await supplyModel.update(req.body, { where: { id: id }, transaction: transactions }), (await transactions.commit(), res.status(200).json(supply)));
     } catch (err) {
-        const messages = {};
-        let message;
-        return await transactions.rollback(), err.errors.forEach(error => ((messages[error.path] = error.message), (message = messages[error.path]))), res.status(500).json(message);
+        return await transactions.rollback(), res.status(500).json(err.message);
     }
 };
 
@@ -79,9 +74,9 @@ exports.restore = async (req, res) => {
     try {
         const id = req.params.id;
         const supply = await supplyModel.restore({ where: { id: id }, transaction: transactions });
-        return supply ? (await transactions.commit(), res.status(200).json(supply)) : await transactions.rollback(), res.status(404).json(`Supply not found`);
+        return supply ? (await transactions.commit(), res.status(200).json(supply)) : (await transactions.rollback(), res.status(404).json(`Supply not found`));
     } catch (err) {
-        return await transactions.rollback(), res.status(500).json(err);
+        return await transactions.rollback(), res.status(500).json(err.message);
     }
 };
 
@@ -91,8 +86,8 @@ exports.delete = async (req, res) => {
     try {
         const id = req.params.id;
         const supply = await supplyModel.destroy({ where: { id: id }, transaction: transactions });
-        return supply ? (await transactions.commit(), res.status(200).json(supply)) : await transactions.rollback(), res.status(404).json(`Supply not found`);
+        return supply ? (await transactions.commit(), res.status(200).json(supply)) : (await transactions.rollback(), res.status(404).json(`Supply not found`));
     } catch (err) {
-        return await transactions.rollback(), res.status(500).json(err);
+        return await transactions.rollback(), res.status(500).json(err.message);
     }
 };

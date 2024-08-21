@@ -12,11 +12,9 @@ exports.create = async (req, res) => {
     const transactions = await sequelize.transaction();
     try {
         const smsCustomer = await smsCustomerModel.create({ customerId: req.body.customerId, body: req.body.body, transaction: transactions });
-        return smsCustomer ? (await transactions.commit(), res.status(201).json(smsCustomer)) : err;
+        return await transactions.commit(), res.status(201).json(smsCustomer);
     } catch (err) {
-        const messages = {};
-        let message;
-        return await transactions.rollback(), err.errors.forEach(error => ((messages[error.path] = error.message), (message = messages[error.path]))), res.status(500).json(message);
+        return await transactions.rollback(), res.status(500).json(err.message);
     }
 };
 
@@ -35,9 +33,9 @@ exports.findAll = async (req, res) => {
             order: [[`id`, `DESC`]],
             where: finder,
         });
-        return smsCustomers ? (await transactions.commit(), res.status(200).json(smsCustomers)) : err;
+        return await transactions.commit(), res.status(200).json(smsCustomers);
     } catch (err) {
-        return await transactions.rollback(), res.status(500).json(err);
+        return await transactions.rollback(), res.status(500).json(err.message);
     }
 };
 
@@ -54,9 +52,9 @@ exports.findOne = async (req, res) => {
             paranoid: false,
             where: { id: id },
         });
-        return smsCustomer ? (await transactions.commit(), res.status(200).json(smsCustomer)) : await transactions.rollback(), res.status(404).json(`SMS Customer not found`);
+        return smsCustomer ? (await transactions.commit(), res.status(200).json(smsCustomer)) : (await transactions.rollback(), res.status(404).json(`SMS Customer not found`));
     } catch (err) {
-        return await transactions.rollback(), res.status(500).json(err);
+        return await transactions.rollback(), res.status(500).json(err.message);
     }
 };
 
@@ -66,11 +64,9 @@ exports.update = async (req, res) => {
     try {
         const id = req.params.id;
         const smsCustomer = await smsCustomerModel.update(req.body, { where: { id: id }, transaction: transactions });
-        return smsCustomer ? (await transactions.commit(), res.status(200).json(smsCustomer)) : err;
+        return await transactions.commit(), res.status(200).json(smsCustomer);
     } catch (err) {
-        const messages = {};
-        let message;
-        return await transactions.rollback(), err.errors.forEach(error => ((messages[error.path] = error.message), (message = messages[error.path]))), res.status(500).json(message);
+        return await transactions.rollback(), res.status(500).json(err.message);
     }
 };
 
@@ -80,9 +76,9 @@ exports.restore = async (req, res) => {
     try {
         const id = req.params.id;
         const smsCustomer = await smsCustomerModel.restore({ where: { id: id }, transaction: transactions });
-        return smsCustomer ? (await transactions.commit(), res.status(200).json(smsCustomer)) : await transactions.rollback(), res.status(404).json(`SMS Customer not found`);
+        return smsCustomer ? (await transactions.commit(), res.status(200).json(smsCustomer)) : (await transactions.rollback(), res.status(404).json(`SMS Customer not found`));
     } catch (err) {
-        return await transactions.rollback(), res.status(500).json(err);
+        return await transactions.rollback(), res.status(500).json(err.message);
     }
 };
 
@@ -92,8 +88,8 @@ exports.delete = async (req, res) => {
     try {
         const id = req.params.id;
         const smsCustomer = await smsCustomerModel.destroy({ where: { id: id }, transaction: transactions });
-        return smsCustomer ? (await transactions.commit(), res.status(200).json(smsCustomer)) : await transactions.rollback(), res.status(404).json(`SMS Customer not found`);
+        return smsCustomer ? (await transactions.commit(), res.status(200).json(smsCustomer)) : (await transactions.rollback(), res.status(404).json(`SMS Customer not found`));
     } catch (err) {
-        return await transactions.rollback(), res.status(500).json(err);
+        return await transactions.rollback(), res.status(500).json(err.message);
     }
 };

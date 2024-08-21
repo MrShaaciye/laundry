@@ -207,13 +207,13 @@ const Supplies = () => {
                 <Box>
                     <Modal keepMounted open={modalAddOpen} aria-labelledby="responsive-modal-title" aria-describedby="responsive-modal-description">
                         <Box sx={style}>
-                            <AddSupply newSupply={handleCreate} supplies={supplies} closeEvent={handleAddClose} />
+                            <AddSupply newSupply={handleCreate} closeEvent={handleAddClose} />
                         </Box>
                     </Modal>
                 </Box>
                 <Modal keepMounted open={modalEditOpen} aria-labelledby="responsive-modal-title" aria-describedby="responsive-modal-description">
                     <Box sx={style}>
-                        <UpdateSupply updatedSupply={handleCreate} supplies={supplies} closeEvent={handleEditClose} supply={supply} />
+                        <UpdateSupply updatedSupply={handleCreate} closeEvent={handleEditClose} supply={supply} />
                     </Box>
                 </Modal>
                 <Modal keepMounted open={modalViewOpen} aria-labelledby="responsive-modal-title" aria-describedby="responsive-modal-description">

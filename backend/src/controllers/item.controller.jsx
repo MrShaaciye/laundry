@@ -11,7 +11,7 @@ exports.create = async (req, res) => {
     const transactions = await sequelize.transaction();
     try {
         const [item, created] = await itemModel.findOrCreate({ where: { name: req.body.name }, transaction: transactions });
-        return created ? (await transactions.commit(), res.status(201).json(item)) : (await transactions.rollback(), res.status(404).json(`Item with the same name already exists`));
+        return created ? (await transactions.commit(), res.status(201).json(item)) : (await transactions.rollback(), res.status(409).json(`Item with the same name already exists`));
     } catch (err) {
         return await transactions.rollback(), res.status(500).json(err.message);
     }
@@ -61,7 +61,7 @@ exports.update = async (req, res) => {
     try {
         const id = req.params.id;
         const item = await itemModel.findOne({ where: { name: req.body.name }, transaction: transactions });
-        return item ? (await transactions.rollback(), res.status(404).json(`Item with the same name already exists`)) : (await itemModel.update(req.body, { where: { id: id }, transaction: transactions }), (await transactions.commit(), res.status(200).json(item)));
+        return item ? (await transactions.rollback(), res.status(409).json(`Item with the same name already exists`)) : (await itemModel.update(req.body, { where: { id: id }, transaction: transactions }), (await transactions.commit(), res.status(200).json(item)));
     } catch (err) {
         return await transactions.rollback(), res.status(500).json(err.message);
     }

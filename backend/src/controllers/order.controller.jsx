@@ -17,11 +17,9 @@ exports.create = async (req, res) => {
     const transactions = await sequelize.transaction();
     try {
         const order = await orderModel.create({ bringDate: req.body.bringDate, collectDate: req.body.collectDate, customerId: req.body.customerId, employeeId: req.body.employeeId, serviceId: req.body.serviceId, itemId: req.body.itemId, priceId: req.body.priceId, quantity: req.body.quantity, amount: req.body.amount, pickupFee: req.body.pickupFee, totalAmount: req.body.totalAmount, paidAmount: req.body.paidAmount, balance: req.body.balance, paymentType: req.body.paymentType, paymentStatus: req.body.paymentStatus, transaction: transactions });
-        return order ? (await transactions.commit(), res.status(201).json(order)) : err;
+        return await transactions.commit(), res.status(201).json(order);
     } catch (err) {
-        const messages = {};
-        let message;
-        return await transactions.rollback(), err.errors.forEach(error => ((messages[error.path] = error.message), (message = messages[error.path]))), res.status(500).json(message);
+        return await transactions.rollback(), res.status(500).json(err.message);
     }
 };
 
@@ -49,9 +47,9 @@ exports.findAll = async (req, res) => {
             order: [[`id`, `DESC`]],
             where: finder,
         });
-        return orders ? (await transactions.commit(), res.status(200).json(orders)) : err;
+        return await transactions.commit(), res.status(200).json(orders);
     } catch (err) {
-        return await transactions.rollback(), res.status(500).json(err);
+        return await transactions.rollback(), res.status(500).json(err.message);
     }
 };
 
@@ -74,7 +72,7 @@ exports.findOne = async (req, res) => {
             paranoid: false,
             where: { id: id },
         });
-        return order ? (await transactions.commit(), res.status(200).json(order)) : await transactions.rollback(), res.status(404).json(`Order not found`);
+        return order ? (await transactions.commit(), res.status(200).json(order)) : (await transactions.rollback(), res.status(404).json(`Order not found`));
     } catch (err) {
         return await transactions.rollback(), res.status(500).json(err);
     }
@@ -86,11 +84,9 @@ exports.update = async (req, res) => {
     try {
         const id = req.params.id;
         const order = await orderModel.update(req.body, { where: { id: id }, transaction: transactions });
-        return order ? (await transactions.commit(), res.status(200).json(order)) : err;
+        return await transactions.commit(), res.status(200).json(order);
     } catch (err) {
-        const messages = {};
-        let message;
-        return await transactions.rollback(), err.errors.forEach(error => ((messages[error.path] = error.message), (message = messages[error.path]))), res.status(500).json(message);
+        return await transactions.rollback(), res.status(500).json(err.message);
     }
 };
 
@@ -100,9 +96,9 @@ exports.restore = async (req, res) => {
     try {
         const id = req.params.id;
         const order = await orderModel.restore({ where: { id: id }, transaction: transactions });
-        return order ? (await transactions.commit(), res.status(200).json(order)) : await transactions.rollback(), res.status(404).json(`Order not found`);
+        return order ? (await transactions.commit(), res.status(200).json(order)) : (await transactions.rollback(), res.status(404).json(`Order not found`));
     } catch (err) {
-        return await transactions.rollback(), res.status(500).json(err);
+        return await transactions.rollback(), res.status(500).json(err.message);
     }
 };
 
@@ -112,8 +108,8 @@ exports.delete = async (req, res) => {
     try {
         const id = req.params.id;
         const order = await orderModel.destroy({ where: { id: id }, transaction: transactions });
-        return order ? (await transactions.commit(), res.status(200).json(order)) : await transactions.rollback(), res.status(404).json(`Order not found`);
+        return order ? (await transactions.commit(), res.status(200).json(order)) : (await transactions.rollback(), res.status(404).json(`Order not found`));
     } catch (err) {
-        return await transactions.rollback(), res.status(500).json(err);
+        return await transactions.rollback(), res.status(500).json(err.message);
     }
 };

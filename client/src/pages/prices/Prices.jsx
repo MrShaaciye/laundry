@@ -208,13 +208,13 @@ const Prices = () => {
                 <Box>
                     <Modal keepMounted open={modalAddOpen} aria-labelledby="responsive-modal-title" aria-describedby="responsive-modal-description">
                         <Box sx={style}>
-                            <AddPrice newPrice={handleCreate} prices={prices} closeEvent={handleAddClose} />
+                            <AddPrice newPrice={handleCreate} closeEvent={handleAddClose} />
                         </Box>
                     </Modal>
                 </Box>
                 <Modal keepMounted open={modalEditOpen} aria-labelledby="responsive-modal-title" aria-describedby="responsive-modal-description">
                     <Box sx={style}>
-                        <UpdatePrice updatedPrice={handleCreate} prices={prices} closeEvent={handleEditClose} price={price} />
+                        <UpdatePrice updatedPrice={handleCreate} closeEvent={handleEditClose} price={price} />
                     </Box>
                 </Modal>
                 <Modal keepMounted open={modalViewOpen} aria-labelledby="responsive-modal-title" aria-describedby="responsive-modal-description">

@@ -11,7 +11,7 @@ exports.create = async (req, res) => {
     const transactions = await sequelize.transaction();
     try {
         const [expense, created] = await expenseModel.findOrCreate({ where: { name: req.body.name }, defaults: { note: req.body.note }, transaction: transactions });
-        return created ? (await transactions.commit(), res.status(201).json(expense)) : (await transactions.rollback(), res.status(404).json(`Expense with the same name already exists`));
+        return created ? (await transactions.commit(), res.status(201).json(expense)) : (await transactions.rollback(), res.status(409).json(`Expense with the same name already exists`));
     } catch (err) {
         return await transactions.rollback(), res.status(500).json(err.message);
     }
@@ -62,7 +62,7 @@ exports.update = async (req, res) => {
     try {
         const id = req.params.id;
         const expense = await expenseModel.findOne({ where: { name: req.body.name }, transaction: transactions });
-        return expense ? (await transactions.rollback(), res.status(400).json(`Expense with the same name already exists`)) : (await expenseModel.update(req.body, { where: { id: id }, transaction: transactions }), (await transactions.commit(), res.status(200).json(expense)));
+        return expense ? (await transactions.rollback(), res.status(409).json(`Expense with the same name already exists`)) : (await expenseModel.update(req.body, { where: { id: id }, transaction: transactions }), (await transactions.commit(), res.status(200).json(expense)));
     } catch (err) {
         return await transactions.rollback(), res.status(500).json(err.message);
     }
