@@ -102,3 +102,52 @@ products(); */
 /* ======================================================================================================================= */
 // Create React App
 /* npx install -g create-react-app . */
+
+// How to run javascript file in nodejs
+/* console.log("Hello World");
+ node main.js */
+
+// Global, Global This and this object
+/* console.log(this);
+console.log(global);
+console.log(globalThis); */
+
+// commonJS import os and ES Module way
+const os = require("os");
+const path = require("path");
+const { add, subtract, multiply, divide, percent } = require("./math");
+/* console.log(os.arch());
+console.log(os.availableParallelism);
+console.log(os.constants);
+console.log(os.cpus());
+console.log(os.devNull);
+console.log(os.endianness());
+console.log(os.freemem());
+console.log(os.getPriority());
+console.log(os.homedir());
+console.log(os.hostname());
+console.log(os.loadavg());
+console.log(os.machine());
+console.log(os.networkInterfaces());
+console.log(os.platform());
+console.log(os.release());
+console.log(os.setPriority);
+console.log(os.tmpdir());
+console.log(os.totalmem());
+console.log(os.type());
+console.log(os.uptime());
+console.log(os.userInfo());
+console.log(os.version());
+console.log(__dirname);
+console.log(__filename);
+console.log(path.basename(__filename));
+console.log(path.dirname(__filename));
+console.log(path.extname(__filename));
+console.log(path.parse(__filename));
+console.log(path.format(path.parse(__filename)));
+*/
+console.log(add(2, 3));
+console.log(subtract(2, 3));
+console.log(multiply(2, 3));
+console.log(divide(2, 3));
+console.log(percent(2, 3));
