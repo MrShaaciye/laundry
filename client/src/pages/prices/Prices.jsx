@@ -223,42 +223,42 @@ const Prices = () => {
                     </Box>
                 </Modal>
             </Stack>
-            {count > 0 && (
-                <Paper sx={{ width: "100%", overflow: "hidden" }}>
-                    <Stack ml={1} mr={1} direction="row" spacing={2}>
-                        <Typography gutterBottom variant="h6" component="div" sx={{ pl: "10px", pt: "10px" }}>
-                            Prices List
-                        </Typography>
-                        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}></Typography>
-                        <Button variant="contained" disableRipple disableElevation sx={{ maxHeight: "35px", minHeight: "35px" }} startIcon={<DownloadIcon />} onClick={handleDownload}>
-                            download
-                        </Button>
-                    </Stack>
-                    <Divider />
-                    <Box height={5} />
-                    {/* Search Box */}
-                    <Stack ml={1} mr={1} direction="row" spacing={2}>
-                        <TextField type="search" size="small" sx={{ width: 300 }} onChange={e => setSearch(e.target.value)} label={`${count} Search Price...`} />
-                        {/* <Autocomplete disablePortal id="combo-box-demo" size="small" options={prices} sx={{ width: 300 }} onChange={(e, v) => setRowData(v)} getOptionLabel={prices => prices.type || ""} renderInput={params => <TextField {...params} label={`${count} Search Price...`} />} /> */}
-                        <Typography variant="h6" component="div" sx={{ flexGrow: 12 }}></Typography>
-                        <Button variant="contained" disableRipple disableElevation sx={{ maxHeight: "35px", minHeight: "35px" }} startIcon={<AddCircleIcon />} onClick={handleAddOpen}>
-                            Add
-                        </Button>
-                    </Stack>
-                    <Box height={5} />
-                    <Divider />
-                    {/* Table */}
-                    <TableContainer sx={{ width: "100%", overflow: "hidden" }}>
-                        <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
-                            <TableHead>
-                                <TableRow>
-                                    {columns.map(column => (
-                                        <TableCell sx={{ fontWeight: "bold" }} key={column.field}>
-                                            {column.label}
-                                        </TableCell>
-                                    ))}
-                                </TableRow>
-                            </TableHead>
+            <Paper sx={{ width: "100%", overflow: "hidden" }}>
+                <Stack ml={1} mr={1} direction="row" spacing={2}>
+                    <Typography gutterBottom variant="h6" component="div" sx={{ pl: "10px", pt: "10px" }}>
+                        Prices List
+                    </Typography>
+                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}></Typography>
+                    <Button variant="contained" disableRipple disableElevation sx={{ maxHeight: "35px", minHeight: "35px" }} startIcon={<DownloadIcon />} onClick={handleDownload}>
+                        download
+                    </Button>
+                </Stack>
+                <Divider />
+                <Box height={5} />
+                {/* Search Box */}
+                <Stack ml={1} mr={1} direction="row" spacing={2}>
+                    <TextField type="search" size="small" sx={{ width: 300 }} onChange={e => setSearch(e.target.value)} label={`${count} Search Price...`} />
+                    {/* <Autocomplete disablePortal id="combo-box-demo" size="small" options={prices} sx={{ width: 300 }} onChange={(e, v) => setRowData(v)} getOptionLabel={prices => prices.type || ""} renderInput={params => <TextField {...params} label={`${count} Search Price...`} />} /> */}
+                    <Typography variant="h6" component="div" sx={{ flexGrow: 12 }}></Typography>
+                    <Button variant="contained" disableRipple disableElevation sx={{ maxHeight: "35px", minHeight: "35px" }} startIcon={<AddCircleIcon />} onClick={handleAddOpen}>
+                        Add
+                    </Button>
+                </Stack>
+                <Box height={5} />
+                <Divider />
+                {/* Table */}
+                <TableContainer sx={{ width: "100%", overflow: "hidden" }}>
+                    <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
+                        <TableHead>
+                            <TableRow>
+                                {columns.map(column => (
+                                    <TableCell sx={{ fontWeight: "bold" }} key={column.field}>
+                                        {column.label}
+                                    </TableCell>
+                                ))}
+                            </TableRow>
+                        </TableHead>
+                        {count > 0 && (
                             <TableBody>
                                 {(rowsPerPage > 0 ? prices.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : prices)
                                     .filter(price => (search.toLowerCase() === "" ? price : price.type.toLowerCase().includes(search)))
@@ -285,32 +285,32 @@ const Prices = () => {
                                     </TableRow>
                                 )}
                             </TableBody>
-                            <TableFooter>
-                                <TableRow>
-                                    <TablePagination
-                                        rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
-                                        colSpan={columns.length}
-                                        count={count}
-                                        rowsPerPage={rowsPerPage}
-                                        page={page}
-                                        slotProps={{
-                                            select: {
-                                                inputProps: {
-                                                    "aria-label": "rows per page",
-                                                },
-                                                native: true,
+                        )}
+                        <TableFooter>
+                            <TableRow>
+                                <TablePagination
+                                    rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
+                                    colSpan={columns.length}
+                                    count={count}
+                                    rowsPerPage={rowsPerPage}
+                                    page={page}
+                                    slotProps={{
+                                        select: {
+                                            inputProps: {
+                                                "aria-label": "rows per page",
                                             },
-                                        }}
-                                        onPageChange={handleChangePage}
-                                        onRowsPerPageChange={handleChangeRowsPerPage}
-                                        ActionsComponent={TablePaginationActions}
-                                    />
-                                </TableRow>
-                            </TableFooter>
-                        </Table>
-                    </TableContainer>
-                </Paper>
-            )}
+                                            native: true,
+                                        },
+                                    }}
+                                    onPageChange={handleChangePage}
+                                    onRowsPerPageChange={handleChangeRowsPerPage}
+                                    ActionsComponent={TablePaginationActions}
+                                />
+                            </TableRow>
+                        </TableFooter>
+                    </Table>
+                </TableContainer>
+            </Paper>
         </>
     );
 };
