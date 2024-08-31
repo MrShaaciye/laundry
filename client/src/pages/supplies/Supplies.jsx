@@ -43,7 +43,7 @@ const columns = [
     { field: `createdAt`, label: `Created At` },
     { field: `updatedAt`, label: `Updated At` },
     { field: `deletedAt`, label: `Deleted At` },
-    { field: `actions`, label: `Actions` },
+    { field: `actions`, label: `Actions`, align: "center" },
 ];
 
 // Pagination Function
@@ -250,7 +250,7 @@ const Supplies = () => {
                         <TableHead>
                             <TableRow>
                                 {columns.map(column => (
-                                    <TableCell sx={{ fontWeight: "bold" }} key={column.field}>
+                                    <TableCell key={column.field} align={column.align} sx={{ fontWeight: "bold" }}>
                                         {column.label}
                                     </TableCell>
                                 ))}
@@ -267,7 +267,7 @@ const Supplies = () => {
                                             <TableCell>{supply.note}</TableCell>
                                             <TableCell>{dateFormatter(new Date(supply.createdAt), "YYYY-MM-DD HH:mm:ss")}</TableCell>
                                             <TableCell>{dateFormatter(new Date(supply.updatedAt), "YYYY-MM-DD HH:mm:ss")}</TableCell>
-                                            <TableCell>{supply.deletedAt ? supply.deletedAt : "Null"}</TableCell>
+                                            <TableCell>{supply.deletedAt ? dateFormatter(new Date(supply.deletedAt), "YYYY-MM-DD HH:mm:ss") : "Null"}</TableCell>
                                             <TableCell>
                                                 <Stack direction="row" justifyContent="center" alignItems="center" spacing={0.3}>
                                                     <VisibilityIcon style={{ fontSize: "20px", color: "green", cursor: "pointer" }} onClick={() => handleView(supply.id)} />

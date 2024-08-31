@@ -41,12 +41,12 @@ const columns = [
     { field: `id`, label: `ID` },
     { field: `customer`, label: `Customer` },
     { field: `employee`, label: `Employee` },
-    { field: `fee`, label: `Fee` },
+    { field: `fee`, label: `Fee`, align: "right" },
     { field: `note`, label: `Note` },
     { field: `createdAt`, label: `Created At` },
     { field: `updatedAt`, label: `Updated At` },
     { field: `deletedAt`, label: `Deleted At` },
-    { field: `actions`, label: `Actions` },
+    { field: `actions`, label: `Actions`, align: "center" },
 ];
 
 // Pagination Function
@@ -282,7 +282,7 @@ const Inventories = () => {
                         <TableHead>
                             <TableRow>
                                 {columns.map(column => (
-                                    <TableCell sx={{ fontWeight: "bold" }} key={column.field}>
+                                    <TableCell key={column.field} align={column.align} sx={{ fontWeight: "bold" }}>
                                         {column.label}
                                     </TableCell>
                                 ))}
@@ -297,7 +297,7 @@ const Inventories = () => {
                                             <TableCell>{delivery.id}</TableCell>
                                             <TableCell>{`${delivery.customers.name} [${delivery.customers.phone}] ${delivery.customers.address}`}</TableCell>
                                             <TableCell>{`${delivery.employees.name} [${delivery.employees.jobTitle}]`}</TableCell>
-                                            <TableCell>{currencyFormatter(delivery.fee)}</TableCell>
+                                            <TableCell align="right">{currencyFormatter(delivery.fee)}</TableCell>
                                             <TableCell>{delivery.note}</TableCell>
                                             <TableCell>{dateFormatter(new Date(delivery.createdAt), "YYYY-MM-DD HH:mm:ss")}</TableCell>
                                             <TableCell>{dateFormatter(new Date(delivery.updatedAt), "YYYY-MM-DD HH:mm:ss")}</TableCell>

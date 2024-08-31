@@ -16,6 +16,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 import dateFormatter from "../../components/utils/dateFormatter";
+import numberFormatter from "../../components/utils/numberFormatter";
 const AddInventory = lazy(() => import("./AddInventory"));
 const UpdateInventory = lazy(() => import("./UpdateInventory"));
 const ViewInventory = lazy(() => import("./ViewInventory"));
@@ -39,13 +40,13 @@ const style = {
 const columns = [
     { field: `id`, label: `ID` },
     { field: `supply name`, label: `Supply Name` },
-    { field: `quantity`, label: `Quantity` },
+    { field: `quantity`, label: `Quantity`, align: "right" },
     { field: `type`, label: `Type` },
     { field: `note`, label: `Note` },
     { field: `createdAt`, label: `Created At` },
     { field: `updatedAt`, label: `Updated At` },
     { field: `deletedAt`, label: `Deleted At` },
-    { field: `actions`, label: `Actions` },
+    { field: `actions`, label: `Actions`, align: "center" },
 ];
 
 // Pagination Function
@@ -267,7 +268,7 @@ const Inventories = () => {
                         <TableHead>
                             <TableRow>
                                 {columns.map(column => (
-                                    <TableCell sx={{ fontWeight: "bold" }} key={column.field}>
+                                    <TableCell key={column.field} align={column.align} sx={{ fontWeight: "bold" }}>
                                         {column.label}
                                     </TableCell>
                                 ))}
@@ -281,7 +282,7 @@ const Inventories = () => {
                                         <TableRow key={inventory.id}>
                                             <TableCell>{inventory.id}</TableCell>
                                             <TableCell>{inventory.supplies.name}</TableCell>
-                                            <TableCell>{inventory.quantity}</TableCell>
+                                            <TableCell align="right">{numberFormatter(inventory.quantity)}</TableCell>
                                             <TableCell>{inventory.type}</TableCell>
                                             <TableCell>{inventory.note}</TableCell>
                                             <TableCell>{dateFormatter(new Date(inventory.createdAt), "YYYY-MM-DD HH:mm:ss")}</TableCell>

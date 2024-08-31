@@ -41,9 +41,9 @@ const columns = [
     { field: `id`, label: `ID` },
     { field: `expense Name`, label: `Expense Name` },
     { field: `date`, label: `Date` },
-    { field: `amount`, label: `Amount` },
+    { field: `amount`, label: `Amount`, align: "right" },
     { field: `note`, label: `Note` },
-    { field: `actions`, label: `Actions` },
+    { field: `actions`, label: `Actions`, align: "center" },
 ];
 
 // Pagination Function
@@ -264,7 +264,7 @@ const Payments = () => {
                         <TableHead>
                             <TableRow>
                                 {columns.map(column => (
-                                    <TableCell sx={{ fontWeight: "bold" }} key={column.field}>
+                                    <TableCell key={column.field} align={column.align} sx={{ fontWeight: "bold" }}>
                                         {column.label}
                                     </TableCell>
                                 ))}
@@ -279,7 +279,7 @@ const Payments = () => {
                                             <TableCell>{payment.id}</TableCell>
                                             <TableCell>{payment.expenses.name}</TableCell>
                                             <TableCell>{dateFormatter(new Date(payment.date), "YYYY-MM-DD HH:mm:ss")}</TableCell>
-                                            <TableCell>{currencyFormatter(payment.amount)}</TableCell>
+                                            <TableCell align="right">{currencyFormatter(payment.amount)}</TableCell>
                                             <TableCell>{payment.note}</TableCell>
                                             <TableCell>
                                                 <Stack direction="row" justifyContent="center" alignItems="center" spacing={0.3}>

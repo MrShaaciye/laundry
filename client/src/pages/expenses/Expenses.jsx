@@ -43,7 +43,7 @@ const columns = [
     { field: `createdAt`, label: `Created At` },
     { field: `updatedAt`, label: `Updated At` },
     { field: `deletedAt`, label: `Deleted At` },
-    { field: `actions`, label: `Actions` },
+    { field: `actions`, label: `Actions`, align: "center" },
 ];
 
 // Pagination Function
@@ -250,7 +250,7 @@ const Expenses = () => {
                         <TableHead>
                             <TableRow>
                                 {columns.map(column => (
-                                    <TableCell sx={{ fontWeight: "bold" }} key={column.field}>
+                                    <TableCell key={column.field} align={column.align} sx={{ fontWeight: "bold" }}>
                                         {column.label}
                                     </TableCell>
                                 ))}

@@ -40,11 +40,11 @@ const style = {
 const columns = [
     { field: `id`, label: `ID` },
     { field: `type`, label: `Type` },
-    { field: `cost`, label: `Cost` },
+    { field: `cost`, label: `Cost`, align: "right" },
     { field: `createdAt`, label: `Created At` },
     { field: `updatedAt`, label: `Updated At` },
     { field: `deletedAt`, label: `Deleted At` },
-    { field: `actions`, label: `Actions` },
+    { field: `actions`, label: `Actions`, align: "center" },
 ];
 
 // Pagination Function
@@ -252,7 +252,7 @@ const Prices = () => {
                         <TableHead>
                             <TableRow>
                                 {columns.map(column => (
-                                    <TableCell sx={{ fontWeight: "bold" }} key={column.field}>
+                                    <TableCell key={column.field} align={column.align} sx={{ fontWeight: "bold" }}>
                                         {column.label}
                                     </TableCell>
                                 ))}
@@ -266,7 +266,7 @@ const Prices = () => {
                                         <TableRow key={price.id}>
                                             <TableCell>{price.id}</TableCell>
                                             <TableCell>{price.type}</TableCell>
-                                            <TableCell>{currencyFormatter(price.cost)}</TableCell>
+                                            <TableCell align="right">{currencyFormatter(price.cost)}</TableCell>
                                             <TableCell>{dateFormatter(new Date(price.createdAt), "YYYY-MM-DD HH:mm:ss")}</TableCell>
                                             <TableCell>{dateFormatter(new Date(price.updatedAt), "YYYY-MM-DD HH:mm:ss")}</TableCell>
                                             <TableCell>{price.deletedAt ? dateFormatter(new Date(price.deletedAt), "YYYY-MM-DD HH:mm:ss") : "Null"}</TableCell>

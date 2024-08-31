@@ -44,8 +44,8 @@ const columns = [
     { field: `address`, label: `Address` },
     { field: `phone`, label: `Phone` },
     { field: `jobTitle`, label: `Title` },
-    { field: `salary`, label: `salary` },
-    { field: `actions`, label: `Actions` },
+    { field: `salary`, label: `salary`, align: "right" },
+    { field: `actions`, label: `Actions`, align: "center" },
 ];
 
 // Pagination Function
@@ -281,7 +281,7 @@ const Employees = () => {
                         <TableHead>
                             <TableRow>
                                 {columns.map(column => (
-                                    <TableCell key={column.field} sx={{ fontWeight: "bold" }}>
+                                    <TableCell key={column.field} align={column.align} sx={{ fontWeight: "bold" }}>
                                         {column.label}
                                     </TableCell>
                                 ))}

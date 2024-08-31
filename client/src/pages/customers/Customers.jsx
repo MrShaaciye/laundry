@@ -17,6 +17,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 import currencyFormatter from "../../components/utils/currencyFormatter";
+import numberFormatter from "../../components/utils/numberFormatter";
 const AddCustomer = lazy(() => import("./AddCustomer"));
 const UpdateCustomer = lazy(() => import("./UpdateCustomer"));
 const ViewCustomer = lazy(() => import("./ViewCustomer"));
@@ -43,10 +44,10 @@ const columns = [
     { field: `gender`, label: `Gender` },
     { field: `address`, label: `Address` },
     { field: `phone`, label: `Phone` },
-    { field: `deposit`, label: `Deposit` },
-    { field: `units`, label: `Units` },
+    { field: `deposit`, label: `Deposit`, align: "right" },
+    { field: `units`, label: `Units`, align: "right" },
     { field: `payment`, label: `Payment` },
-    { field: `actions`, label: `Actions` },
+    { field: `actions`, label: `Actions`, align: "center" },
 ];
 
 // Pagination Function
@@ -282,7 +283,7 @@ const Customers = () => {
                         <TableHead>
                             <TableRow>
                                 {columns.map(column => (
-                                    <TableCell key={column.field} sx={{ fontWeight: "bold" }}>
+                                    <TableCell key={column.id} align={column.align} sx={{ fontWeight: "bold" }}>
                                         {column.label}
                                     </TableCell>
                                 ))}
@@ -302,7 +303,7 @@ const Customers = () => {
                                             <TableCell>{customer.address}</TableCell>
                                             <TableCell>{customer.phone}</TableCell>
                                             <TableCell align="right">{currencyFormatter(customer.depositAmount)}</TableCell>
-                                            <TableCell align="right">{customer.allowedUnit}</TableCell>
+                                            <TableCell align="right">{numberFormatter(customer.allowedUnit)}</TableCell>
                                             <TableCell>{customer.paymentStatus}</TableCell>
                                             <TableCell>
                                                 <Stack direction="row" justifyContent="center" alignItems="center" spacing={0.3}>

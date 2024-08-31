@@ -42,7 +42,7 @@ const columns = [
     { field: `createdAt`, label: `Created At` },
     { field: `updatedAt`, label: `Updated At` },
     { field: `deletedAt`, label: `Deleted At` },
-    { field: `actions`, label: `Actions` },
+    { field: `actions`, label: `Actions`, align: "center" },
 ];
 
 // Pagination Function
@@ -250,7 +250,7 @@ const Services = () => {
                         <TableHead>
                             <TableRow>
                                 {columns.map(column => (
-                                    <TableCell key={column.field} sx={{ fontWeight: "bold" }}>
+                                    <TableCell key={column.field} align={column.align} sx={{ fontWeight: "bold" }}>
                                         {column.label}
                                     </TableCell>
                                 ))}
@@ -268,7 +268,7 @@ const Services = () => {
                                             <TableCell>{service.name}</TableCell>
                                             <TableCell>{dateFormatter(new Date(service.createdAt), "YYYY-MM-DD HH:mm:ss")}</TableCell>
                                             <TableCell>{dateFormatter(new Date(service.updatedAt), "YYYY-MM-DD HH:mm:ss")}</TableCell>
-                                            <TableCell>{service.deletedAt ? service.deletedAt : "Null"}</TableCell>
+                                            <TableCell>{service.deletedAt ? dateFormatter(new Date(service.deletedAt), "YYYY-MM-DD HH:mm:ss") : "Null"}</TableCell>
                                             <TableCell>
                                                 <Stack direction="row" justifyContent="center" alignItems="center" spacing={0.3}>
                                                     <VisibilityIcon style={{ fontSize: "20px", color: "green", cursor: "pointer" }} onClick={() => handleView(service.id)} />
