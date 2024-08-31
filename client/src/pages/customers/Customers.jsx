@@ -291,7 +291,7 @@ const Customers = () => {
                         </TableHead>
                         {count > 0 && (
                             <TableBody>
-                                {(rowsPerPage > 0 ? customers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : customers)
+                                {(rowsPerPage > 0 ? customers?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : customers)
                                     .filter(customer => {
                                         return search.toLowerCase() === "" ? customer : customer.name.toLowerCase().includes(search);
                                     })
