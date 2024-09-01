@@ -289,9 +289,10 @@ const Customers = () => {
                                 ))}
                             </TableRow>
                         </TableHead>
-                        {count > 0 && (
-                            <TableBody>
-                                {(rowsPerPage > 0 ? customers?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : customers)
+                        <TableBody>
+                            {count > 0 && rowsPerPage > 0 ? (
+                                customers
+                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                     .filter(customer => {
                                         return search.toLowerCase() === "" ? customer : customer.name.toLowerCase().includes(search);
                                     })
@@ -313,14 +314,20 @@ const Customers = () => {
                                                 </Stack>
                                             </TableCell>
                                         </TableRow>
-                                    ))}
-                                {emptyRows > 0 && (
-                                    <TableRow style={{ height: 53 * emptyRows }}>
-                                        <TableCell colSpan={6} />
-                                    </TableRow>
-                                )}
-                            </TableBody>
-                        )}
+                                    ))
+                            ) : (
+                                <TableRow>
+                                    <TableCell colSpan={9}>
+                                        <Typography align="center">No data available in this table</Typography>
+                                    </TableCell>
+                                </TableRow>
+                            )}
+                            {emptyRows > 0 && (
+                                <TableRow style={{ height: 53 * emptyRows }}>
+                                    <TableCell colSpan={6} />
+                                </TableRow>
+                            )}
+                        </TableBody>
                         <TableFooter>
                             <TableRow>
                                 <TablePagination

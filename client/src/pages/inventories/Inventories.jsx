@@ -274,9 +274,10 @@ const Inventories = () => {
                                 ))}
                             </TableRow>
                         </TableHead>
-                        {count > 0 && (
-                            <TableBody>
-                                {(rowsPerPage > 0 ? inventories.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : inventories)
+                        <TableBody>
+                            {count > 0 && rowsPerPage > 0 ? (
+                                inventories
+                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                     .filter(inventory => (search.toLowerCase() === "" ? inventory : inventory.type.toLowerCase().includes(search)))
                                     .map(inventory => (
                                         <TableRow key={inventory.id}>
@@ -296,14 +297,21 @@ const Inventories = () => {
                                                 </Stack>
                                             </TableCell>
                                         </TableRow>
-                                    ))}
-                                {emptyRows > 0 && (
-                                    <TableRow style={{ height: 53 * emptyRows }}>
-                                        <TableCell colSpan={6} />
-                                    </TableRow>
-                                )}
-                            </TableBody>
-                        )}
+                                    ))
+                            ) : (
+                                <TableRow>
+                                    <TableCell colSpan={9}>
+                                        <Typography align="center">No data available in this table</Typography>
+                                    </TableCell>
+                                </TableRow>
+                            )}
+                            {emptyRows > 0 && (
+                                <TableRow style={{ height: 53 * emptyRows }}>
+                                    <TableCell colSpan={6} />
+                                </TableRow>
+                            )}
+                        </TableBody>
+
                         <TableFooter>
                             <TableRow>
                                 <TablePagination

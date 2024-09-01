@@ -287,9 +287,11 @@ const Employees = () => {
                                 ))}
                             </TableRow>
                         </TableHead>
-                        {count > 0 && (
-                            <TableBody>
-                                {(rowsPerPage > 0 ? employees.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : employees)
+
+                        <TableBody>
+                            {count > 0 && rowsPerPage > 0 ? (
+                                employees
+                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                     .filter(employee => {
                                         return search.toLowerCase() === "" ? employee : employee.name.toLowerCase().includes(search) || employee.jobTitle.toLowerCase().includes(search) || employee.phone.toLowerCase().includes(search);
                                     })
@@ -310,14 +312,20 @@ const Employees = () => {
                                                 </Stack>
                                             </TableCell>
                                         </TableRow>
-                                    ))}
-                                {emptyRows > 0 && (
-                                    <TableRow style={{ height: 53 * emptyRows }}>
-                                        <TableCell colSpan={6} />
-                                    </TableRow>
-                                )}
-                            </TableBody>
-                        )}
+                                    ))
+                            ) : (
+                                <TableRow>
+                                    <TableCell colSpan={8}>
+                                        <Typography align="center">No data available in this table</Typography>
+                                    </TableCell>
+                                </TableRow>
+                            )}
+                            {emptyRows > 0 && (
+                                <TableRow style={{ height: 53 * emptyRows }}>
+                                    <TableCell colSpan={6} />
+                                </TableRow>
+                            )}
+                        </TableBody>
                         <TableFooter>
                             <TableRow>
                                 <TablePagination

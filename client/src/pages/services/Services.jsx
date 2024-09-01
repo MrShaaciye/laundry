@@ -256,9 +256,10 @@ const Services = () => {
                                 ))}
                             </TableRow>
                         </TableHead>
-                        {count > 0 && (
-                            <TableBody>
-                                {(rowsPerPage > 0 ? services.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : services)
+                        <TableBody>
+                            {count > 0 && rowsPerPage > 0 ? (
+                                services
+                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                     .filter(service => {
                                         return search.toLowerCase() === "" ? service : service.name.toLowerCase().includes(search);
                                     })
@@ -277,14 +278,21 @@ const Services = () => {
                                                 </Stack>
                                             </TableCell>
                                         </TableRow>
-                                    ))}
-                                {emptyRows > 0 && (
-                                    <TableRow style={{ height: 53 * emptyRows }}>
-                                        <TableCell colSpan={6} />
-                                    </TableRow>
-                                )}
-                            </TableBody>
-                        )}
+                                    ))
+                            ) : (
+                                <TableRow>
+                                    <TableCell colSpan={6}>
+                                        <Typography align="center">No data available in this table</Typography>
+                                    </TableCell>
+                                </TableRow>
+                            )}
+                            {emptyRows > 0 && (
+                                <TableRow style={{ height: 53 * emptyRows }}>
+                                    <TableCell colSpan={6} />
+                                </TableRow>
+                            )}
+                        </TableBody>
+
                         <TableFooter>
                             <TableRow>
                                 <TablePagination

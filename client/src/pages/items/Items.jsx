@@ -256,9 +256,10 @@ const Items = () => {
                                 ))}
                             </TableRow>
                         </TableHead>
-                        {count > 0 && (
-                            <TableBody>
-                                {(rowsPerPage > 0 ? items.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : items)
+                        <TableBody>
+                            {count > 0 && rowsPerPage > 0 ? (
+                                items
+                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                     .filter(item => {
                                         return search.toLowerCase() === "" ? item : item.name.toLowerCase().includes(search);
                                     })
@@ -277,14 +278,21 @@ const Items = () => {
                                                 </Stack>
                                             </TableCell>
                                         </TableRow>
-                                    ))}
-                                {emptyRows > 0 && (
-                                    <TableRow style={{ height: 53 * emptyRows }}>
-                                        <TableCell colSpan={6} />
-                                    </TableRow>
-                                )}
-                            </TableBody>
-                        )}
+                                    ))
+                            ) : (
+                                <TableRow>
+                                    <TableCell colSpan={6}>
+                                        <Typography align="center">No data available in this table</Typography>
+                                    </TableCell>
+                                </TableRow>
+                            )}
+                            {emptyRows > 0 && (
+                                <TableRow style={{ height: 53 * emptyRows }}>
+                                    <TableCell colSpan={6} />
+                                </TableRow>
+                            )}
+                        </TableBody>
+
                         <TableFooter>
                             <TableRow>
                                 <TablePagination

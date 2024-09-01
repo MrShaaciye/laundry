@@ -288,9 +288,10 @@ const Inventories = () => {
                                 ))}
                             </TableRow>
                         </TableHead>
-                        {count > 0 && (
-                            <TableBody>
-                                {(rowsPerPage > 0 ? deliveries.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : deliveries)
+                        <TableBody>
+                            {count > 0 && rowsPerPage > 0 ? (
+                                deliveries
+                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                     .filter(delivery => (search.toLowerCase() === "" ? delivery : delivery.type.toLowerCase().includes(search)))
                                     .map(delivery => (
                                         <TableRow key={delivery.id}>
@@ -310,14 +311,21 @@ const Inventories = () => {
                                                 </Stack>
                                             </TableCell>
                                         </TableRow>
-                                    ))}
-                                {emptyRows > 0 && (
-                                    <TableRow style={{ height: 53 * emptyRows }}>
-                                        <TableCell colSpan={6} />
-                                    </TableRow>
-                                )}
-                            </TableBody>
-                        )}
+                                    ))
+                            ) : (
+                                <TableRow>
+                                    <TableCell colSpan={9}>
+                                        <Typography align="center">No data available in this table</Typography>
+                                    </TableCell>
+                                </TableRow>
+                            )}
+                            {emptyRows > 0 && (
+                                <TableRow style={{ height: 53 * emptyRows }}>
+                                    <TableCell colSpan={6} />
+                                </TableRow>
+                            )}
+                        </TableBody>
+
                         <TableFooter>
                             <TableRow>
                                 <TablePagination
