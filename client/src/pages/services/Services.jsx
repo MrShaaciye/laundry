@@ -281,14 +281,14 @@ const Services = () => {
                                     ))
                             ) : (
                                 <TableRow>
-                                    <TableCell colSpan={6}>
+                                    <TableCell colSpan={columns.length}>
                                         <Typography align="center">No data available in this table</Typography>
                                     </TableCell>
                                 </TableRow>
                             )}
                             {emptyRows > 0 && (
                                 <TableRow style={{ height: 53 * emptyRows }}>
-                                    <TableCell colSpan={6} />
+                                    <TableCell colSpan={columns.length} />
                                 </TableRow>
                             )}
                         </TableBody>
