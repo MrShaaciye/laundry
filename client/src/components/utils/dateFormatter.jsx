@@ -10,7 +10,7 @@ const dateFormatter = (date, format) => {
     if (hours.length < 2) hours = "0" + hours;
     if (minutes.length < 2) minutes = "0" + minutes;
     if (seconds.length < 2) seconds = "0" + seconds;
-    return format.replace("YYYY", year).replace("MM", month).replace("DD", day).replace("HH", hours).replace("mm", minutes).replace("ss", seconds);
+    return format.replace("DD", year).replace("MM", month).replace("YYYY", day).replace("HH", hours).replace("mm", minutes).replace("ss", seconds);
 };
 
 export default dateFormatter;
