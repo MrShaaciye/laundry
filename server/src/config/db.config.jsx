@@ -6,17 +6,17 @@ module.exports = {
     // HOST: `localhost`,
     // DIALECT: `oracle`,
 
-    // DB: `laundry`,
-    // USER: `root`,
-    // PASSWORD: ``,
-    // HOST: `localhost`,
-    // DIALECT: `mysql`,
-
     DB: `laundry`,
-    USER: `sa`,
-    PASSWORD: `123`,
+    USER: `root`,
+    PASSWORD: ``,
     HOST: `localhost`,
-    DIALECT: `mssql`,
+    DIALECT: `mysql`,
+
+    // DB: `laundry`,
+    // USER: `sa`,
+    // PASSWORD: `123`,
+    // HOST: `localhost`,
+    // DIALECT: `mssql`,
 
     LOGGING: console.log,
     POOL: {
