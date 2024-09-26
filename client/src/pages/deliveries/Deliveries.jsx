@@ -296,8 +296,8 @@ const Inventories = () => {
                                     .map(delivery => (
                                         <TableRow key={delivery.id}>
                                             <TableCell>{delivery.id}</TableCell>
-                                            <TableCell>{`${delivery.customers.name} [${delivery.customers.phone}] ${delivery.customers.address}`}</TableCell>
-                                            <TableCell>{`${delivery.employees.name} [${delivery.employees.jobTitle}]`}</TableCell>
+                                            <TableCell>{`${delivery.customers?.name} [${delivery.customers?.phone}] ${delivery.customers?.address}`}</TableCell>
+                                            <TableCell>{`${delivery.employees?.name} [${delivery.employees?.jobTitle}]`}</TableCell>
                                             <TableCell align="right">{currencyFormatter(delivery.fee)}</TableCell>
                                             <TableCell>{delivery.note}</TableCell>
                                             <TableCell>{dateFormatter(new Date(delivery.createdAt), "YYYY-MM-DD HH:mm:ss")}</TableCell>

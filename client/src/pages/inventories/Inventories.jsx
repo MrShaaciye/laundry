@@ -282,7 +282,7 @@ const Inventories = () => {
                                     .map(inventory => (
                                         <TableRow key={inventory.id}>
                                             <TableCell>{inventory.id}</TableCell>
-                                            <TableCell>{inventory.supplies.name}</TableCell>
+                                            <TableCell>{inventory.supplies?.name}</TableCell>
                                             <TableCell align="right">{numberFormatter(inventory.quantity)}</TableCell>
                                             <TableCell>{inventory.type}</TableCell>
                                             <TableCell>{inventory.note}</TableCell>
