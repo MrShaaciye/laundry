@@ -49,7 +49,7 @@ const ViewPayment = ({ payment, closeEvent }) => {
                         : {payment.id}
                     </Typography>
                     <Typography variant="body" display="block">
-                        : {payment.expenseId ? payment.expenses.name : "N/A"}
+                        : {payment.expenseId ? `${payment.expenses?.name}` : "N/A"}
                     </Typography>
                     <Typography variant="body" display="block">
                         : {dateFormatter(new Date(payment.date), "YYYY-MM-DD HH:mm:ss")}

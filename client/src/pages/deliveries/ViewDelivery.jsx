@@ -49,10 +49,10 @@ const ViewDelivery = ({ delivery, closeEvent }) => {
                         : {delivery.id}
                     </Typography>
                     <Typography variant="body" display="block">
-                        : {delivery.customerId ? `${delivery.customers.name} [${delivery.customers.phone}] ${delivery.customers.address}` : "N/A"}
+                        : {delivery.customerId ? `${delivery.customers?.name} [${delivery.customers?.phone}] ${delivery.customers?.address}` : "N/A"}
                     </Typography>
                     <Typography variant="body" display="block">
-                        : {delivery.employeeId ? `${delivery.employees.name} [${delivery.employees.jobTitle}]` : "N/A"}
+                        : {delivery.employeeId ? `${delivery.employees?.name} [${delivery.employees?.jobTitle}]` : "N/A"}
                     </Typography>
                     <Typography variant="body" display="block">
                         : {currencyFormatter(delivery.fee)}

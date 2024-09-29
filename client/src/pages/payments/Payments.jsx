@@ -278,7 +278,7 @@ const Payments = () => {
                                     .map(payment => (
                                         <TableRow key={payment.id}>
                                             <TableCell>{payment.id}</TableCell>
-                                            <TableCell>{payment.expenses?.name}</TableCell>
+                                            <TableCell>{`${payment.expenses?.name}`}</TableCell>
                                             <TableCell>{dateFormatter(new Date(payment.date), "YYYY-MM-DD HH:mm:ss")}</TableCell>
                                             <TableCell align="right">{currencyFormatter(payment.amount)}</TableCell>
                                             <TableCell>{payment.note}</TableCell>

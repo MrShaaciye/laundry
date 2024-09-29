@@ -48,7 +48,7 @@ const ViewInventory = ({ inventory, closeEvent }) => {
                         : {inventory.id}
                     </Typography>
                     <Typography variant="body" display="block">
-                        : {inventory.supplyId ? inventory.supplies.name : "N/A"}
+                        : {inventory.supplyId ? `${inventory.supplies?.name}` : "N/A"}
                     </Typography>
                     <Typography variant="body" display="block">
                         : {inventory.quantity}
