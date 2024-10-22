@@ -56,7 +56,7 @@ const UpdateCustomer = ({ customer, updatedCustomer, closeEvent }) => {
                 setTimeout(() => {
                     onSubmitProps.resetForm();
                     onSubmitProps.setSubmitting(false);
-                }, 5000);
+                }, 3000);
                 updatedCustomer(formData);
                 closeEvent();
                 return toast.success(`Customer updated successfully`);
