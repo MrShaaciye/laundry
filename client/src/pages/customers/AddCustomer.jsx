@@ -56,7 +56,7 @@ const AddCustomer = ({ newCustomer, customers, closeEvent }) => {
             setTimeout(() => {
                 onSubmitProps.resetForm();
                 onSubmitProps.setSubmitting(false);
-            }, 5000);
+            }, 3000);
             newCustomer(formData);
             closeEvent();
             return toast.success(`Customer added successfully`);
