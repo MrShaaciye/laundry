@@ -20,24 +20,22 @@ exports.create = async (req, res) => {
 };
 
 // Login User
-/* exports.login = async (req, res) => {
-    const transactions = await sequelize.transaction();
-    try {
-        const { username, password } = req.body;
-        const user = await userModel.findOne({ where: { username: username }, transaction: transactions });
-        if (!user) return await transactions.rollback(), res.status(404).json({ err: `Sorry! username ${username}User not found` });
-        const match = await bcrypt.compare(password, user.password);
-        let accessToken;
-        return !match ? (await transactions.rollback(), res.status(401).json({ err: `Sorry! password is incorrect` })) : (await transactions.commit(), (accessToken = jwt.sign({ username: user.username, id: user.id }, "secret", { expiresIn: 60 * 60 })), res.status(200).json({ token: accessToken, username: user.username, type: user.type, id: user.id }));
-    } catch (err) {
-        const messages = {};
-        let message;
-        return await transactions.rollback(), err.errors.forEach(error => ((messages[error.path] = error.message), (message = messages[error.path]))), res.status(500).json(message);
-    }
-}; */
+exports.login = async (req, res) => {
+  const transactions = await sequelize.transaction();
+  try {
+    const { username, password } = req.body;
+    const user = await userModel.findOne({ where: { username: username }, transaction: transactions });
+    if (!user) return await transactions.rollback(), res.status(404).json({ err: `Sorry! username ${username}User not found` });
+    const match = await bcrypt.compare(password, user.password);
+    let accessToken;
+    return !match ? (await transactions.rollback(), res.status(400).json({ err: `Sorry! password is incorrect` })) : (await transactions.commit(), (accessToken = jwt.sign({ username: user.username, id: user.id }, "secret", { expiresIn: 60 * 60 })), res.status(200).json({ token: accessToken, username: user.username, type: user.type, id: user.id }));
+  } catch (err) {
+    return await transactions.rollback(), res.status(500).json(err.message);
+  }
+};
 
 // Auth User
-// exports.auth = async (req, res) => await res.json(req.user);
+exports.auth = async (req, res) => await res.json(req.user);
 
 // Find All Users
 exports.findAll = async (req, res) => {
