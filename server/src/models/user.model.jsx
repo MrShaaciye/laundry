@@ -12,24 +12,24 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         autoIncrement: true,
       },
-      // name: {
-      //   type: DataTypes.STRING(50),
-      //   allowNull: false,
-      //   validate: {
-      //     is: {
-      //       args: /^[A-Za-z ]+$/i,
-      //       msg: `Name must be Letters`,
-      //     },
-      //     len: {
-      //       args: [3, 50],
-      //       msg: `Name must be between 3 and 50 characters.`,
-      //     },
-      //     notEmpty: {
-      //       args: true,
-      //       msg: `Name is required.`,
-      //     },
-      //   },
-      // },
+      name: {
+        type: DataTypes.STRING(50),
+        allowNull: false,
+        validate: {
+          is: {
+            args: /^[A-Za-z ]+$/i,
+            msg: `Name must be Letters`,
+          },
+          len: {
+            args: [3, 50],
+            msg: `Name must be between 3 and 50 characters.`,
+          },
+          notEmpty: {
+            args: true,
+            msg: `Name is required.`,
+          },
+        },
+      },
       username: {
         type: DataTypes.STRING(20),
         allowNull: false,
