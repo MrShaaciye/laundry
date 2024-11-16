@@ -82,7 +82,7 @@ db.smsEmployeeModel.belongsTo(db.employeeModel, { as: `employees`, foreignKey: `
 
 // Create tables
 db.sequelize
-  .sync({ force: false, alter: true, match: /laundry$/ })
+  .sync({ force: false, alter: false, match: /laundry$/ })
   .then(() => console.log(`Tables were synced successfully!`))
   .catch((err) => console.log(`Unable to sync Tables! ${err}`));
 
