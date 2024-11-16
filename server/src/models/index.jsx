@@ -4,22 +4,22 @@ const { Sequelize, QueryTypes, DataTypes, Op } = require(`sequelize`);
 
 // Initialize Sequelize
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
-    host: dbConfig.HOST,
-    dialect: dbConfig.DIALECT,
-    logging: dbConfig.LOGGING,
-    pool: {
-        max: dbConfig.POOL.MAX,
-        min: dbConfig.POOL.MIN,
-        acquire: dbConfig.POOL.ACQUIRE,
-        idle: dbConfig.POOL.IDLE,
-    },
+  host: dbConfig.HOST,
+  dialect: dbConfig.DIALECT,
+  logging: dbConfig.LOGGING,
+  pool: {
+    max: dbConfig.POOL.MAX,
+    min: dbConfig.POOL.MIN,
+    acquire: dbConfig.POOL.ACQUIRE,
+    idle: dbConfig.POOL.IDLE,
+  },
 });
 
 // Create Connection
 sequelize
-    .authenticate()
-    .then(() => console.log(`Database Authenticated successfully!`))
-    .catch(err => console.log(`Unable to authenticate database ${err}`));
+  .authenticate()
+  .then(() => console.log(`Database Authenticated successfully!`))
+  .catch((err) => console.log(`Unable to authenticate database ${err}`));
 
 // Defining database
 const db = {};
@@ -82,8 +82,8 @@ db.smsEmployeeModel.belongsTo(db.employeeModel, { as: `employees`, foreignKey: `
 
 // Create tables
 db.sequelize
-    .sync({ force: false, alter: false, match: /laundry$/ })
-    .then(() => console.log(`Tables were synced successfully!`))
-    .catch(err => console.log(`Unable to sync Tables! ${err}`));
+  .sync({ force: false, alter: true, match: /laundry$/ })
+  .then(() => console.log(`Tables were synced successfully!`))
+  .catch((err) => console.log(`Unable to sync Tables! ${err}`));
 
 module.exports = db;
