@@ -1,10 +1,10 @@
 `use strict`;
-const compression = require(`compression`);
 const express = require(`express`);
 const dotenv = require(`dotenv`).config();
 const cors = require(`cors`);
 const https = require(`https`);
 const fs = require(`fs`);
+const compressionOpt = require(`./src/middleware/compressionOpt.jsx`);
 const logger = require(`./src/middleware/logger.jsx`);
 
 // CONFIGURATION
@@ -14,25 +14,15 @@ const httpsServer = https.createServer({
   cert: fs.readFileSync(`./src/keys/cert.pem`),
 });
 
-const compressionOptions = compression({
-  level: 6,
-  threshold: 10 * 1000,
-  filter: (req, res) => {
-    if (req.headers[`x-no-compression`]) {
-      return false;
-    }
-    return compression.filter(req, res);
-  },
-});
-
 const corsOptions = {
   origin: `http://localhost:3000`,
   optionsSuccessStatus: 200,
 };
 
+// Middlewares
 app
   .use(cors(corsOptions))
-  .use(compressionOptions)
+  .use(compressionOpt)
   .use(logger)
   .use(express.json())
   .use(express.urlencoded({ extended: false }))

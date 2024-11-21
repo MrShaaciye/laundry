@@ -1,0 +1,16 @@
+>> Create folder and Open VSCode in it
+===========================================================
+build nodejs app
+>> npm init
+===========================================================
+install dependencies & Dev dependencies 
+>> npm i bcrypt compression cors dotenv express jsonwebtoken moment multer mysql2 oracledb sequelize tedious xlsx
+>> npm i --save-dev nodemon
+===========================================================
+>> Write package.json >> inside "main": "server.jsx",
+>> Write package.json >> inside "script": {"start": "nodemon server.jsx ", "dev": "nodemon server",}
+>> start you app >> npm start or >> npm run dev  
+===========================================================
+>> Create file server.jsx inside your Project Folder 
+>> 
+ 
