@@ -4,7 +4,11 @@ const dotenv = require(`dotenv`).config();
 const cors = require(`cors`);
 const https = require(`https`);
 const fs = require(`fs`);
+<<<<<<< HEAD
 const compressionOpt = require(`./src/middleware/compressionOpt.jsx`);
+=======
+const compressionOptions = require(`./src/middleware/compressionOptions.jsx`);
+>>>>>>> 850afdc564aa01b3e3edece5e5faad98d82b8407
 const logger = require(`./src/middleware/logger.jsx`);
 
 // CONFIGURATION
