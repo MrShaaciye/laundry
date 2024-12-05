@@ -4,6 +4,7 @@ const dotenv = require(`dotenv`).config();
 const cors = require(`cors`);
 const https = require(`https`);
 const fs = require(`fs`);
+const corsOptions = require(`./src/middleware/corsOptions.jsx`);
 const compressionOpt = require(`./src/middleware/compressionOpt.jsx`);
 const logger = require(`./src/middleware/logger.jsx`);
 
@@ -13,11 +14,6 @@ const httpsServer = https.createServer({
   key: fs.readFileSync(`./src/keys/key.pem`),
   cert: fs.readFileSync(`./src/keys/cert.pem`),
 });
-
-const corsOptions = {
-  origin: `http://localhost:3000`,
-  optionsSuccessStatus: 200,
-};
 
 // Middlewares
 app
