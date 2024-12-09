@@ -1,7 +1,7 @@
 `use strict`;
 const compression = require("compression");
 
-const compressionOpt = compression({
+const compressionOptions = compression({
   level: 6,
   threshold: 10 * 1000,
   filter: (req, res) => {
@@ -12,4 +12,4 @@ const compressionOpt = compression({
   },
 });
 
-module.exports = compressionOpt;
+module.exports = compressionOptions;

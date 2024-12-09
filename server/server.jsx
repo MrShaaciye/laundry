@@ -5,7 +5,7 @@ const cors = require(`cors`);
 const https = require(`https`);
 
 const corsOptions = require(`./src/middleware/corsOptions.jsx`);
-const compressionOpt = require(`./src/middleware/compressionOpt.jsx`);
+const compressionOptions = require(`./src/middleware/compressionOptions.jsx`);
 const logger = require(`./src/middleware/logger.jsx`);
 const httpsServer = require(`./src/middleware/httpsServer.jsx`);
 
@@ -15,7 +15,7 @@ const app = express();
 // Middlewares
 app
   .use(cors(corsOptions))
-  .use(compressionOpt)
+  .use(compressionOptions)
   .use(logger)
   .use(express.json())
   .use(express.urlencoded({ extended: false }))
