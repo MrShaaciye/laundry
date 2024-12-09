@@ -3,17 +3,14 @@ const express = require(`express`);
 const dotenv = require(`dotenv`).config();
 const cors = require(`cors`);
 const https = require(`https`);
-const fs = require(`fs`);
+
 const corsOptions = require(`./src/middleware/corsOptions.jsx`);
 const compressionOpt = require(`./src/middleware/compressionOpt.jsx`);
 const logger = require(`./src/middleware/logger.jsx`);
+const httpsServer = require(`./src/middleware/httpsServer.jsx`);
 
 // CONFIGURATION
 const app = express();
-const httpsServer = https.createServer({
-  key: fs.readFileSync(`./src/keys/key.pem`),
-  cert: fs.readFileSync(`./src/keys/cert.pem`),
-});
 
 // Middlewares
 app
@@ -42,5 +39,5 @@ require(`./src/routers/smsemployee.router.jsx`)(app);
 
 app.get(`*`, (req, res) => res.status(404).send({ message: `Sorry! This route doesn't exist` }));
 const PORT = process.env.PORT || 4001;
-app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
-// https.createServer(httpsServer, app).listen(PORT, () => console.log(`Server listening on port ${PORT}`));
+// app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
+https.createServer(httpsServer, app).listen(PORT, () => console.log(`Server listening on port ${PORT}`));
