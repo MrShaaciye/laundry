@@ -37,6 +37,7 @@ require(`./src/routers/user.router.jsx`)(app);
 require(`./src/routers/smscustomer.router.jsx`)(app);
 require(`./src/routers/smsemployee.router.jsx`)(app);
 
+// Server
 app.get(`*`, (req, res) => res.status(404).send({ message: `Sorry! This route doesn't exist` }));
 const PORT = process.env.PORT || 4001;
 // app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
