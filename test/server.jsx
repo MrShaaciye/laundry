@@ -2,7 +2,9 @@
 const express = require("express");
 const dotenv = require("dotenv").config();
 const cors = require("cors");
+
 const corsOptions = require(`./src/middleware/corsOptions.jsx`);
+
 const app = express();
 
 // Middleware
@@ -13,6 +15,7 @@ app
   .get(`/`, (req, res) => res.status(200).json({ message: "Welcome to the API for testing programs" }));
 
 // Routers
+app.get(`*`, (req, res) => res.status(404).json({ message: `Sorry! This route doesn't exist` }));
 
 // Server
 const PORT = process.env.PORT || 7001;
