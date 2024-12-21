@@ -7,6 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import SideBar from "./layout/SideBar";
 import Header from "./layout/Header";
 
+// const Login = lazy(() => import("./pages/login/Login"));
 const Dashboard = lazy(() => import("./pages/admin/Dashboard"));
 const Customers = lazy(() => import("./pages/customers/Customers"));
 const Employees = lazy(() => import("./pages/employees/Employees"));
@@ -20,42 +21,43 @@ const Inventories = lazy(() => import("./pages/inventories/Inventories"));
 const Deliveries = lazy(() => import("./pages/deliveries/Deliveries"));
 
 const App = () => {
-    const [isSidebar, setIsSidebar] = useState(true);
+  const [isSidebar, setIsSidebar] = useState(true);
 
-    return (
-        <>
-            <Router>
-                <CssBaseline />
-                <ToastContainer />
-                <div className="app">
-                    <SideBar isSidebar={isSidebar} />
-                    <main className="content">
-                        <Header setIsSidebar={setIsSidebar} />
-                        <div className="content_body">
-                            <Box m="20px">
-                                <Suspense fallback={<div>Loading... please wait</div>}>
-                                    <Routes>
-                                        <Route path="/admin" element={<Dashboard />} />
-                                        <Route path="/customers" element={<Customers />} />
-                                        <Route path="/employees" element={<Employees />} />
-                                        <Route path="/services" element={<Services />} />
-                                        <Route path="/items" element={<Items />} />
-                                        <Route path="/prices" element={<Prices />} />
-                                        <Route path="/supplies" element={<Supplies />} />
-                                        <Route path="/expenses" element={<Expenses />} />
-                                        <Route path="/payments" element={<Payments />} />
-                                        <Route path="/inventories" element={<Inventories />} />
-                                        <Route path="/deliveries" element={<Deliveries />} />
-                                        <Route path="*" element={<div>Oops! Page Not Found</div>} />
-                                    </Routes>
-                                </Suspense>
-                            </Box>
-                        </div>
-                    </main>
-                </div>
-            </Router>
-        </>
-    );
+  return (
+    <>
+      <Router>
+        <CssBaseline />
+        <ToastContainer />
+        <div className="app">
+          <SideBar isSidebar={isSidebar} />
+          <main className="content">
+            <Header setIsSidebar={setIsSidebar} />
+            <div className="content_body">
+              <Box m="20px">
+                <Suspense fallback={<div>Loading... please wait</div>}>
+                  <Routes>
+                    {/* <Route path="/" element={<Login />} /> */}
+                    <Route path="/admin" element={<Dashboard />} />
+                    <Route path="/customers" element={<Customers />} />
+                    <Route path="/employees" element={<Employees />} />
+                    <Route path="/services" element={<Services />} />
+                    <Route path="/items" element={<Items />} />
+                    <Route path="/prices" element={<Prices />} />
+                    <Route path="/supplies" element={<Supplies />} />
+                    <Route path="/expenses" element={<Expenses />} />
+                    <Route path="/payments" element={<Payments />} />
+                    <Route path="/inventories" element={<Inventories />} />
+                    <Route path="/deliveries" element={<Deliveries />} />
+                    <Route path="*" element={<div>Oops! Page Not Found</div>} />
+                  </Routes>
+                </Suspense>
+              </Box>
+            </div>
+          </main>
+        </div>
+      </Router>
+    </>
+  );
 };
 
 export default App;
