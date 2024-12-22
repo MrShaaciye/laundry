@@ -40,5 +40,5 @@ require(`./src/routers/smsemployee.router.jsx`)(app);
 // Server
 app.get(`*`, (req, res) => res.status(404).send({ message: `Sorry! This route doesn't exist` }));
 const PORT = process.env.PORT || 4001;
-// app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
-https.createServer(httpsServer, app).listen(PORT, () => console.log(`Server is listening on port ${PORT}`));
+app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
+// https.createServer(httpsServer, app).listen(PORT, () => console.log(`Server is listening on port ${PORT}`));
