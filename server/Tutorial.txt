@@ -1,16 +1,368 @@
 >> Create folder and Open VSCode in it
-===========================================================
+===========================================================================
 build nodejs app
 >> npm init
-===========================================================
+===========================================================================
 install dependencies & Dev dependencies 
 >> npm i bcrypt compression cors dotenv express https jsonwebtoken moment multer mysql2 oracledb sequelize tedious xlsx
 >> npm i --save-dev nodemon
-===========================================================
+===========================================================================
 >> Write package.json >> inside "main": "server.jsx",
 >> Write package.json >> inside "script": {"start": "nodemon server.jsx ", "dev": "nodemon server",}
 >> start you app >> npm start/npm run dev  
-===========================================================
->> Create file server.jsx inside your Project Folder 
->> 
- 
+===========================================================================
+>> Create a file server.jsx inside the Project Folder 
+>> Write the following code
+[&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&]
+`use strict`;
+const dotenv = require("dotenv").config();
+const express = require("express");
+const cors = require("cors");
+
+const corsOptions = require(`./src/middlewares/corsOptions.jsx`);
+const compressionOptions = require(`./src/middlewares/compressionOptions.jsx`);
+const logger = require(`./src/middlewares/logger.jsx`);
+
+// Configuration
+const app = express();
+
+// Middleware
+app
+  .use(cors(corsOptions))
+  .use(compressionOptions)
+  .use(logger)
+  .use(express.json())
+  .use(express.urlencoded({ extended: true }))
+  .get(`/`, (req, res) => res.send({ message: `Welcome to test nodejs ` }));
+
+// Routes
+app.get(`*`, (req, res) => res.status(404).send({ message: `Sorry! This router doesn't exit` }));
+
+const PORT = process.env.PORT || 5001;
+app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
+[&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&]
+===========================================================================
+>> Create a file .env inside the Project Folder
+>> Write the following code
+[&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&]
+PORT=5000
+SECRET_KEY=secret
+[&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&]
+===========================================================================
+>> Create folders src/middlewares inside the Project Folder
+>> Create a file logger.jsx
+>> Write the following code
+[&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&]
+`use strict`;
+const moment = require("moment");
+
+// Create Logger
+const logger = (req, res, next) => (console.log(`${req.protocol}://${req.get("host")}${req.originalUrl} - ${moment().format()}`), next());
+
+module.exports = logger;
+[&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&]
+===========================================================================
+>> Create a file corsOptions.jsx in same location
+>> Write the following code
+[&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&]
+`use strict`;
+
+const corsOptions = {
+  origin: `http://localhost:3000`,
+  optionsSuccessStatus: 200,
+};
+
+module.exports = corsOptions;
+[&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&]
+===========================================================================
+>> Create a file compressionOptions.jsx in same location
+>> Write the following code
+[&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&]
+`use strict`;
+const compression = require("compression");
+
+const compressionOptions = compression({
+  level: 6,
+  threshold: 10 * 1000,
+  filter: (req, res) => {
+    if (req.headers[`x-no-compression`]) {
+      return false;
+    }
+    return compression.filter(req, res);
+  },
+});
+
+module.exports = compressionOptions;
+[&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&]
+===========================================================================
+>> Create a file auth.jsx in same location
+>> Write the following code
+[&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&]
+`use strict`;
+const jwt = require("jsonwebtoken");
+
+const token = (req, res, next) => {
+  const accessToken = req.header(`accessToken`);
+  !accessToken ? res.json({ err: `User not logged in!` }) : accessToken;
+
+  try {
+    const validToken = jwt.verify(accessToken, `secret`);
+    req.user = validToken;
+
+    return validToken ? next() : !validToken;
+  } catch (err) {
+    return res.json({ err: err });
+  }
+};
+
+module.exports = token;
+[&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&]
+===========================================================================
+>> Create a folder config inside the src Folder
+>> Create a file db.config.jsx
+>> Write the following code
+[&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&]
+`use strict`;
+module.exports = {
+  // DB: `ORCLPDB`,
+  // USER: `laundry`,
+  // PASSWORD: `656369`,
+  // HOST: `localhost`,
+  // DIALECT: `oracle`,
+
+  DB: `laundry`,
+  USER: `root`,
+  PASSWORD: ``,
+  HOST: `localhost`,
+  DIALECT: `mysql`,
+
+  // DB: `laundry`,
+  // USER: `sa`,
+  // PASSWORD: `123`,
+  // HOST: `localhost`,
+  // DIALECT: `mssql`,
+
+  LOGGING: console.log,
+  POOL: {
+    MAX: 5,
+    MIN: 0,
+    ACQUIRE: 30000,
+    IDLE: 10000,
+  },
+};
+[&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&]
+===========================================================================
+>> Create a folder src/models inside the src Folder
+>> Create a file index.jsx
+>> Write the following code
+[&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&]
+`use strict`;
+const dbConfig = require(`../config/db.config.jsx`);
+const { Sequelize, QueryTypes, DataTypes, Op } = require(`sequelize`);
+
+// Initialize Sequelize
+const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
+  host: dbConfig.HOST,
+  dialect: dbConfig.DIALECT,
+  logging: dbConfig.LOGGING,
+  pool: {
+    max: dbConfig.POOL.MAX,
+    min: dbConfig.POOL.MIN,
+    acquire: dbConfig.POOL.ACQUIRE,
+    idle: dbConfig.POOL.IDLE,
+  },
+});
+
+// Create Connection
+sequelize
+  .authenticate()
+  .then(() => console.log(`Database Authenticated successfully!`))
+  .catch((err) => console.log(`Unable to authenticate database ${err}`));
+
+// Defining database
+const db = {};
+db.sequelize = sequelize;
+db.Sequelize = Sequelize;
+db.QueryTypes = QueryTypes;
+db.DataTypes = DataTypes;
+db.Op = Op;
+
+// Import Models
+db.customerModel = require(`./customer.model.jsx`)(sequelize, DataTypes);
+db.employeeModel = require(`./employee.model.jsx`)(sequelize, DataTypes);
+db.orderModel = require(`./order.model.jsx`)(sequelize, DataTypes);
+
+
+// One to many Associations
+// Order model
+db.customerModel.hasMany(db.orderModel, { as: `orders`, foreignKey: `customerId`, onUpdate: `CASCADE`, onDelete: `CASCADE` });
+db.orderModel.belongsTo(db.customerModel, { as: `customers`, foreignKey: `customerId`, onUpdate: `CASCADE`, onDelete: `CASCADE` });
+db.employeeModel.hasMany(db.orderModel, { as: `orders`, foreignKey: `employeeId`, onUpdate: `CASCADE`, onDelete: `CASCADE` });
+db.orderModel.belongsTo(db.employeeModel, { as: `employees`, foreignKey: `employeeId`, onUpdate: `CASCADE`, onDelete: `CASCADE` });
+
+
+// Create tables
+db.sequelize
+  .sync({ force: false, alter: false, match: /laundry$/ })
+  .then(() => console.log(`Tables were synced successfully!`))
+  .catch((err) => console.log(`Unable to sync Tables! ${err}`));
+
+module.exports = db;
+[&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&]
+===========================================================================
+>> Create a file customer.model.jsx in same location
+>> Write the following code
+[&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&]
+`use strict`;
+module.exports = (sequelize, DataTypes) => {
+    // Define Customer Model
+    const Customers = sequelize.define(
+        `customer`,
+        {
+            id: {
+                type: DataTypes.BIGINT(20).UNSIGNED,
+                allowNull: false,
+                primaryKey: true,
+                autoIncrement: true,
+            },
+            name: {
+                type: DataTypes.STRING(50),
+                allowNull: false,
+                validate: {
+                    is: {
+                        args: /^[A-Za-z ]+$/i,
+                        msg: `Name must be Letters`,
+                    },
+                    len: {
+                        args: [3, 50],
+                        msg: `Name must be between 3 and 50 characters.`,
+                    },
+                    notEmpty: {
+                        args: true,
+                        msg: `Name is required.`,
+                    },
+                },
+            },
+            gender: {
+                type: DataTypes.STRING(6),
+                allowNull: false,
+                validate: {
+                    isIn: {
+                        args: [[`Male`, `Female`]],
+                        msg: `Gender must be one of the Male or Female.`,
+                    },
+                    len: {
+                        args: [4, 6],
+                        msg: `Gender must be between 4 and 6 characters.`,
+                    },
+                    notEmpty: {
+                        args: true,
+                        msg: `Gender is required.`,
+                    },
+                },
+            },
+            address: {
+                type: DataTypes.STRING(100),
+                allowNull: false,
+                validate: {
+                    is: {
+                        args: /^[A-Za-z0-9_., ]+$/i,
+                        msg: `Address must be Letters/Numbers`,
+                    },
+                    len: {
+                        args: [4, 100],
+                        msg: `Address must be between 4 and 100 characters.`,
+                    },
+                    notEmpty: {
+                        args: true,
+                        msg: `Address is required.`,
+                    },
+                },
+            },
+            phone: {
+                type: DataTypes.STRING(9),
+                allowNull: false,
+                validate: {
+                    is: {
+                        args: /^[0-9]+$/i,
+                        msg: `Phone must be numbers`,
+                    },
+                    len: {
+                        args: [9, 9],
+                        msg: `Phone must be 9 characters.`,
+                    },
+                    notEmpty: {
+                        args: true,
+                        msg: `Phone is required.`,
+                    },
+                },
+            },
+            depositAmount: {
+                type: DataTypes.DECIMAL(8, 2),
+                allowNull: false,
+                validate: {
+                    isDecimal: {
+                        args: true,
+                        msg: `Deposit amount must be a decimal number.`,
+                    },
+                    len: {
+                        args: [1, 8],
+                        msg: `Deposit amount must be between 1 and 8 characters.`,
+                    },
+                    notNull: {
+                        args: true,
+                        msg: `Deposit amount is required.`,
+                    },
+                },
+            },
+            allowedUnit: {
+                type: DataTypes.INTEGER(1).UNSIGNED,
+                allowNull: false,
+                validate: {
+                    isIn: {
+                        args: [[`1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`]],
+                        msg: `Allowed Units must be only number 4`,
+                    },
+                    isInt: {
+                        args: true,
+                        msg: `Allowed Unit must be an integer.`,
+                    },
+                    len: {
+                        args: [1, 1],
+                        msg: `Allowed Units must be 1 character.`,
+                    },
+                    notNull: {
+                        args: true,
+                        msg: `Allowed Unit is required.`,
+                    },
+                },
+            },
+            paymentStatus: {
+                type: DataTypes.STRING(12),
+                allowNull: false,
+                validate: {
+                    isIn: {
+                        args: [[`Full Paid`, `Partial Paid`, `Not Paid`]],
+                        msg: `Payment status must be one of the Full Paid, Partial Paid or Not Paid.`,
+                    },
+                    len: {
+                        args: [8, 12],
+                        msg: `Payment status must be between 8 and 12 characters.`,
+                    },
+                    notEmpty: {
+                        args: true,
+                        msg: `Payment status is required.`,
+                    },
+                },
+            },
+        },
+        {
+            timestamps: true,
+            paranoid: true,
+        }
+    );
+
+    return Customers;
+};
+[&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&]
+===========================================================================
