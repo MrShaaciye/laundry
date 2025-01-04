@@ -1,6 +1,6 @@
 `use strict`;
+require("dotenv").config({ path: `${process.cwd()}/.env` });
 const express = require(`express`);
-const dotenv = require(`dotenv`).config();
 const cors = require(`cors`);
 const https = require(`https`);
 

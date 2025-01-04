@@ -6,11 +6,11 @@ module.exports = {
   // HOST: `localhost`,
   // DIALECT: `oracle`,
 
-  DB: `laundry`,
-  USER: `root`,
-  PASSWORD: ``,
-  HOST: `localhost`,
-  DIALECT: `mysql`,
+  DB: process.env.DB,
+  USER: process.env.USER,
+  PASSWORD: process.env.PASSWORD,
+  HOST: process.env.HOST,
+  DIALECT: process.env.DIALECT,
 
   // DB: `laundry`,
   // USER: `sa`,
