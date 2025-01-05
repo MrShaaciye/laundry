@@ -87,7 +87,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         validate: {
           is: {
-            args: /^[0-9]+$/i,
+            args: /^[A-Za-z]+$/i,
             msg: `Job Title must be letters.`,
           },
           len: {
