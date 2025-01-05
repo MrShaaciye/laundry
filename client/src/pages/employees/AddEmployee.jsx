@@ -44,9 +44,9 @@ const AddEmployee = ({ newEmployee, closeEvent }) => {
       .required(),
     jobTitle: yup
       .string()
-      .min(5)
-      .max(20)
-      .matches(/^[A-Za-z]+$/, "Job Title must be Letters")
+      .min(3)
+      .max(25)
+      .matches(/^[A-Za-z ]+$/, "Job Title must be Letters")
       .required(),
     salary: yup.number().typeError().positive().min(100).max(9999.99).required(),
   });

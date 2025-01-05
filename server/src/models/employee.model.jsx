@@ -83,16 +83,16 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       jobTitle: {
-        type: DataTypes.STRING(20),
+        type: DataTypes.STRING(25),
         allowNull: false,
         validate: {
           is: {
-            args: /^[A-Za-z]+$/i,
+            args: /^[A-Za-z ]+$/i,
             msg: `Job Title must be letters.`,
           },
           len: {
-            args: [5, 20],
-            msg: `Job Title must be between 8 and 12 characters.`,
+            args: [3, 25],
+            msg: `Job Title must be between 5 and 25 characters.`,
           },
           notEmpty: {
             args: true,
