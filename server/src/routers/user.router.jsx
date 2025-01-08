@@ -9,9 +9,9 @@ module.exports = (app) => {
 
   // User Routers
   router.route(`/auth`).get(token, userCtrl.auth);
-  router.route(`/user`).post(userCtrl.create).get(userCtrl.findAll);
-  router.route(`/user/:id`).get(userCtrl.findOne).put(userCtrl.update).delete(userCtrl.delete);
-  router.route(`/user/restore/:id`).get(userCtrl.restore);
+  router.route(`/user`).post(token, userCtrl.create).get(token, userCtrl.findAll);
+  router.route(`/user/:id`).get(token, userCtrl.findOne).put(token, userCtrl.update).delete(token, userCtrl.delete);
+  router.route(`/user/restore/:id`).get(token, userCtrl.restore);
   router.route(`/user/login`).post(userCtrl.login);
 
   app.use(`/api/v1`, router);

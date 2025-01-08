@@ -41,12 +41,14 @@ const Login = () => {
     const data = { username: user.username, password: user.password };
     try {
       await axios.post(`/api/v1/user/login`, data).then((res) => {
+        if (res.data.err) return toast.error(res.data.err);
         setTimeout(() => {
           localStorage.setItem("accessToken", res.data.token);
           setAuthState({ username: res.data.username, id: res.data.id, type: res.data.type, status: true });
           onSubmitProps.resetForm();
           onSubmitProps.setSubmitting(false);
-          return navigate("/admin");
+          navigate("/admin");
+          return toast.success(`Welcome back ${res.data.username}!`);
         }, 500);
       });
     } catch (err) {
