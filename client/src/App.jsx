@@ -28,21 +28,18 @@ const App = () => {
   const [authState, setAuthState] = useState({ username: ``, id: 0, type: ``, status: false });
   const [isSidebar, setIsSidebar] = useState(true);
 
-  const getAuth = async () => {
-    axios.get(`/api/v1/auth`, { headers: { accessToken: localStorage.getItem("accessToken") } }).then((res) => {
-      if (res.data.error) {
-        setAuthState({ ...authState, status: false });
-      } else {
-        setAuthState({ username: res.data.username, id: res.data.id, type: res.data.type, status: true });
-      }
-    });
-  };
   useEffect(() => {
     if (log.current) {
       log.current = false;
-      getAuth();
+      axios.get(`/api/v1/auth`, { headers: { accessToken: localStorage.getItem("accessToken") } }).then((res) => {
+        if (res.data.error) {
+          setAuthState({ ...authState, status: false });
+        } else {
+          setAuthState({ username: res.data.username, id: res.data.id, type: res.data.type, status: true });
+        }
+      });
     }
-  }, []);
+  }, [authState]);
 
   return (
     <>
