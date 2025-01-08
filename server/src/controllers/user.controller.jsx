@@ -35,7 +35,9 @@ exports.login = async (req, res) => {
 };
 
 // Auth User
-exports.auth = async (req, res) => await res.json(req.user);
+exports.auth = async (req, res) => {
+  return await res.json(req.user);
+};
 
 // Find All Users
 exports.findAll = async (req, res) => {

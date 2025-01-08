@@ -1,43 +1,93 @@
-import React from "react";
-import { Button, TextField, Container, Typography, Box } from "@mui/material";
-import { Formik, FastField, Form } from "formik";
-import * as Yup from "yup";
+"use client";
+import { useContext, lazy } from "react";
+import { Container, Typography, Box, Grid } from "@mui/material";
+import { Form, Formik, FastField } from "formik";
+import * as yup from "yup";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
-const LoginSchema = Yup.object().shape({
-  username: Yup.string().required("Required"),
-  password: Yup.string().min(6, "Password too short").required("Required"),
-});
+import { AuthContext } from "../../helper/AuthContext";
+const TextField = lazy(() => import("../../components/formsUI/TextFieldWrapper"));
+const Button = lazy(() => import("../../components/formsUI/ButtonWrapper"));
 
 const Login = () => {
+  const navigate = useNavigate();
+  const { setAuthState } = useContext(AuthContext);
+
+  // Initial Values
+  const initialValues = {
+    username: "",
+    password: "",
+  };
+
+  // Validation Schema with Yup
+  const validationSchema = yup.object().shape({
+    username: yup
+      .string()
+      .min(3)
+      .max(20)
+      .matches(/^[A-Za-z0-9_.]+$/, "Username must be Letters or mixed Letters/Numbers/Underscore/Dot")
+      .required("Required"),
+    password: yup
+      .string()
+      .min(6)
+      .max(20)
+      .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$])/i, "Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character")
+      .required("Required"),
+  });
+
+  const onSubmit = async (user, onSubmitProps) => {
+    const data = { username: user.username, password: user.password };
+    try {
+      await axios.post(`/api/v1/user/login`, data).then((res) => {
+        setTimeout(() => {
+          localStorage.setItem("accessToken", res.data.token);
+          setAuthState({ username: res.data.username, id: res.data.id, type: res.data.type, status: true });
+          onSubmitProps.resetForm();
+          onSubmitProps.setSubmitting(false);
+          return navigate("/admin");
+        }, 500);
+      });
+    } catch (err) {
+      return toast.error(err.response.data);
+    }
+  };
+
   return (
-    <Container maxWidth="sm">
-      <Box mt={5}>
-        <Typography variant="h4" component="h1" gutterBottom>
-          Login
-        </Typography>
-        <Formik
-          initialValues={{ username: "", password: "" }}
-          validationSchema={LoginSchema}
-          onSubmit={(values) => {
-            console.log(values);
-          }}
-        >
-          {({ errors, touched }) => (
-            <Form>
-              <Box mb={3}>
-                <FastField name="username">{({ field }) => <TextField {...field} label="Username" variant="outlined" fullWidth error={touched.username && !!errors.username} helperText={touched.username && errors.username} />}</FastField>
-              </Box>
-              <Box mb={3}>
-                <FastField name="password">{({ field }) => <TextField {...field} label="Password" type="password" variant="outlined" fullWidth error={touched.password && !!errors.password} helperText={touched.password && errors.password} />}</FastField>
-              </Box>
-              <Button type="submit" variant="contained" color="primary" fullWidth>
-                Login
-              </Button>
-            </Form>
-          )}
-        </Formik>
-      </Box>
-    </Container>
+    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "90vh", width: "100vw" }}>
+      <Container maxWidth="sm">
+        <Box mt={5}>
+          <Typography variant="h4" component="h1" gutterBottom>
+            Login
+          </Typography>
+          <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
+            {(formik) => {
+              return (
+                <Form>
+                  <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                      <Box height={7} />
+                      <FastField type="text" name="username" label="Username" component={TextField} />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Box height={7} />
+                      <FastField type="password" name="password" label="Password" component={TextField} />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Box height={7} />
+                      <Button type="submit" label="Submit" disabled={!(formik.dirty && formik.isValid) || formik.isSubmitting}>
+                        {formik.isSubmitting ? "Loading" : "Login"}
+                      </Button>
+                    </Grid>
+                  </Grid>
+                </Form>
+              );
+            }}
+          </Formik>
+        </Box>
+      </Container>
+    </div>
   );
 };
 

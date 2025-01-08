@@ -36,7 +36,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           is: {
             args: /^[A-Za-z0-9_.]+$/i,
-            msg: `Username must be Letters with Numbers/Underscore/Dot`,
+            msg: `Username must be Letters or mixed Letters/Numbers/Underscore/Dot`,
           },
           len: {
             args: [3, 20],
