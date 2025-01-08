@@ -8,6 +8,7 @@ import SideBar from "./layout/SideBar";
 import Header from "./layout/Header";
 import axios from "axios";
 import { AuthContext } from "./helper/AuthContext";
+import PageNotFound from "./pages/notfound/PageNotFound";
 
 const Login = lazy(() => import("./pages/login/Login"));
 const Dashboard = lazy(() => import("./pages/admin/Dashboard"));
@@ -27,18 +28,21 @@ const App = () => {
   const [authState, setAuthState] = useState({ username: ``, id: 0, type: ``, status: false });
   const [isSidebar, setIsSidebar] = useState(true);
 
+  const getAuth = async () => {
+    axios.get(`/api/v1/auth`, { headers: { accessToken: localStorage.getItem("accessToken") } }).then((res) => {
+      if (res.data.error) {
+        setAuthState({ ...authState, status: false });
+      } else {
+        setAuthState({ username: res.data.username, id: res.data.id, type: res.data.type, status: true });
+      }
+    });
+  };
   useEffect(() => {
     if (log.current) {
       log.current = false;
-      axios.get(`/api/v1/auth`, { headers: { accessToken: localStorage.getItem("accessToken") } }).then((res) => {
-        if (res.data.error) {
-          setAuthState({ ...authState, status: false });
-        } else {
-          setAuthState({ username: res.data.username, id: res.data.id, type: res.data.type, status: true });
-        }
-      });
+      getAuth();
     }
-  }, [authState]);
+  }, []);
 
   return (
     <>
@@ -51,7 +55,7 @@ const App = () => {
               <>
                 <Suspense fallback={<div>Loading... please wait</div>}>
                   <Routes>
-                    <Route path="/" element={<Login />} />
+                    <Route path="/" exact element={<Login />} />
                   </Routes>
                 </Suspense>
               </>
@@ -64,18 +68,19 @@ const App = () => {
                     <Box m="20px">
                       <Suspense fallback={<div>Loading... please wait</div>}>
                         <Routes>
-                          <Route path="/admin" element={<Dashboard />} />
-                          <Route path="/customers" element={<Customers />} />
-                          <Route path="/employees" element={<Employees />} />
-                          <Route path="/services" element={<Services />} />
-                          <Route path="/items" element={<Items />} />
-                          <Route path="/prices" element={<Prices />} />
-                          <Route path="/supplies" element={<Supplies />} />
-                          <Route path="/expenses" element={<Expenses />} />
-                          <Route path="/payments" element={<Payments />} />
-                          <Route path="/inventories" element={<Inventories />} />
-                          <Route path="/deliveries" element={<Deliveries />} />
-                          <Route path="*" element={<div>Oops! Page Not Found</div>} />
+                          <Route path="/admin" exact element={<Dashboard />} />
+                          <Route path="/customers" exact element={<Customers />} />
+                          <Route path="/employees" exact element={<Employees />} />
+                          <Route path="/services" exact element={<Services />} />
+                          <Route path="/items" exact element={<Items />} />
+                          <Route path="/prices" exact element={<Prices />} />
+                          <Route path="/supplies" exact element={<Supplies />} />
+                          <Route path="/expenses" exact element={<Expenses />} />
+                          <Route path="/payments" exact element={<Payments />} />
+                          <Route path="/inventories" exact element={<Inventories />} />
+                          <Route path="/deliveries" exact element={<Deliveries />} />
+
+                          <Route path="*" exact element={<PageNotFound />} />
                         </Routes>
                       </Suspense>
                     </Box>

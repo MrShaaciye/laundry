@@ -12,7 +12,7 @@ import { AuthContext } from "../helper/AuthContext";
 const HeaderBar = () => {
   // Define States
   const navigate = useNavigate();
-  const { setAuthState } = useContext(AuthContext);
+  const { authState, setAuthState } = useContext(AuthContext);
   const [anchorEl, setAnchorEl] = useState(null);
 
   // Handle Functions
@@ -64,7 +64,7 @@ const HeaderBar = () => {
             <MenuItem onClick={handleClose}>Profile</MenuItem>
           </NavLink>
           <NavLink to="#" className="menu-bars">
-            <MenuItem onClick={handleClose}>My account</MenuItem>
+            <MenuItem onClick={handleClose}>{`Hi, ${authState.username ? authState.username.toUpperCase() : ""}!`}</MenuItem>
           </NavLink>
           <NavLink to="/" className="menu-bars" onClick={logout}>
             <MenuItem>Logout</MenuItem>
