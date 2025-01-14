@@ -1,15 +1,16 @@
 `use strict`;
-module.exports = app => {
-    // Import router from express & middleware
-    const router = require(`express`).Router();
+module.exports = (app) => {
+  // Import router from express & middleware
+  const router = require(`express`).Router();
+  const token = require(`../middleware/auth.jsx`);
 
-    // Import Controllers
-    const smsCustomerCtrl = require(`../controllers/smscustomer.controller.jsx`);
+  // Import Controllers
+  const SMSCustomerCtrl = require(`../controllers/SMScustomer.controller.jsx`);
 
-    // SMS Customer Routers
-    router.route(`/smscustomer`).post(smsCustomerCtrl.create).get(smsCustomerCtrl.findAll);
-    router.route(`/smscustomer/:id`).get(smsCustomerCtrl.findOne).put(smsCustomerCtrl.update).delete(smsCustomerCtrl.delete);
-    router.route(`/smscustomer/restore/:id`).get(smsCustomerCtrl.restore);
+  // SMS Customer Routers
+  router.route(`/SMScustomer`).post(SMSCustomerCtrl.create).get(SMSCustomerCtrl.findAll);
+  router.route(`/SMScustomer/:id`).get(SMSCustomerCtrl.findOne).put(SMSCustomerCtrl.update).delete(SMSCustomerCtrl.delete);
+  router.route(`/SMScustomer/restore/:id`).get(SMSCustomerCtrl.restore);
 
-    app.use(`/api/v1`, router);
+  app.use(`/api/v1`, router);
 };

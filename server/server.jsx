@@ -34,8 +34,8 @@ require(`./src/routers/payment.router.jsx`)(app);
 require(`./src/routers/inventory.router.jsx`)(app);
 require(`./src/routers/delivery.router.jsx`)(app);
 require(`./src/routers/user.router.jsx`)(app);
-require(`./src/routers/smscustomer.router.jsx`)(app);
-require(`./src/routers/smsemployee.router.jsx`)(app);
+require(`./src/routers/SMScustomer.router.jsx`)(app);
+require(`./src/routers/SMSemployee.router.jsx`)(app);
 
 // Server
 app.get(`*`, (req, res) => res.status(404).send({ message: `Sorry! This route doesn't exist` }));

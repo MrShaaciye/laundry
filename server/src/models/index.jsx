@@ -42,8 +42,8 @@ db.paymentModel = require(`./payment.model.jsx`)(sequelize, DataTypes);
 db.inventoryModel = require(`./inventory.model.jsx`)(sequelize, DataTypes);
 db.deliveryModel = require(`./delivery.model.jsx`)(sequelize, DataTypes);
 db.userModel = require(`./user.model.jsx`)(sequelize, DataTypes);
-db.smsCustomerModel = require(`./smscustomer.model.jsx`)(sequelize, DataTypes);
-db.smsEmployeeModel = require(`./smsemployee.model.jsx`)(sequelize, DataTypes);
+db.SMSCustomerModel = require(`./SMScustomer.model.jsx`)(sequelize, DataTypes);
+db.SMSEmployeeModel = require(`./SMSemployee.model.jsx`)(sequelize, DataTypes);
 
 // One to many Associations
 // Order model
@@ -73,12 +73,12 @@ db.employeeModel.hasMany(db.deliveryModel, { as: `deliveries`, foreignKey: `empl
 db.deliveryModel.belongsTo(db.employeeModel, { as: `employees`, foreignKey: `employeeId`, onUpdate: `CASCADE`, onDelete: `CASCADE` });
 
 // SMS Customer model
-db.customerModel.hasMany(db.smsCustomerModel, { as: `smsCustomers`, foreignKey: `customerId`, onUpdate: `CASCADE`, onDelete: `CASCADE` });
-db.smsCustomerModel.belongsTo(db.customerModel, { as: `customers`, foreignKey: `customerId`, onUpdate: `CASCADE`, onDelete: `CASCADE` });
+db.customerModel.hasMany(db.SMSCustomerModel, { as: `smsCustomers`, foreignKey: `customerId`, onUpdate: `CASCADE`, onDelete: `CASCADE` });
+db.SMSCustomerModel.belongsTo(db.customerModel, { as: `customers`, foreignKey: `customerId`, onUpdate: `CASCADE`, onDelete: `CASCADE` });
 
 // SMS Employee model
-db.employeeModel.hasMany(db.smsEmployeeModel, { as: `smsEmployees`, foreignKey: `employeeId`, onUpdate: `CASCADE`, onDelete: `CASCADE` });
-db.smsEmployeeModel.belongsTo(db.employeeModel, { as: `employees`, foreignKey: `employeeId`, onUpdate: `CASCADE`, onDelete: `CASCADE` });
+db.employeeModel.hasMany(db.SMSEmployeeModel, { as: `smsEmployees`, foreignKey: `employeeId`, onUpdate: `CASCADE`, onDelete: `CASCADE` });
+db.SMSEmployeeModel.belongsTo(db.employeeModel, { as: `employees`, foreignKey: `employeeId`, onUpdate: `CASCADE`, onDelete: `CASCADE` });
 
 // Create tables
 db.sequelize
