@@ -8,8 +8,8 @@ module.exports = (app) => {
   const orderCtrl = require(`../controllers/order.controller.jsx`);
 
   // Order Routers
-  router.route(`/order`).post(orderCtrl.create).get(orderCtrl.findAll);
-  router.route(`/order/:id`).get(orderCtrl.findOne).put(orderCtrl.update).delete(orderCtrl.delete);
+  router.route(`/order`).post(token, orderCtrl.create).get(token, orderCtrl.findAll);
+  router.route(`/order/:id`).get(token, orderCtrl.findOne).put(token, orderCtrl.update).delete(token, orderCtrl.delete);
   router.route(`/order/restore/:id`).get(orderCtrl.restore);
 
   app.use(`/api/v1`, router);
