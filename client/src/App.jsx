@@ -8,7 +8,7 @@ import SideBar from "./layout/SideBar";
 import Header from "./layout/Header";
 import axios from "axios";
 import { AuthContext } from "./helper/AuthContext";
-// import PageNotFound from "./pages/notfound/PageNotFound";
+import PageNotFound from "./pages/notfound/PageNotFound";
 
 const Login = lazy(() => import("./pages/login/Login"));
 const Dashboard = lazy(() => import("./pages/admin/Dashboard"));
@@ -48,7 +48,15 @@ const App = () => {
           <CssBaseline />
           <ToastContainer />
           <div className="app">
-            {authState.status ? (
+            {!authState.status ? (
+              <>
+                <Suspense fallback={<div>Loading... please wait</div>}>
+                  <Routes>
+                    <Route path="/" exact element={<Login />} />
+                  </Routes>
+                </Suspense>
+              </>
+            ) : (
               <>
                 <SideBar isSidebar={isSidebar} />
                 <main className="content">
@@ -69,20 +77,12 @@ const App = () => {
                           <Route path="/inventories" exact element={<Inventories />} />
                           <Route path="/deliveries" exact element={<Deliveries />} />
 
-                          {/* <Route path="*" exact element={<PageNotFound />} /> */}
+                          <Route path="*" exact element={<PageNotFound />} />
                         </Routes>
                       </Suspense>
                     </Box>
                   </div>
                 </main>
-              </>
-            ) : (
-              <>
-                <Suspense fallback={<div>Loading... please wait</div>}>
-                  <Routes>
-                    <Route path="/" exact element={<Login />} />
-                  </Routes>
-                </Suspense>
               </>
             )}
           </div>
