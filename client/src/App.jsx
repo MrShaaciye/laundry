@@ -35,7 +35,7 @@ const App = () => {
         if (res.data.error) {
           setAuthState({ ...authState, status: false });
         } else {
-          setAuthState({ username: res.data.username, id: res.data.id, type: res.data.type, status: true });
+          setAuthState({ name: res.data.name, username: res.data.username, id: res.data.id, type: res.data.type, status: true });
         }
       });
     }
@@ -49,13 +49,11 @@ const App = () => {
           <ToastContainer />
           <div className="app">
             {!authState.status ? (
-              <>
-                <Suspense fallback={<div>Loading... please wait</div>}>
-                  <Routes>
-                    <Route path="/" exact element={<Login />} />
-                  </Routes>
-                </Suspense>
-              </>
+              <Suspense fallback={<div>Loading... please wait</div>}>
+                <Routes>
+                  <Route path="/" exact element={<Login />} />
+                </Routes>
+              </Suspense>
             ) : (
               <>
                 <SideBar isSidebar={isSidebar} />

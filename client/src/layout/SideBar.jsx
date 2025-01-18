@@ -67,7 +67,7 @@ const SideBar = () => {
                 </Box>
               )}
 
-              <NavLink to="/admin" className="menu-bars">
+              <NavLink to="/dashboard" className="menu-bars">
                 <MenuItem icon={<HomeOutlinedIcon />}>Dashboard</MenuItem>
               </NavLink>
 

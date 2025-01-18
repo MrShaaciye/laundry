@@ -28,13 +28,13 @@ const Login = () => {
       .min(3)
       .max(20)
       .matches(/^[A-Za-z0-9_.]+$/, "Username must be Letters or mixed Letters/Numbers/Underscore/Dot")
-      .required("Required"),
+      .required(),
     password: yup
       .string()
       .min(6)
       .max(20)
       .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$])/i, "Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character")
-      .required("Required"),
+      .required(),
   });
 
   const onSubmit = async (user, onSubmitProps) => {
@@ -47,7 +47,7 @@ const Login = () => {
           setAuthState({ username: res.data.username, id: res.data.id, type: res.data.type, status: true });
           onSubmitProps.resetForm();
           onSubmitProps.setSubmitting(false);
-          navigate("/admin");
+          navigate("/dashboard");
           return toast.success(`Welcome back ${res.data.username}!`);
         }, 500);
       });
