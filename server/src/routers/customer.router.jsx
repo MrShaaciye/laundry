@@ -14,8 +14,8 @@ module.exports = (app) => {
 
   // Customer Routers
   router.route(`/customer/bulkCreate`).post(upload.single(`file`), customerCtrl.bulkCreate);
-  router.route(`/customer`).post(token, customerCtrl.create).get(token, customerCtrl.findAll);
-  router.route(`/customer/:id`).get(token, customerCtrl.findOne).put(token, customerCtrl.update).delete(token, customerCtrl.delete);
+  router.route(`/customer`).post(customerCtrl.create).get(customerCtrl.findAll);
+  router.route(`/customer/:id`).get(customerCtrl.findOne).put(customerCtrl.update).delete(customerCtrl.delete);
   router.route(`/customer/restore/:id`).get(customerCtrl.restore);
 
   app.use(`/api/v1`, router);
