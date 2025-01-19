@@ -48,7 +48,13 @@ const App = () => {
           <CssBaseline />
           <ToastContainer />
           <div className="app">
-            {authState.status ? (
+            {!authState.status ? (
+              <Suspense fallback={<div>Loading... please wait</div>}>
+                <Routes>
+                  <Route path="/" element={<Login />} />
+                </Routes>
+              </Suspense>
+            ) : (
               <>
                 <SideBar isSidebar={isSidebar} />
                 <main className="content">
@@ -68,19 +74,14 @@ const App = () => {
                           <Route path="/payments" element={<Payments />} />
                           <Route path="/inventories" element={<Inventories />} />
                           <Route path="/deliveries" element={<Deliveries />} />
+
+                          <Route path="*" element={<PageNotFound />} />
                         </Routes>
                       </Suspense>
                     </Box>
                   </div>
                 </main>
               </>
-            ) : (
-              <Suspense fallback={<div>Loading... please wait</div>}>
-                <Routes>
-                  <Route path="/" element={<Login />} />
-                  <Route path="*" element={<PageNotFound />} />
-                </Routes>
-              </Suspense>
             )}
           </div>
         </Router>
