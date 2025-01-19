@@ -25,7 +25,7 @@ const Deliveries = lazy(() => import("./pages/deliveries/Deliveries"));
 
 const App = () => {
   const log = useRef(true);
-  const [authState, setAuthState] = useState({ username: ``, id: 0, type: ``, status: false });
+  const [authState, setAuthState] = useState({ id: 0, name: ``, username: ``, type: ``, status: false });
   const [isSidebar, setIsSidebar] = useState(true);
 
   useEffect(() => {
@@ -35,7 +35,7 @@ const App = () => {
         if (res.data.error) {
           setAuthState({ ...authState, status: false });
         } else {
-          setAuthState({ name: res.data.name, username: res.data.username, id: res.data.id, type: res.data.type, status: true });
+          setAuthState({ id: res.data.id, name: res.data.name, username: res.data.username, type: res.data.type, status: true });
         }
       });
     }
@@ -51,7 +51,7 @@ const App = () => {
             {!authState.status ? (
               <Suspense fallback={<div>Loading... please wait</div>}>
                 <Routes>
-                  <Route path="/" element={<Login />} />
+                  <Route path="/" exact element={<Login />} />
                 </Routes>
               </Suspense>
             ) : (
@@ -63,19 +63,19 @@ const App = () => {
                     <Box m="20px">
                       <Suspense fallback={<div>Loading... please wait</div>}>
                         <Routes>
-                          <Route path="/dashboard" element={<Dashboard />} />
-                          <Route path="/customers" element={<Customers />} />
-                          <Route path="/employees" element={<Employees />} />
-                          <Route path="/services" element={<Services />} />
-                          <Route path="/items" element={<Items />} />
-                          <Route path="/prices" element={<Prices />} />
-                          <Route path="/supplies" element={<Supplies />} />
-                          <Route path="/expenses" element={<Expenses />} />
-                          <Route path="/payments" element={<Payments />} />
-                          <Route path="/inventories" element={<Inventories />} />
-                          <Route path="/deliveries" element={<Deliveries />} />
+                          <Route path="/dashboard" exact element={<Dashboard />} />
+                          <Route path="/customers" exact element={<Customers />} />
+                          <Route path="/employees" exact element={<Employees />} />
+                          <Route path="/services" exact element={<Services />} />
+                          <Route path="/items" exact element={<Items />} />
+                          <Route path="/prices" exact element={<Prices />} />
+                          <Route path="/supplies" exact element={<Supplies />} />
+                          <Route path="/expenses" exact element={<Expenses />} />
+                          <Route path="/payments" exact element={<Payments />} />
+                          <Route path="/inventories" exact element={<Inventories />} />
+                          <Route path="/deliveries" exact element={<Deliveries />} />
 
-                          <Route path="*" element={<PageNotFound />} />
+                          <Route path="*" exact element={<PageNotFound />} />
                         </Routes>
                       </Suspense>
                     </Box>

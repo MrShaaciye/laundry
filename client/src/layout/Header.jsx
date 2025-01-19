@@ -22,7 +22,7 @@ const HeaderBar = () => {
   // log out function
   const logout = async () => {
     localStorage.removeItem(`accessToken`);
-    await setAuthState({ username: ``, id: 0, status: false });
+    await setAuthState({ id: 0, name: ``, username: ``, type: ``, status: false });
     return navigate("/");
   };
 
