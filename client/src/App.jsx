@@ -68,8 +68,6 @@ const App = () => {
                           <Route path="/payments" element={<Payments />} />
                           <Route path="/inventories" element={<Inventories />} />
                           <Route path="/deliveries" element={<Deliveries />} />
-
-                          <Route path="*" element={<PageNotFound />} />
                         </Routes>
                       </Suspense>
                     </Box>
@@ -80,6 +78,7 @@ const App = () => {
               <Suspense fallback={<div>Loading... please wait</div>}>
                 <Routes>
                   <Route path="/" element={<Login />} />
+                  <Route path="*" element={<PageNotFound />} />
                 </Routes>
               </Suspense>
             )}
