@@ -40,17 +40,16 @@ const Login = () => {
   const onSubmit = async (user, onSubmitProps) => {
     const data = { username: user.username, password: user.password };
     try {
-      await axios.post(`/api/v1/user/login`, data).then((res) => {
-        if (res.data.err) return toast.error(res.data.err);
-        setTimeout(() => {
-          localStorage.setItem("accessToken", res.data.token);
-          setAuthState({ username: res.data.username, id: res.data.id, type: res.data.type, status: true });
-          onSubmitProps.resetForm();
-          onSubmitProps.setSubmitting(false);
-          navigate("/dashboard");
-          return toast.success(`Welcome back ${res.data.username}!`);
-        }, 500);
-      });
+      const res = await axios.post(`/api/v1/user/login`, data);
+      if (res.data.err) return toast.error(res.data.err);
+      setTimeout(() => {
+        localStorage.setItem("accessToken", res.data.token);
+        setAuthState({ username: res.data.username, id: res.data.id, type: res.data.type, status: true });
+        onSubmitProps.resetForm();
+        onSubmitProps.setSubmitting(false);
+        navigate("/dashboard");
+        return toast.success(`Welcome back ${res.data.username}!`);
+      }, 500);
     } catch (err) {
       return toast.error(err.response.data);
     }
