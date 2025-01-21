@@ -33,7 +33,7 @@ const Login = () => {
       .string()
       .min(6)
       .max(20)
-      .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$])/i, "Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character")
+      .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$])/, "Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character")
       .required(),
   });
 
@@ -44,7 +44,7 @@ const Login = () => {
       if (res.data.err) return toast.error(res.data.err);
       setTimeout(() => {
         localStorage.setItem("accessToken", res.data.token);
-        setAuthState({ username: res.data.username, id: res.data.id, type: res.data.type, status: true });
+        setAuthState({ id: res.data.id, name: res.data.name, username: res.data.username, type: res.data.type, status: true });
         onSubmitProps.resetForm();
         onSubmitProps.setSubmitting(false);
         navigate("/dashboard");
@@ -56,7 +56,7 @@ const Login = () => {
   };
 
   return (
-    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "90vh", width: "100vw" }}>
+    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100%", width: "100%" }}>
       <Container maxWidth="sm">
         <Box mt={5}>
           <Typography variant="h4" component="h1" gutterBottom>
