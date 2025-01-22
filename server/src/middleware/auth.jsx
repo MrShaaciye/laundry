@@ -6,7 +6,7 @@ const token = (req, res, next) => {
   !accessToken ? res.json({ err: `User not logged in!` }) : accessToken;
 
   try {
-    const validToken = jwt.verify(accessToken, `secret`);
+    const validToken = jwt.verify(accessToken, process.env.SECRET_KEY);
     req.user = validToken;
 
     return validToken ? next() : !validToken;

@@ -43,12 +43,13 @@ const Login = () => {
       const res = await axios.post(`/api/v1/user/login`, data);
       if (res.data.err) return toast.error(res.data.err);
       setTimeout(() => {
+        console.log(res.data, "res.data");
         localStorage.setItem("accessToken", res.data.token);
         setAuthState({ id: res.data.id, name: res.data.name, username: res.data.username, type: res.data.type, status: true });
         onSubmitProps.resetForm();
         onSubmitProps.setSubmitting(false);
         navigate("/dashboard");
-        return toast.success(`Welcome back ${res.data.username}!`);
+        toast.success(`Welcome back ${res.data.username}!`);
       }, 500);
     } catch (err) {
       return toast.error(err.response.data);

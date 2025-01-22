@@ -12,9 +12,7 @@ import { AuthContext } from "../helper/AuthContext";
 const HeaderBar = () => {
   // Define States
   const navigate = useNavigate();
-  // const { authState, setAuthState } = useContext(AuthContext);
   const { authState, setAuthState } = useContext(AuthContext);
-  console.log(authState);
   const [anchorEl, setAnchorEl] = useState(null);
 
   // Handle Functions
@@ -22,7 +20,7 @@ const HeaderBar = () => {
   const handleClose = () => setAnchorEl(null);
 
   // log out function
-  const logout = async () => {
+  const logout = () => {
     localStorage.removeItem(`accessToken`);
     setAuthState({ id: 0, name: ``, username: ``, type: ``, status: false });
     return navigate("/");

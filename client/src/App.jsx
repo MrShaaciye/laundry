@@ -1,9 +1,10 @@
 "use client";
-import { lazy, Suspense, useState, useContext } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { CssBaseline, Box } from "@mui/material";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
 import SideBar from "./layout/SideBar";
 import Header from "./layout/Header";
 import { AuthContext } from "./helper/AuthContext";
@@ -23,9 +24,23 @@ const Inventories = lazy(() => import("./pages/inventories/Inventories"));
 const Deliveries = lazy(() => import("./pages/deliveries/Deliveries"));
 
 const App = () => {
-  const { authState, setAuthState } = useContext(AuthContext) || { authState: null, setAuthState: () => {} };
+  const log = useRef(true);
+  const [authState, setAuthState] = useState({ id: 0, name: ``, username: ``, type: ``, status: false });
   const [isSidebar, setIsSidebar] = useState(true);
-  // cannot destructure property "authState" of (0, react__WEBPACK_IMPORTED_MODULE_0__.useContext)(AuthContext) as it is null.
+
+  useEffect(() => {
+    if (log.current) {
+      log.current = false;
+      axios.get(`/api/v1/auth`, { headers: { accessToken: localStorage.getItem("accessToken") } }).then((res) => {
+        if (res.data.err) {
+          setAuthState({ ...authState, status: false });
+        } else {
+          // setAuthState({ username: res.data.username, id: res.data.id, status: true });
+          setAuthState({ id: res.data.id, name: res.data.name, username: res.data.username, type: res.data.type, status: true });
+        }
+      });
+    }
+  }, [authState]);
 
   return (
     <AuthContext.Provider value={{ authState, setAuthState }}>
@@ -36,14 +51,13 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Login />} />
           </Routes>
-        </Suspense>
-        <div className="app">
-          <SideBar isSidebar={isSidebar} />
-          <main className="content">
-            <Header setIsSidebar={setIsSidebar} />
-            <div className="content_body">
-              <Box m="20px">
-                <Suspense fallback={<div>Loading... please wait</div>}>
+
+          <div className="app">
+            <SideBar isSidebar={isSidebar} />
+            <main className="content">
+              <Header setIsSidebar={setIsSidebar} />
+              <div className="content_body">
+                <Box m="20px">
                   <Routes>
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/customers" element={<Customers />} />
@@ -58,11 +72,11 @@ const App = () => {
                     <Route path="/deliveries" element={<Deliveries />} />
                     <Route path="*" element={<PageNotFound />} />
                   </Routes>
-                </Suspense>
-              </Box>
-            </div>
-          </main>
-        </div>
+                </Box>
+              </div>
+            </main>
+          </div>
+        </Suspense>
       </Router>
     </AuthContext.Provider>
   );
