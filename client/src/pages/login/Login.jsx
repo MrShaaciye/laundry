@@ -43,8 +43,8 @@ const Login = () => {
       const res = await axios.post(`/api/v1/user/login`, data);
       if (res.data.err) return toast.error(res.data.err);
       setTimeout(() => {
-        const accessToken = localStorage.setItem("accessToken", res.data.token);
-        setAuthState({ id: res.data.id, name: res.data.name, username: res.data.username, type: res.data.type, token: accessToken });
+        localStorage.setItem("accessToken", res.data.token);
+        setAuthState({ id: res.data.id, name: res.data.name, username: res.data.username, type: res.data.type });
         onSubmitProps.resetForm();
         onSubmitProps.setSubmitting(false);
         navigate("/dashboard");

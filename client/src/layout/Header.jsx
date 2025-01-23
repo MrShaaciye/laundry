@@ -21,8 +21,8 @@ const HeaderBar = () => {
 
   // log out function
   const logout = () => {
-    const accessToken = localStorage.removeItem(`accessToken`);
-    setAuthState({ id: 0, name: ``, username: ``, type: ``, token: accessToken });
+    localStorage.removeItem(`accessToken`);
+    setAuthState({ id: 0, name: ``, username: ``, type: `` });
     return navigate("/");
   };
 
