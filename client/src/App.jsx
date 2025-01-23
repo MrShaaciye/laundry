@@ -47,34 +47,36 @@ const App = () => {
         <CssBaseline />
         <ToastContainer />
         <Suspense fallback={<div>Loading... please wait</div>}>
-          <Routes>
-            <Route path="/" element={<Login />} />
-          </Routes>
-
-          <div className="app">
-            <SideBar isSidebar={isSidebar} />
-            <main className="content">
-              <Header setIsSidebar={setIsSidebar} />
-              <div className="content_body">
-                <Box m="20px">
-                  <Routes>
-                    <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="/customers" element={<Customers />} />
-                    <Route path="/employees" element={<Employees />} />
-                    <Route path="/services" element={<Services />} />
-                    <Route path="/items" element={<Items />} />
-                    <Route path="/prices" element={<Prices />} />
-                    <Route path="/supplies" element={<Supplies />} />
-                    <Route path="/expenses" element={<Expenses />} />
-                    <Route path="/payments" element={<Payments />} />
-                    <Route path="/inventories" element={<Inventories />} />
-                    <Route path="/deliveries" element={<Deliveries />} />
-                    <Route path="*" element={<PageNotFound />} />
-                  </Routes>
-                </Box>
-              </div>
-            </main>
-          </div>
+          {authState.username ? (
+            <div className="app">
+              <SideBar isSidebar={isSidebar} />
+              <main className="content">
+                <Header setIsSidebar={setIsSidebar} />
+                <div className="content_body">
+                  <Box m="20px">
+                    <Routes>
+                      <Route path="/dashboard" element={<Dashboard />} />
+                      <Route path="/customers" element={<Customers />} />
+                      <Route path="/employees" element={<Employees />} />
+                      <Route path="/services" element={<Services />} />
+                      <Route path="/items" element={<Items />} />
+                      <Route path="/prices" element={<Prices />} />
+                      <Route path="/supplies" element={<Supplies />} />
+                      <Route path="/expenses" element={<Expenses />} />
+                      <Route path="/payments" element={<Payments />} />
+                      <Route path="/inventories" element={<Inventories />} />
+                      <Route path="/deliveries" element={<Deliveries />} />
+                      <Route path="*" element={<PageNotFound />} />
+                    </Routes>
+                  </Box>
+                </div>
+              </main>
+            </div>
+          ) : (
+            <Routes>
+              <Route path="/" element={<Login />} />
+            </Routes>
+          )}
         </Suspense>
       </Router>
     </AuthContext.Provider>

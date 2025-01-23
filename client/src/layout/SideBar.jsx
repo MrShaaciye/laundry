@@ -25,7 +25,6 @@ import { AuthContext } from "../helper/AuthContext";
 
 const SideBar = () => {
   const { authState } = useContext(AuthContext);
-
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [toggled, setToggled] = useState(false);
   const [broken, setBroken] = useState(false);
