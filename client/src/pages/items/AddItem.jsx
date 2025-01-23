@@ -29,7 +29,7 @@ const AddItem = ({ newItem, closeEvent }) => {
   // Submit Form Data function
   const onSubmit = async (formData, onSubmitProps) => {
     try {
-      await axios.post(`/api/v1/item`, formData);
+      await axios.post(`/api/v1/item`, formData, { headers: { accessToken: localStorage.getItem("accessToken") } });
       setTimeout(() => {
         onSubmitProps.resetForm();
         onSubmitProps.setSubmitting(false);

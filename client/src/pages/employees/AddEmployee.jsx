@@ -54,7 +54,7 @@ const AddEmployee = ({ newEmployee, closeEvent }) => {
   // Submit Form Data function
   const onSubmit = async (formData, onSubmitProps) => {
     try {
-      await axios.post(`/api/v1/employee`, formData);
+      await axios.post(`/api/v1/employee`, formData, { headers: { accessToken: localStorage.getItem("accessToken") } });
       setTimeout(() => {
         onSubmitProps.resetForm();
         onSubmitProps.setSubmitting(false);

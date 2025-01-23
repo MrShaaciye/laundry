@@ -25,18 +25,17 @@ const Deliveries = lazy(() => import("./pages/deliveries/Deliveries"));
 
 const App = () => {
   const log = useRef(true);
-  const [authState, setAuthState] = useState({ id: 0, name: ``, username: ``, type: ``, status: false });
+  const [authState, setAuthState] = useState({ id: 0, name: ``, username: ``, type: ``, token: `` });
   const [isSidebar, setIsSidebar] = useState(true);
 
   useEffect(() => {
     if (log.current) {
       log.current = false;
       axios.get(`/api/v1/auth`, { headers: { accessToken: localStorage.getItem("accessToken") } }).then((res) => {
-        if (res.data.err) {
-          setAuthState({ ...authState, status: false });
+        if (res.data.error) {
+          setAuthState({ ...authState, token: `` });
         } else {
-          // setAuthState({ username: res.data.username, id: res.data.id, status: true });
-          setAuthState({ id: res.data.id, name: res.data.name, username: res.data.username, type: res.data.type, status: true });
+          setAuthState({ id: res.data.id, name: res.data.name, username: res.data.username, type: res.data.type, token: res.data.token });
         }
       });
     }

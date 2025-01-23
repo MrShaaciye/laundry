@@ -54,7 +54,7 @@ const UpdateEmployee = ({ employee, updatedEmployee, closeEvent }) => {
   // Submit Form Data function
   const onSubmit = async (formData, onSubmitProps) => {
     try {
-      await axios.put(`/api/v1/employee/${employee.id}`, formData).then((res) => {
+      await axios.put(`/api/v1/employee/${employee.id}`, formData, { headers: { accessToken: localStorage.getItem("accessToken") } }).then((res) => {
         setTimeout(() => {
           onSubmitProps.resetForm();
           onSubmitProps.setSubmitting(false);

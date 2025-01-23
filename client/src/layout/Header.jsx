@@ -21,8 +21,8 @@ const HeaderBar = () => {
 
   // log out function
   const logout = () => {
-    localStorage.removeItem(`accessToken`);
-    setAuthState({ id: 0, name: ``, username: ``, type: ``, status: false });
+    const accessToken = localStorage.removeItem(`accessToken`);
+    setAuthState({ id: 0, name: ``, username: ``, type: ``, token: accessToken });
     return navigate("/");
   };
 
@@ -64,7 +64,7 @@ const HeaderBar = () => {
             <MenuItem onClick={handleClose}>Profile</MenuItem>
           </NavLink>
           <NavLink to="#" className="menu-bars">
-            <MenuItem onClick={handleClose}>{`Hi, ${authState?.username ? authState.username.toUpperCase() : ""}!`}</MenuItem>
+            <MenuItem onClick={handleClose}>{`Hi, ${authState?.username ? authState.username.toUpperCase() : ""}`}</MenuItem>
           </NavLink>
           <NavLink to="/" className="menu-bars" onClick={logout}>
             <MenuItem>Logout</MenuItem>

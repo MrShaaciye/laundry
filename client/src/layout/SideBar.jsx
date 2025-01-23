@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Sidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
 import { Box, IconButton, Typography } from "@mui/material";
 import { NavLink } from "react-router-dom";
@@ -21,8 +21,11 @@ import PaymentOutlinedIcon from "@mui/icons-material/PaymentOutlined";
 import StorefrontOutlinedIcon from "@mui/icons-material/StorefrontOutlined";
 import Inventory2OutlinedIcon from "@mui/icons-material/Inventory2Outlined";
 import DeliveryDiningOutlinedIcon from "@mui/icons-material/DeliveryDiningOutlined";
+import { AuthContext } from "../helper/AuthContext";
 
 const SideBar = () => {
+  const { authState } = useContext(AuthContext);
+
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [toggled, setToggled] = useState(false);
   const [broken, setBroken] = useState(false);
@@ -66,11 +69,12 @@ const SideBar = () => {
                   </Box>
                 </Box>
               )}
-              <>
+              {authState.type === "admin" && (
                 <NavLink to="/dashboard" className="menu-bars" style={{ textDecoration: "none", color: "inherit" }}>
                   <MenuItem icon={<HomeOutlinedIcon />}>Dashboard</MenuItem>
                 </NavLink>
-
+              )}
+              {authState.type === "manager" && (
                 <SubMenu icon={<AppRegistration />} label="Registration">
                   <NavLink to={"/customers"} className="menu-bars" style={{ textDecoration: "none", color: "inherit" }}>
                     <MenuItem icon={<GroupsOutlinedIcon />}>Customers</MenuItem>
@@ -91,25 +95,28 @@ const SideBar = () => {
                     <MenuItem icon={<InventoryOutlinedIcon />}>Supplies</MenuItem>
                   </NavLink>
                 </SubMenu>
+              )}
+              {authState.type === "user" && (
+                <>
+                  <SubMenu icon={<ExpandOutlinedIcon />} label="Expenditure">
+                    <NavLink to={"/expenses"} className="menu-bars" style={{ textDecoration: "none", color: "inherit" }}>
+                      <MenuItem icon={<ExpandCircleDownOutlinedIcon />}>Expenses</MenuItem>
+                    </NavLink>
+                    <NavLink to={"/payments"} className="menu-bars" style={{ textDecoration: "none", color: "inherit" }}>
+                      <MenuItem icon={<PaymentOutlinedIcon />}>Payments</MenuItem>
+                    </NavLink>
+                  </SubMenu>
 
-                <SubMenu icon={<ExpandOutlinedIcon />} label="Expenditure">
-                  <NavLink to={"/expenses"} className="menu-bars" style={{ textDecoration: "none", color: "inherit" }}>
-                    <MenuItem icon={<ExpandCircleDownOutlinedIcon />}>Expenses</MenuItem>
-                  </NavLink>
-                  <NavLink to={"/payments"} className="menu-bars" style={{ textDecoration: "none", color: "inherit" }}>
-                    <MenuItem icon={<PaymentOutlinedIcon />}>Payments</MenuItem>
-                  </NavLink>
-                </SubMenu>
-
-                <SubMenu icon={<StorefrontOutlinedIcon />} label="Stock Management">
-                  <NavLink to={"/inventories"} className="menu-bars" style={{ textDecoration: "none", color: "inherit" }}>
-                    <MenuItem icon={<Inventory2OutlinedIcon />}>Inventories</MenuItem>
-                  </NavLink>
-                  <NavLink to={"/deliveries"} className="menu-bars" style={{ textDecoration: "none", color: "inherit" }}>
-                    <MenuItem icon={<DeliveryDiningOutlinedIcon />}>Deliveries</MenuItem>
-                  </NavLink>
-                </SubMenu>
-              </>
+                  <SubMenu icon={<StorefrontOutlinedIcon />} label="Stock Management">
+                    <NavLink to={"/inventories"} className="menu-bars" style={{ textDecoration: "none", color: "inherit" }}>
+                      <MenuItem icon={<Inventory2OutlinedIcon />}>Inventories</MenuItem>
+                    </NavLink>
+                    <NavLink to={"/deliveries"} className="menu-bars" style={{ textDecoration: "none", color: "inherit" }}>
+                      <MenuItem icon={<DeliveryDiningOutlinedIcon />}>Deliveries</MenuItem>
+                    </NavLink>
+                  </SubMenu>
+                </>
+              )}
             </Menu>
 
             <div

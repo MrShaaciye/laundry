@@ -43,13 +43,12 @@ const Login = () => {
       const res = await axios.post(`/api/v1/user/login`, data);
       if (res.data.err) return toast.error(res.data.err);
       setTimeout(() => {
-        console.log(res.data, "res.data");
-        localStorage.setItem("accessToken", res.data.token);
-        setAuthState({ id: res.data.id, name: res.data.name, username: res.data.username, type: res.data.type, status: true });
+        const accessToken = localStorage.setItem("accessToken", res.data.token);
+        setAuthState({ id: res.data.id, name: res.data.name, username: res.data.username, type: res.data.type, token: accessToken });
         onSubmitProps.resetForm();
         onSubmitProps.setSubmitting(false);
         navigate("/dashboard");
-        toast.success(`Welcome back ${res.data.username}!`);
+        return toast.success(`Welcome back ${res.data.username}!`);
       }, 500);
     } catch (err) {
       return toast.error(err.response.data);
@@ -57,7 +56,7 @@ const Login = () => {
   };
 
   return (
-    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100%", width: "100%" }}>
+    <div style={{ display: "block", justifyContent: "center", alignItems: "center", height: "100%", width: "100%", padding: "250px" }}>
       <Container maxWidth="sm">
         <Box mt={5}>
           <Typography variant="h4" component="h1" gutterBottom>
