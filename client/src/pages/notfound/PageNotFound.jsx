@@ -1,11 +1,16 @@
+import { useContext } from "react";
 import { Container } from "@mui/material";
 import { NavLink, useNavigate } from "react-router-dom";
+import { AuthContext } from "../../helper/AuthContext";
 
 const PageNotFound = () => {
   const navigate = useNavigate();
+  const { setAuthState } = useContext(AuthContext);
 
   const handleRedirect = async () => {
-    return await navigate("/");
+    localStorage.removeItem(`accessToken`);
+    setAuthState({ id: 0, name: ``, username: ``, type: `` });
+    return navigate("/");
   };
   return (
     <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "90vh", width: "100vw" }}>
