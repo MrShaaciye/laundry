@@ -8,8 +8,8 @@ import axios from "axios";
 import SideBar from "./layout/SideBar";
 import Header from "./layout/Header";
 import { AuthContext } from "./helper/AuthContext";
-import PageNotFound from "./pages/notfound/PageNotFound";
 
+const PageNotFound = lazy(() => import("./pages/notfound/PageNotFound"));
 const Login = lazy(() => import("./pages/login/Login"));
 const Dashboard = lazy(() => import("./pages/admin/Dashboard"));
 const Customers = lazy(() => import("./pages/customers/Customers"));
