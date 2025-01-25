@@ -287,7 +287,6 @@ const Employees = () => {
                 ))}
               </TableRow>
             </TableHead>
-
             <TableBody>
               {count > 0 && rowsPerPage > 0 ? (
                 employees

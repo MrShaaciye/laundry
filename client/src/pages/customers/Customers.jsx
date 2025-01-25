@@ -283,7 +283,7 @@ const Customers = () => {
             <TableHead>
               <TableRow>
                 {columns.map((column) => (
-                  <TableCell key={column.id} align={column.align} sx={{ fontWeight: "bold" }}>
+                  <TableCell key={column.field} align={column.align} sx={{ fontWeight: "bold" }}>
                     {column.label}
                   </TableCell>
                 ))}
