@@ -75,6 +75,7 @@ const App = () => {
           ) : (
             <Routes>
               <Route path="/" element={<Login />} />
+              <Route path="*" element={<PageNotFound />} />
             </Routes>
           )}
         </Suspense>
