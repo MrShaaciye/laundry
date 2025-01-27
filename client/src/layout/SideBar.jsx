@@ -2,7 +2,7 @@
 import { useContext, useState } from "react";
 import { Sidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
 import { Box, IconButton, Typography } from "@mui/material";
-import { NavLink } from "react-router-dom";
+import { Navigate, NavLink } from "react-router-dom";
 
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
@@ -68,12 +68,11 @@ const SideBar = () => {
                   </Box>
                 </Box>
               )}
-              {authState.type === "admin" && (
+              {authState.type === "admin" ? (
                 <NavLink to="/dashboard" className="menu-bars" style={{ textDecoration: "none", color: "inherit" }}>
                   <MenuItem icon={<HomeOutlinedIcon />}>Dashboard</MenuItem>
                 </NavLink>
-              )}
-              {authState.type === "manager" && (
+              ) : authState.type === "manager" ? (
                 <SubMenu icon={<AppRegistration />} label="Registration">
                   <NavLink to={"/customers"} className="menu-bars" style={{ textDecoration: "none", color: "inherit" }}>
                     <MenuItem icon={<GroupsOutlinedIcon />}>Customers</MenuItem>
@@ -94,8 +93,7 @@ const SideBar = () => {
                     <MenuItem icon={<InventoryOutlinedIcon />}>Supplies</MenuItem>
                   </NavLink>
                 </SubMenu>
-              )}
-              {authState.type === "user" && (
+              ) : authState.type === "user" ? (
                 <>
                   <SubMenu icon={<ExpandOutlinedIcon />} label="Expenditure">
                     <NavLink to={"/expenses"} className="menu-bars" style={{ textDecoration: "none", color: "inherit" }}>
@@ -115,6 +113,8 @@ const SideBar = () => {
                     </NavLink>
                   </SubMenu>
                 </>
+              ) : (
+                <Navigate to="/" />
               )}
             </Menu>
 
