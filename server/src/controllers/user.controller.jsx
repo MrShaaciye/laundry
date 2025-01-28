@@ -28,7 +28,7 @@ exports.login = async (req, res) => {
     if (!user) return await transactions.rollback(), res.status(200).json({ err: `Sorry! username doesn't exist` });
     const match = await bcrypt.compare(password, user.password);
     let accessToken;
-    return match ? (await transactions.commit(), (accessToken = jwt.sign({ id: user.id, name: user.name, username: user.username, type: user.type }, process.env.SECRET_KEY, { expiresIn: 60 * 60 })), res.status(200).json({ token: accessToken, id: user.id, name: user.name, username: user.username, type: user.type })) : (await transactions.rollback(), res.status(200).json({ err: `Sorry! Password is incorrect` }));
+    return match ? (await transactions.commit(), (accessToken = jwt.sign({ id: user.id, name: user.name, username: user.username, type: user.type }, process.env.SECRET_KEY, { expiresIn: process.env.JWT_EXPIRES_IN })), res.status(200).json({ token: accessToken, id: user.id, name: user.name, username: user.username, type: user.type })) : (await transactions.rollback(), res.status(200).json({ err: `Sorry! Password is incorrect` }));
   } catch (err) {
     return await transactions.rollback(), res.status(500).json(err.message);
   }
