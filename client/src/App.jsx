@@ -55,18 +55,17 @@ const App = () => {
                 <div className="content_body">
                   <Box m="20px">
                     <Routes>
-                      {/* Redirect to dashboard page if the user is logged in */}
-                      <Route path="/dashboard" element={authState.type === "admin" ? <Dashboard /> : <Navigate to="/login" />} />
-                      <Route path="/customers" element={authState.type === "manager" ? <Customers /> : <Navigate to="/login" />} />
-                      <Route path="/employees" element={authState.type === "manager" ? <Employees /> : <Navigate to="/login" />} />
-                      <Route path="/services" element={authState.type === "manager" ? <Services /> : <Navigate to="/login" />} />
-                      <Route path="/items" element={authState.type === "manager" ? <Items /> : <Navigate to="/login" />} />
-                      <Route path="/prices" element={authState.type === "manager" ? <Prices /> : <Navigate to="/login" />} />
-                      <Route path="/supplies" element={authState.type === "manager" ? <Supplies /> : <Navigate to="/login" />} />
-                      <Route path="/expenses" element={authState.type === "user" ? <Expenses /> : <Navigate to="/login" />} />
-                      <Route path="/payments" element={authState.type === "user" ? <Payments /> : <Navigate to="/login" />} />
-                      <Route path="/inventories" element={authState.type === "user" ? <Inventories /> : <Navigate to="/login" />} />
-                      <Route path="/deliveries" element={authState.type === "user" ? <Deliveries /> : <Navigate to="/login" />} />
+                      <Route path="/dashboard" element={authState.type === "admin" ? <Dashboard /> : <Navigate to="/" />} />
+                      <Route path="/customers" element={authState.type === "manager" ? <Customers /> : <Navigate to="/" />} />
+                      <Route path="/employees" element={authState.type === "manager" ? <Employees /> : <Navigate to="/" />} />
+                      <Route path="/services" element={authState.type === "manager" ? <Services /> : <Navigate to="/" />} />
+                      <Route path="/items" element={authState.type === "manager" ? <Items /> : <Navigate to="/" />} />
+                      <Route path="/prices" element={authState.type === "manager" ? <Prices /> : <Navigate to="/" />} />
+                      <Route path="/supplies" element={authState.type === "manager" ? <Supplies /> : <Navigate to="/" />} />
+                      <Route path="/expenses" element={authState.type === "user" ? <Expenses /> : <Navigate to="/" />} />
+                      <Route path="/payments" element={authState.type === "user" ? <Payments /> : <Navigate to="/" />} />
+                      <Route path="/inventories" element={authState.type === "user" ? <Inventories /> : <Navigate to="/" />} />
+                      <Route path="/deliveries" element={authState.type === "user" ? <Deliveries /> : <Navigate to="/" />} />
                       <Route path="*" element={<PageNotFound />} />
                     </Routes>
                   </Box>
@@ -76,7 +75,6 @@ const App = () => {
           ) : (
             <Routes>
               <Route path="/" element={<Login />} />
-              <Route path="*" element={<PageNotFound />} />
             </Routes>
           )}
         </Suspense>
