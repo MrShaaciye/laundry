@@ -1,6 +1,6 @@
 "use client";
 import { lazy, Suspense, useEffect, useRef, useState } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { CssBaseline, Box } from "@mui/material";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -55,17 +55,18 @@ const App = () => {
                 <div className="content_body">
                   <Box m="20px">
                     <Routes>
-                      <Route path="/dashboard" element={<Dashboard />} />
-                      <Route path="/customers" element={<Customers />} />
-                      <Route path="/employees" element={<Employees />} />
-                      <Route path="/services" element={<Services />} />
-                      <Route path="/items" element={<Items />} />
-                      <Route path="/prices" element={<Prices />} />
-                      <Route path="/supplies" element={<Supplies />} />
-                      <Route path="/expenses" element={<Expenses />} />
-                      <Route path="/payments" element={<Payments />} />
-                      <Route path="/inventories" element={<Inventories />} />
-                      <Route path="/deliveries" element={<Deliveries />} />
+                      {/* Redirect to dashboard page if the user is logged in */}
+                      <Route path="/dashboard" element={authState.type === "admin" ? <Dashboard /> : <Navigate to="/login" />} />
+                      <Route path="/customers" element={authState.type === "manager" ? <Customers /> : <Navigate to="/login" />} />
+                      <Route path="/employees" element={authState.type === "manager" ? <Employees /> : <Navigate to="/login" />} />
+                      <Route path="/services" element={authState.type === "manager" ? <Services /> : <Navigate to="/login" />} />
+                      <Route path="/items" element={authState.type === "manager" ? <Items /> : <Navigate to="/login" />} />
+                      <Route path="/prices" element={authState.type === "manager" ? <Prices /> : <Navigate to="/login" />} />
+                      <Route path="/supplies" element={authState.type === "manager" ? <Supplies /> : <Navigate to="/login" />} />
+                      <Route path="/expenses" element={authState.type === "user" ? <Expenses /> : <Navigate to="/login" />} />
+                      <Route path="/payments" element={authState.type === "user" ? <Payments /> : <Navigate to="/login" />} />
+                      <Route path="/inventories" element={authState.type === "user" ? <Inventories /> : <Navigate to="/login" />} />
+                      <Route path="/deliveries" element={authState.type === "user" ? <Deliveries /> : <Navigate to="/login" />} />
                       <Route path="*" element={<PageNotFound />} />
                     </Routes>
                   </Box>

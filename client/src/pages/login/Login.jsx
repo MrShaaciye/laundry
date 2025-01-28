@@ -47,7 +47,7 @@ const Login = () => {
         setAuthState({ id: res.data.id, name: res.data.name, username: res.data.username, type: res.data.type });
         onSubmitProps.resetForm();
         onSubmitProps.setSubmitting(false);
-        res.data.type === "admin" ? navigate("/dashboard", { replace: true }) : res.data.type === "manager" ? navigate("/customers", { replace: true }) : res.data.type === "user" ? navigate("/expenses", { replace: true }) : navigate("/login", { replace: true });
+        res.data.type === "admin" ? navigate("/dashboard", { replace: true }) : res.data.type === "manager" ? navigate("/customers", { replace: true }) : res.data.type === "user" ? navigate("/expenses", { replace: true }) : navigate("/", { replace: true });
         return toast.success(`Welcome back ${res.data.username}!`);
       }, 500);
     } catch (err) {
