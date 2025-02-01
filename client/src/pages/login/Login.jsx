@@ -1,6 +1,7 @@
 "use client";
-import { useContext, lazy } from "react";
-import { Container, Typography, Box, Grid } from "@mui/material";
+import { useContext, lazy, useState } from "react";
+import { Container, Typography, Box, Grid, IconButton, InputAdornment } from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { Form, Formik, FastField } from "formik";
 import * as yup from "yup";
 import axios from "axios";
@@ -14,6 +15,10 @@ const Button = lazy(() => import("../../components/formsUI/ButtonWrapper"));
 const Login = () => {
   const navigate = useNavigate();
   const { setAuthState } = useContext(AuthContext);
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleClickShowPassword = () => setShowPassword(!showPassword);
+  const handleMouseDownPassword = () => setShowPassword(!showPassword);
 
   // Initial Values
   const initialValues = {
@@ -56,7 +61,7 @@ const Login = () => {
   };
 
   return (
-    <div style={{ display: "block", justifyContent: "center", alignItems: "center", height: "100%", width: "100%", padding: "250px" }}>
+    <div style={{ display: "block", justifyContent: "center", alignItems: "center", height: "100%", width: "100%", padding: "250px", background: "linear-gradient(45deg,rgb(191, 209, 179) 30%,rgb(205, 217, 228) 90%)" }}>
       <Container maxWidth="sm">
         <Box mt={5}>
           <Typography variant="h4" component="h1" gutterBottom>
@@ -73,7 +78,22 @@ const Login = () => {
                     </Grid>
                     <Grid item xs={12}>
                       <Box height={7} />
-                      <FastField type="password" name="password" label="Password" component={TextField} />
+                      <FastField
+                        type={showPassword ? "text" : "password"}
+                        name="password"
+                        label="Password"
+                        component={TextField}
+                        InputProps={{
+                          // <-- This is where the toggle button is added.
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <IconButton aria-label="toggle password visibility" onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword}>
+                                {showPassword ? <Visibility /> : <VisibilityOff />}
+                              </IconButton>
+                            </InputAdornment>
+                          ),
+                        }}
+                      />
                     </Grid>
                     <Grid item xs={12}>
                       <Box height={7} />
