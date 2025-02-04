@@ -274,7 +274,7 @@ const Payments = () => {
               {count > 0 && rowsPerPage > 0 ? (
                 payments
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .filter((payment) => (search.toLowerCase() === "" ? payment : payment.expenses.name.toLowerCase().includes(search)))
+                  .filter((payment) => (search.toLowerCase() === "" ? payment : payment.id.toString().includes(search) || payment.expenses?.name.toLowerCase().includes(search) || payment.amount.toString().includes(search) || payment.note.toLowerCase().includes(search)))
                   .map((payment) => (
                     <TableRow key={payment.id}>
                       <TableCell>{payment.id}</TableCell>

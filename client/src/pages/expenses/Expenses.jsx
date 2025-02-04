@@ -260,7 +260,7 @@ const Expenses = () => {
               {count > 0 && rowsPerPage > 0 ? (
                 expenses
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .filter((expense) => (search.toLowerCase() === "" ? expense : expense.name.toLowerCase().includes(search)))
+                  .filter((expense) => (search.toLowerCase() === "" ? expense : expense.id.toString().includes(search) || expense.name.toLowerCase().includes(search) || expense.note.toLowerCase().includes(search)))
                   .map((expense) => (
                     <TableRow key={expense.id}>
                       <TableCell>{expense.id}</TableCell>

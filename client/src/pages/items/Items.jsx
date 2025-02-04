@@ -260,9 +260,7 @@ const Items = () => {
               {count > 0 && rowsPerPage > 0 ? (
                 items
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .filter((item) => {
-                    return search.toLowerCase() === "" ? item : item.name.toLowerCase().includes(search);
-                  })
+                  .filter((item) => (search.toLowerCase() === "" ? item : item.id.toString().includes(search) || item.name.toLowerCase().includes(search)))
                   .map((item) => (
                     <TableRow key={item.id}>
                       <TableCell>{item.id}</TableCell>

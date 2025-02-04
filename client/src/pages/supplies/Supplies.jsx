@@ -260,7 +260,7 @@ const Supplies = () => {
               {count > 0 && rowsPerPage > 0 ? (
                 supplies
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .filter((supply) => (search.toLowerCase() === "" ? supply : supply.name.toLowerCase().includes(search)))
+                  .filter((supply) => (search.toLowerCase() === "" ? supply : supply.id.toString().includes(search) || supply.name.toLowerCase().includes(search) || supply.note.toLowerCase().includes(search)))
                   .map((supply) => (
                     <TableRow key={supply.id}>
                       <TableCell>{supply.id}</TableCell>

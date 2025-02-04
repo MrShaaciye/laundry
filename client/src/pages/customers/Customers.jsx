@@ -293,9 +293,7 @@ const Customers = () => {
               {count > 0 && rowsPerPage > 0 ? (
                 customers
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .filter((customer) => {
-                    return search.toLowerCase() === "" ? customer : customer.name.toLowerCase().includes(search);
-                  })
+                  .filter((customer) => (search.toLowerCase() === "" ? customer : customer.id.toString().includes(search) || customer.name.toLowerCase().includes(search) || customer.gender.toLowerCase().includes(search) || customer.address.toLowerCase().includes(search) || customer.phone.includes(search) || customer.depositAmount.includes(search) || customer.allowedUnit.toString().includes(search) || customer.paymentStatus.toLowerCase().includes(search)))
                   .map((customer) => (
                     <TableRow key={customer.id}>
                       <TableCell>{customer.id}</TableCell>

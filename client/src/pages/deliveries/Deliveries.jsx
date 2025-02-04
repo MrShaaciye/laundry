@@ -292,7 +292,7 @@ const Inventories = () => {
               {count > 0 && rowsPerPage > 0 ? (
                 deliveries
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .filter((delivery) => (search.toLowerCase() === "" ? delivery : delivery.type.toLowerCase().includes(search)))
+                  .filter((delivery) => (search.toLowerCase() === "" ? delivery : delivery.id.toString().includes(search) || delivery.customers?.name.toLowerCase().includes(search) || delivery.employees?.name.toLowerCase().includes(search) || delivery.note.toLowerCase().includes(search) || delivery.fee.toString().includes(search)))
                   .map((delivery) => (
                     <TableRow key={delivery.id}>
                       <TableCell>{delivery.id}</TableCell>

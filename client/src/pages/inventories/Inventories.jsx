@@ -278,7 +278,7 @@ const Inventories = () => {
               {count > 0 && rowsPerPage > 0 ? (
                 inventories
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .filter((inventory) => (search.toLowerCase() === "" ? inventory : inventory.type.toLowerCase().includes(search)))
+                  .filter((inventory) => (search.toLowerCase() === "" ? inventory : inventory.id.toString().includes(search) || inventory.supplies?.name.toLowerCase().includes(search) || inventory.quantity.toString().includes(search) || inventory.type.toLowerCase().includes(search) || inventory.note.toLowerCase().includes(search)))
                   .map((inventory) => (
                     <TableRow key={inventory.id}>
                       <TableCell>{inventory.id}</TableCell>

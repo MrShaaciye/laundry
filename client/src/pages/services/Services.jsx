@@ -260,9 +260,7 @@ const Services = () => {
               {count > 0 && rowsPerPage > 0 ? (
                 services
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .filter((service) => {
-                    return search.toLowerCase() === "" ? service : service.name.toLowerCase().includes(search);
-                  })
+                  .filter((service) => (search.toLowerCase() === "" ? service : service.id.toString().includes(search) || service.name.toLowerCase().includes(search)))
                   .map((service) => (
                     <TableRow key={service.id}>
                       <TableCell>{service.id}</TableCell>

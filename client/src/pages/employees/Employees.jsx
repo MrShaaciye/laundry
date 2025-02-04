@@ -291,9 +291,7 @@ const Employees = () => {
               {count > 0 && rowsPerPage > 0 ? (
                 employees
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .filter((employee) => {
-                    return search.toLowerCase() === "" ? employee : employee.name.toLowerCase().includes(search) || employee.jobTitle.toLowerCase().includes(search) || employee.phone.toLowerCase().includes(search);
-                  })
+                  .filter((employee) => (search.toLowerCase() === "" ? employee : employee.id.toString().includes(search) || employee.name.toLowerCase().includes(search) || employee.gender.toLowerCase().includes(search) || employee.address.toLowerCase().includes(search) || employee.phone.toLowerCase().includes(search) || employee.jobTitle.toLowerCase().includes(search) || employee.salary.toString().includes(search)))
                   .map((employee) => (
                     <TableRow key={employee.id}>
                       <TableCell>{employee.id}</TableCell>

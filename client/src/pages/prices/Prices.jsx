@@ -262,7 +262,7 @@ const Prices = () => {
               {count > 0 && rowsPerPage > 0 ? (
                 prices
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .filter((price) => (search.toLowerCase() === "" ? price : price.type.toLowerCase().includes(search)))
+                  .filter((price) => (search.toLowerCase() === "" ? price : price.id.toString().includes(search) || price.type.toLowerCase().includes(search) || price.cost.includes(search)))
                   .map((price) => (
                     <TableRow key={price.id}>
                       <TableCell>{price.id}</TableCell>
