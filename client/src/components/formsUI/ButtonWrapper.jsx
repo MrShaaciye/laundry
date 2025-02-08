@@ -1,4 +1,3 @@
-"use client";
 import { Button } from "@mui/material";
 
 const ButtonWrapper = ({ label, ...props }) => {
