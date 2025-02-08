@@ -36,7 +36,7 @@ const SideBar = () => {
         height: "100%",
       }}
     >
-      <Sidebar collapsed={isCollapsed} toggled={toggled} onBackdropClick={() => setToggled(false)} onBreakPoint={setBroken} image="/assets/17372.jpg" breakPoint="md" style={{ height: "100%" }}>
+      <Sidebar collapsed={isCollapsed} toggled={toggled} onBackdropClick={() => setToggled(false)} onBreakpoint={setBroken} image="/assets/17372.jpg" breakPoint="md" style={{ height: "100%" }}>
         <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
           <div style={{ flex: 1, marginBottom: "32px" }}>
             <Menu iconShape="square">
