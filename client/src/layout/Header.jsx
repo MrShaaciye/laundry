@@ -41,8 +41,8 @@ const HeaderBar = () => {
         <IconButton>
           <SettingsOutlinedIcon />
         </IconButton>
-        <IconButton>
-          <PersonOutlinedIcon onClick={handleMenu} />
+        <IconButton onClick={handleMenu}>
+          <PersonOutlinedIcon />
           <Menu
             id="menu-header"
             anchorEl={anchorEl}
