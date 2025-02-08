@@ -7,7 +7,7 @@ const MenuItemWrapper = ({ field, form, options, ...props }) => {
   const fieldError = errors[name] && touched[name];
 
   return (
-    <TextField size="small" required select variant="outlined" color="primary" autoComplete="off" fullWidth {...props} name={name} value={value || ""} onChange={onChange} onBlur={onBlur} error={Boolean(fieldError)} helperText={fieldError}>
+    <TextField size="small" required select variant="outlined" color="primary" autoComplete="off" fullWidth {...props} name={name} value={value || ""} onChange={onChange} onBlur={onBlur} error={Boolean(fieldError)} helperText={fieldError || ""}>
       {options.map((option) => (
         <MenuItem key={option.value} value={option.value}>
           {option.label}
