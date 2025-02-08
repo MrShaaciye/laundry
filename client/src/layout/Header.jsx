@@ -58,15 +58,19 @@ const HeaderBar = () => {
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
-            <NavLink to="/profile" className="menu-bars">
-              <MenuItem onClick={handleClose}>Profile</MenuItem>
-            </NavLink>
-            <NavLink to="#" className="menu-bars">
-              <MenuItem onClick={handleClose}>{`Hi, ${authState?.username ? authState.username.toUpperCase() : ""}`}</MenuItem>
-            </NavLink>
-            <NavLink to="/" className="menu-bars" onClick={logout}>
-              <MenuItem>Logout</MenuItem>
-            </NavLink>
+            <MenuItem onClick={handleClose}>
+              <NavLink to="/profile" className="menu-bars">
+                Profile
+              </NavLink>
+            </MenuItem>
+            <MenuItem onClick={handleClose}>
+              <NavLink to="#" className="menu-bars">{`Hi, ${authState?.username ? authState.username.toUpperCase() : ""}`}</NavLink>
+            </MenuItem>
+            <MenuItem onClick={logout}>
+              <NavLink to="/" className="menu-bars">
+                Logout
+              </NavLink>
+            </MenuItem>
           </Menu>
         </IconButton>
       </Box>
