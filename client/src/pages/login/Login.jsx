@@ -1,5 +1,5 @@
 "use client";
-import { useContext, lazy, useState } from "react";
+import { useContext, useState } from "react";
 import { Container, Typography, Box, Grid, IconButton, InputAdornment } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { Form, Formik, FastField } from "formik";
@@ -9,8 +9,8 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import { AuthContext } from "../../helper/AuthContext";
-const TextField = lazy(() => import("../../components/formsUI/TextFieldWrapper"));
-const Button = lazy(() => import("../../components/formsUI/ButtonWrapper"));
+import TextField from "../../components/formsUI/TextFieldWrapper";
+import Button from "../../components/formsUI/ButtonWrapper";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -52,7 +52,15 @@ const Login = () => {
         setAuthState({ id: res.data.id, name: res.data.name, username: res.data.username, type: res.data.type });
         onSubmitProps.resetForm();
         onSubmitProps.setSubmitting(false);
-        res.data.type === "admin" ? navigate("/dashboard", { replace: true }) : res.data.type === "manager" ? navigate("/customers", { replace: true }) : res.data.type === "user" ? navigate("/expenses", { replace: true }) : navigate("/", { replace: true });
+        if (res.data.type === "admin") {
+          navigate("/dashboard", { replace: true });
+        } else if (res.data.type === "manager") {
+          navigate("/customers", { replace: true });
+        } else if (res.data.type === "user") {
+          navigate("/expenses", { replace: true });
+        } else {
+          navigate("/", { replace: true });
+        }
         return toast.success(`Welcome back ${res.data.username}!`);
       }, 500);
     } catch (err) {
