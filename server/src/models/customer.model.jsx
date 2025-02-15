@@ -55,8 +55,8 @@ module.exports = (sequelize, DataTypes) => {
             msg: `Address must be Letters/Numbers`,
           },
           len: {
-            args: [4, 100],
-            msg: `Address must be between 4 and 100 characters.`,
+            args: [5, 100],
+            msg: `Address must be between 5 and 100 characters.`,
           },
           notEmpty: {
             args: true,
