@@ -1,3 +1,5 @@
+// Object Literal
+// An object literal is a list of zero or more pairs of property names and associated values of an object, enclosed in curly braces ({}).
 const groceryItem = {
   name: "Apples",
   quantity: 4,
