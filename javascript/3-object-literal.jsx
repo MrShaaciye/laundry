@@ -4,8 +4,11 @@ const groceryItem = {
   name: "Apples",
   quantity: 4,
 
+  /**
+   * Displays the item in the console.
+   */
   displayItem: function () {
-    console.log(`${this.quantity} x ${this.name}`);
+    console.log(`Name: ${this.name}, Quantity: ${this.quantity}`);
   },
 };
 

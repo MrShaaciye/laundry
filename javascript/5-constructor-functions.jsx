@@ -1,13 +1,13 @@
 // Constructor functions
 // Constructor functions are functions that create objects. They are used to create multiple instances of an object. The object created by a constructor function can have properties and methods.
 
-const GroceryItem = function (name, quantity) {
+function GroceryItem(name, quantity) {
   this.name = name;
   this.quantity = quantity;
   this.display = function () {
     console.log(`${this.quantity} x ${this.name}`);
   };
-};
+}
 
 const newItem = new GroceryItem("Apples", 5);
 newItem.display();
