@@ -24,12 +24,13 @@ function GroceryItem(name, quantity) {
   this.name = name;
   this.quantity = quantity;
   this.display = function () {
-    console.log(`${this.quantity} x ${this.name}`);
+    console.log(`${this.name} x ${this.quantity}`);
   };
 }
 
 const item = new GroceryItem("Apple", 5);
-item["groceryAisle"] = "Produce"; // Add a new property to the object
-console.log(item); // groceryItem { name: 'Apple', quantity: 5, display: [Function], GroceryAisle: 'Produce' }
+item.display(); // Apple x 5
+item["price"] = 2.5; // Add a new property to the object
+console.log(item); // GroceryItem { name: 'Apple', quantity: 5, display: [Function], price: 2.5 }
 delete item.quantity; // Remove a property from the object
-console.log(item); // groceryItem { name: 'Apple', quantity: 5, display: [Function] }
+console.log(item);
