@@ -1,0 +1,40 @@
+=================================================================
+Click Settings Icon || Ctrl + ,
+Write ==> blink 
+Editor> Cursor Blinking 
+Change Blink to Expand
+
+=================================================================
+Click Settings Icon || Ctrl + ,
+Write ==> cursor smooth
+Editor> Cursor Smooth Caret Animation 
+Change off to on
+
+=================================================================
+Click Settings Icon || Ctrl + ,
+Write ==> word wrap
+Editor> Word Wrap
+Change off to on
+
+=================================================================
+Click Settings Icon || Ctrl + ,
+Write ==> bracket pair
+Editor> Bracket Pair Colorization: Enabled
+Click Checkbox Controls whether bracket pair colorization is enabled or not
+
+=================================================================
+Prettier extension
+Click Settings Icon || Ctrl + ,
+Write ==> format on save
+Editor> Format On Save
+Click Checkbox Format a file on save.
+
+=================================================================
+Quokka.js extension
+Ctrl + k, q
+
+=================================================================p
+
+
+
+
