@@ -1,3 +1,5 @@
+>> docker run --name MySQL80 -d -p 3333:3306 --rm -v mysqldata:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=password mysql:latest
+>> docker run --name mysql-db -e MYSQL_ROOT_PASSWORD=password -p 3333:3306 -d mysql:latest
 >> Create folder and Open VSCode in it
 ===========================================================================
 build nodejs app

@@ -105,8 +105,8 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         validate: {
           isIn: {
-            args: [[`1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`]],
-            msg: `Allowed Units must be only number 4`,
+            args: [[1, 2, 3, 4, 5, 6, 7, 8, 9]],
+            msg: `Allowed Units must be a number between 1 and 9`,
           },
           isInt: {
             args: true,
