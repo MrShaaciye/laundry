@@ -95,7 +95,7 @@ exports.delete = async (req, res) => {
   const transactions = await sequelize.transaction();
   try {
     const id = req.params.id;
-    const delivery = await deliveryModel.destroy({ where: { id: id }, transaction: transactions });
+    const delivery = await deliveryModel.destroy({ where: { id }, force: true, transaction: transactions });
     return delivery ? (await transactions.commit(), res.status(200).json(delivery)) : (await transactions.rollback(), res.status(404).json(`Delivery not found`));
   } catch (err) {
     return await transactions.rollback(), res.status(500).json(err.message);
